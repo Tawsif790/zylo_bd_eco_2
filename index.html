@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link rel="icon" id="faviconLink" type="image/jpeg" href="">
 <style>
 /* ============================================================
@@ -183,6 +184,54 @@ header{
   background:rgba(8,11,20,.6); border:1px solid rgba(255,255,255,.2); color:#fff; display:flex; align-items:center; justify-content:center; transition:.2s;
 }
 .banner-sound-btn:hover{background:rgba(8,11,20,.85);}
+.hero-video-fallback{
+  position:absolute; inset:0; z-index:4; display:none; align-items:center; justify-content:center;
+  background:rgba(8,11,20,.35); cursor:pointer;
+}
+.hero-video-fallback.show{display:flex;}
+.hero-video-fallback .play-circle{
+  width:74px; height:74px; border-radius:50%; background:rgba(8,11,20,.65); backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.3); display:flex; align-items:center; justify-content:center;
+  font-size:1.6rem; color:#fff; transition:transform .2s;
+}
+.hero-video-fallback:hover .play-circle{transform:scale(1.08);}
+
+/* ============ Model showcase section ============ */
+.model-showcase{position:relative; overflow:hidden;}
+.model-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+.model-card{
+  position:relative; border-radius:16px; overflow:hidden; aspect-ratio:3/4.1;
+  background:var(--navy-900); border:1px solid rgba(255,255,255,.06); transition:transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.model-card:hover{transform:translateY(-6px);}
+.model-card img{width:100%; height:100%; object-fit:cover; transition:transform .6s;}
+.model-card:hover img{transform:scale(1.08);}
+.model-card-overlay{
+  position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:18px;
+  background:linear-gradient(180deg, transparent 40%, rgba(8,11,20,.9) 100%);
+}
+.model-card-overlay .tag{font-size:.68rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-light); margin-bottom:4px;}
+.model-card-overlay h4{font-family:var(--font-display); font-size:1.05rem; font-weight:700;}
+.model-card-overlay p{font-size:.78rem; color:var(--muted); margin-top:2px;}
+.model-showcase-cta{display:flex; align-items:center; justify-content:center; gap:16px; margin-top:34px; flex-wrap:wrap; text-align:center;}
+@media(max-width:900px){ .model-grid{grid-template-columns:repeat(2,1fr);} }
+@media(max-width:520px){ .model-grid{grid-template-columns:1fr 1fr; gap:12px;} }
+
+/* ============ Admin: video upload ============ */
+.video-note{
+  display:flex; gap:8px; align-items:flex-start; font-size:.78rem; color:var(--gold-light);
+  background:rgba(212,175,55,.08); border:1px solid rgba(212,175,55,.25); border-radius:10px; padding:10px 12px; margin-bottom:16px;
+}
+.video-note i{margin-top:2px; flex-shrink:0;}
+.video-upload-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+.video-upload-btn{
+  display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px; cursor:pointer;
+  background:rgba(245,241,230,.06); color:var(--cream); font-size:.85rem; font-weight:600; border:1px solid rgba(255,255,255,.12); transition:.2s;
+}
+.video-upload-btn:hover{background:rgba(245,241,230,.12);}
+#videoFileName{font-size:.82rem; color:var(--muted);}
+.video-preview-wrap video{width:100%; max-width:360px; border-radius:10px; margin-top:14px; background:#000; display:block;}
+.video-current-tag{display:inline-flex; align-items:center; gap:6px; font-size:.76rem; color:var(--success); margin-top:8px;}
 
 /* ============ Shop by category strip ============ */
 .category-strip{display:flex; gap:18px; overflow-x:auto; padding:6px 2px 14px; scrollbar-width:thin;}
@@ -221,6 +270,8 @@ header{
 .card-img img{width:100%; height:100%; object-fit:cover; transition:transform .5s;}
 .card:hover .card-img img{transform:scale(1.07);}
 .card-badge{position:absolute; top:10px; left:10px; background:linear-gradient(135deg,var(--red),var(--red-dark)); color:#fff; font-size:.68rem; font-weight:700; padding:5px 10px; border-radius:6px; text-transform:uppercase; letter-spacing:.04em;}
+.card-badge.type-instock{background:linear-gradient(135deg,var(--success),#1f9d68); left:auto; right:10px; top:10px;}
+.card-badge.type-preorder{background:linear-gradient(135deg,var(--gold-light),var(--gold)); color:var(--navy-950); left:auto; right:10px; top:10px;}
 .love-btn{
   position:absolute; top:10px; right:10px; width:38px; height:38px; border-radius:50%;
   background:rgba(8,11,20,.65); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;
@@ -272,7 +323,7 @@ header{
 
 /* ============ Footer ============ */
 footer{background:var(--navy-900); border-top:1px solid rgba(255,255,255,.06); padding:56px 0 24px; margin-top:40px;}
-.footer-grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:32px; margin-bottom:40px;}
+.footer-grid{display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:32px; margin-bottom:40px;}
 .footer-brand p{color:var(--muted); font-size:.86rem; margin:14px 0 18px; max-width:280px;}
 .footer-social{display:flex; gap:10px;}
 .footer-social a{width:36px; height:36px; border-radius:50%; background:var(--navy-800); display:flex; align-items:center; justify-content:center; color:var(--muted); transition:.2s;}
@@ -367,6 +418,18 @@ textarea.form-control{resize:vertical; min-height:70px;}
 .advance-note{font-size:.78rem; color:var(--muted-dim); margin-top:8px; line-height:1.5;}
 .advance-note b{color:var(--cream);}
 
+/* ============ Payment method choice (pre-order modal) ============ */
+.payment-method-choice{display:flex; gap:10px; flex-wrap:wrap;}
+.pay-option{
+  flex:1 1 160px; display:flex; align-items:center; gap:8px; padding:11px 14px;
+  border-radius:10px; border:1px solid rgba(245,241,230,.16); background:var(--navy-800);
+  font-size:.84rem; color:var(--muted); cursor:pointer; transition:border-color .2s, color .2s, background .2s;
+}
+.pay-option input{accent-color:var(--gold); margin:0;}
+.pay-option:has(input:checked){border-color:var(--gold); color:var(--cream); background:rgba(212,175,55,.08);}
+.pay-option small{color:var(--muted-dim); font-weight:400;}
+.pay-option[hidden]{display:none;}
+
 .modal-footer{display:flex; gap:10px; justify-content:flex-end; padding-top:6px;}
 .toast{
   position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(120%); z-index:2000;
@@ -398,7 +461,7 @@ textarea.form-control{resize:vertical; min-height:70px;}
 .admin-top h2{font-family:var(--font-display); font-size:1.5rem;}
 .admin-top p{color:var(--muted); font-size:.85rem;}
 
-.stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:30px;}
+.stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:18px; margin-bottom:30px;}
 .stat-card{background:var(--navy-900); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:20px;}
 .stat-card i{font-size:1.2rem; color:var(--gold); margin-bottom:10px; display:block;}
 .stat-card b{font-family:var(--font-display); font-size:1.7rem; display:block;}
@@ -428,6 +491,13 @@ tr:hover td{background:rgba(255,255,255,.02);}
 .status-pill{padding:4px 10px; border-radius:999px; font-size:.7rem; font-weight:700; text-transform:uppercase;}
 .status-pill.published{background:rgba(62,207,142,.15); color:var(--success);}
 .status-pill.hidden{background:rgba(200,16,46,.15); color:#ff6b7d;}
+.status-pill.status-pending{background:rgba(212,175,55,.15); color:var(--gold-light);}
+.status-pill.status-accepted{background:rgba(62,207,142,.15); color:var(--success);}
+.status-pill.status-rejected{background:rgba(200,16,46,.15); color:#ff6b7d;}
+.my-order-card{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.06);}
+.my-order-card:last-child{border:none;}
+.my-order-card b{font-size:.9rem; display:block;}
+.my-order-meta{font-size:.76rem; color:var(--muted-dim);}
 .row-actions{display:flex; gap:8px; flex-wrap:wrap;}
 .icon-btn{width:32px; height:32px; border-radius:8px; background:var(--navy-800); color:var(--cream); display:flex; align-items:center; justify-content:center; transition:.2s; font-size:.82rem;}
 .icon-btn:hover{background:rgba(212,175,55,.2); color:var(--gold-light);}
@@ -497,7 +567,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
   <!-- ANNOUNCEMENT BAR -->
   <div class="announce-bar" id="announceBar">
     <div class="container announce-inner">
-      <span><i class="fa-solid fa-truck-fast"></i> Pre-order today — 50% advance confirms your order, rest on delivery.</span>
+      <span><i class="fa-solid fa-truck-fast"></i> <span id="announceTextEl">Pre-order today — 50% advance confirms your order, rest on delivery.</span></span>
       <button class="announce-close" id="announceClose" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i></button>
     </div>
   </div>
@@ -530,23 +600,47 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
 
   <!-- HERO VIDEO BANNER (Lukaz-style full-bleed autoplay banner) -->
   <section class="hero-banner" id="brandVideo">
-    <video id="brandVideoPlayer" autoplay muted loop playsinline preload="metadata"
+    <video id="brandVideoPlayer" autoplay muted loop playsinline webkit-playsinline preload="auto"
            poster="https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=1200&q=80">
+      <source id="brandVideoSource" src="" type="video/mp4">
       Your browser doesn't support embedded video.
     </video>
     <div class="hero-banner-overlay">
       <div class="container hero-banner-inner">
         <div class="hero-banner-mark"><img class="logo-img-medium" alt="Zylo BD logo"></div>
         <span class="eyebrow">Direct Import · Patiya, Chattogram</span>
-        <h1>Welcome to <span>Zylo BD</span></h1>
-        <p>Bags · Jewelry · Beauty · Kitchen &amp; Home essentials — imported from China, delivered to your door in Bangladesh.</p>
+        <h1 id="heroHeadlineEl">Welcome to <span>Zylo BD</span></h1>
+        <p id="heroSubtextEl">Bags · Jewelry · Beauty · Home — imported from China.</p>
         <div class="hero-banner-actions">
           <a href="#shop" class="btn btn-primary"><i class="fa-solid fa-bag-shopping"></i> Shop Now</a>
           <a href="https://wa.me/8801828697195" target="_blank" rel="noopener" class="btn btn-outline"><i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp</a>
         </div>
       </div>
     </div>
+    <!-- iOS/Safari sometimes blocks programmatic autoplay even when muted; this tap-to-play
+         layer guarantees playback via a direct user gesture if that happens -->
+    <div class="hero-video-fallback" id="heroVideoFallback">
+      <div class="play-circle"><i class="fa-solid fa-play"></i></div>
+    </div>
     <button class="banner-sound-btn" id="bannerSoundBtn" title="Toggle sound"><i class="fa-solid fa-volume-xmark"></i></button>
+  </section>
+
+  <!-- MODEL SHOWCASE -->
+  <section class="section model-showcase" id="models">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Styled By Zylo</span>
+          <h2>Meet the faces behind the look</h2>
+        </div>
+        <p>Real styling, real products — see how our pieces come together.</p>
+      </div>
+      <div class="model-grid" id="modelGrid"></div>
+      <div class="model-showcase-cta">
+        <a href="#shop" class="btn btn-primary"><i class="fa-solid fa-bag-shopping"></i> Shop Their Picks</a>
+        <a href="https://wa.me/8801828697195" target="_blank" rel="noopener" class="btn btn-outline"><i class="fa-brands fa-whatsapp"></i> Become a Zylo Model</a>
+      </div>
+    </div>
   </section>
 
   <!-- SHOP BY CATEGORY -->
@@ -557,7 +651,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           <span class="eyebrow">Browse</span>
           <h2>Shop by category</h2>
         </div>
-        <p>Find your favorites faster — tap a category to jump straight to it.</p>
+        <p>Tap a category to jump right in.</p>
       </div>
       <div class="category-strip" id="categoryStrip"></div>
     </div>
@@ -569,7 +663,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <div>
         <span class="eyebrow">How It Works</span>
         <h1>Trendy bags, jewelry &amp; daily essentials, imported from <span>China to your door</span> in Bangladesh.</h1>
-        <p>Zylo BD brings you handbags, necklaces, beauty items and clever home essentials — sourced directly from China. No middlemen, honest pricing, and easy pre-order for our Patiya, Thanarmur & Chattogram customers.</p>
+        <p>Sourced directly from China, delivered across Bangladesh — honest pricing, easy pre-order.</p>
         <div class="tagline-strip">
           <span><i class="fa-solid fa-bolt"></i> Trendy</span>
           <span><i class="fa-solid fa-tag"></i> Affordable</span>
@@ -628,7 +722,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           <span class="eyebrow">Catalog</span>
           <h2>Fresh imports, ready to pre-order</h2>
         </div>
-        <p>Love your favorite items and reserve them with a quick pre-order — we'll confirm by phone before shipping arrives.</p>
+        <p>Tap the heart to save favorites, or pre-order in a click.</p>
       </div>
       <div class="filter-bar" id="filterBar"></div>
       <div class="product-grid" id="productGrid"></div>
@@ -636,7 +730,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <div class="custom-request-cta">
         <div>
           <h4><i class="fa-solid fa-wand-magic-sparkles"></i> Can't find what you want?</h4>
-          <p>Request any product — electronics or anything else — and we'll quote you a price.</p>
+          <p>Electronics or anything else — just ask.</p>
         </div>
         <button class="btn btn-primary btn-sm" id="openCustomRequestBtn">Request a Product</button>
       </div>
@@ -653,9 +747,9 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
         </div>
       </div>
       <div class="why-grid">
-        <div class="why-card"><i class="fa-solid fa-warehouse"></i><h3>Direct Sourcing</h3><p>We import straight from factories and wholesale markets in China — cutting out middlemen so your bags, jewelry & essentials stay affordable.</p></div>
-        <div class="why-card"><i class="fa-solid fa-magnifying-glass-dollar"></i><h3>Quality Checked</h3><p>Every batch — from handbags to kitchen gadgets — is inspected before it ships, and again before it leaves our Patiya facility.</p></div>
-        <div class="why-card"><i class="fa-solid fa-location-dot"></i><h3>Local & Reachable</h3><p>Based in Thanarmur, Patiya, Chattogram — real people you can call, message or visit for support.</p></div>
+        <div class="why-card"><i class="fa-solid fa-warehouse"></i><h3>Direct Sourcing</h3><p>Straight from China, no middlemen.</p></div>
+        <div class="why-card"><i class="fa-solid fa-magnifying-glass-dollar"></i><h3>Quality Checked</h3><p>Inspected before it ships, and again before it leaves Patiya.</p></div>
+        <div class="why-card"><i class="fa-solid fa-location-dot"></i><h3>Local & Reachable</h3><p>Real people in Patiya, a call or message away.</p></div>
       </div>
     </div>
   </section>
@@ -666,10 +760,10 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <div class="payment-note">
         <div class="icon"><i class="fa-solid fa-credit-card"></i></div>
         <div>
-          <h4>Online Payment Gateway</h4>
-          <p>We currently accept Cash on Delivery and manual bKash/Nagad payment on confirmation. Card & mobile-wallet checkout is on its way.</p>
+          <h4>Payment Options</h4>
+          <p id="paymentNoteText">Cash on Delivery, plus manual bKash/Nagad transfer. Card checkout is on its way.</p>
         </div>
-        <span class="soon-tag"><i class="fa-solid fa-clock"></i> Coming Soon</span>
+        <span class="soon-tag"><i class="fa-solid fa-credit-card"></i> Card: Coming Soon</span>
       </div>
     </div>
   </section>
@@ -682,7 +776,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           <span class="eyebrow">Visit Us</span>
           <h2>Our shop in Chattogram</h2>
         </div>
-        <p>Prefer to see it in person? Drop by our Patiya location.</p>
+        <p>Drop by our Patiya location anytime.</p>
       </div>
       <div class="outlet-card">
         <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=700&q=80" alt="Zylo BD shop location">
@@ -702,7 +796,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="logo"><div class="mark"><img class="logo-img-small" alt="Zylo BD logo"></div><div>Zylo BD<br><span class="brand-tagline">Trendy · Affordable · Reliable</span></div></div>
-          <p>Direct import shop bringing high-quality Chinese products to customers across Bangladesh — based in Patiya, Thanarmur, Chattogram.</p>
+          <p>China-import shop for her — Patiya, Chattogram.</p>
           <div class="footer-social">
             <a href="https://www.facebook.com/profile.php?id=61574309019842" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="https://wa.me/8801828697195" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
@@ -710,42 +804,29 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
             <a href="mailto:zylobd.fashion@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
           </div>
           <div class="payment-badges">
-            <span><i class="fa-solid fa-mobile-screen-button"></i> bKash</span>
-            <span><i class="fa-solid fa-mobile-screen-button"></i> Nagad</span>
-            <span><i class="fa-solid fa-money-bill-wave"></i> Cash on Delivery</span>
+            <span>bKash</span><span>Nagad</span><span>Cash on Delivery</span>
           </div>
         </div>
         <div class="footer-col">
-          <h5>Order Info</h5>
+          <h5>Shop</h5>
           <ul>
-            <li><a href="#" id="footerOrderTracking">Order Tracking</a></li>
-            <li><a href="#shop">Pre-Order</a></li>
-            <li><a href="#" data-policy="return">Return Policy</a></li>
-            <li><a href="#" id="footerWishlist">WishList</a></li>
+            <li><a href="#shop">All Products</a></li>
+            <li><a href="#" id="footerOrderTracking">My Orders</a></li>
+            <li><a href="#" id="openCustomRequestFooterLink">Request a Product</a></li>
           </ul>
         </div>
         <div class="footer-col">
-          <h5>Customer Care</h5>
+          <h5>Account</h5>
           <ul>
-            <li><a href="#contact">Contact Us</a></li>
-            <li><a href="#" id="footerMyAccount">My Account</a></li>
             <li><a href="#" id="footerLoginLink">Login / Sign Up</a></li>
-            <li><a href="#why">About Us</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h5>Company Info</h5>
-          <ul>
-            <li><a href="#" data-policy="privacy">Privacy Policy</a></li>
-            <li><a href="#" data-policy="terms">Terms &amp; Conditions</a></li>
-            <li><a href="#" data-policy="preorder">Pre-Order Policy</a></li>
+            <li><a href="#contact">Contact Us</a></li>
             <li><a href="#" id="footerAdminLink" class="admin-link">Admin</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <span>© 2026 Zylo BD. All rights reserved.</span>
-        <span>Developed by <a href="https://tawsif790.github.io/My_portgfolio_3D/" target="_blank" rel="noopener">Tawsif</a> · Made with <i class="fa-solid fa-heart" style="color:var(--red);"></i> in Chattogram</span>
+        <span>Developed by <a href="https://tawsif790.github.io/My_portgfolio_3D/" target="_blank" rel="noopener">Tawsif</a></span>
       </div>
     </div>
   </footer>
@@ -772,6 +853,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           <input type="password" class="form-control" id="loginPassword" required placeholder="••••••••">
         </div>
         <div class="admin-error" id="loginError">Incorrect phone or password.</div>
+        <p style="text-align:right; margin:-8px 0 4px;"><a href="#" id="openForgotPassword" style="font-size:.8rem; color:var(--gold-light);">Forgot password?</a></p>
         <div class="modal-footer" style="justify-content:space-between; align-items:center;">
           <button type="button" class="btn btn-ghost btn-sm" id="switchToSignup">Create an account</button>
           <button type="submit" class="btn btn-primary"><i class="fa-solid fa-right-to-bracket"></i> Log In</button>
@@ -804,7 +886,43 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
   </div>
 </div>
 
-<!-- ================= PRE-ORDER MODAL ================= -->
+<!-- ================= FORGOT PASSWORD MODAL ================= -->
+<div class="overlay" id="forgotPasswordOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3><i class="fa-solid fa-key"></i> Reset Password</h3>
+      <button class="modal-close" id="closeForgotPassword"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="video-note" style="margin-bottom:16px;">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>This site has no email/SMS server yet, so we verify it's you using the phone number on your account and let you set a new password directly. See the note above <code>loadSettings()</code> for how to wire this up to a real OTP/email flow on a backend.</span>
+      </div>
+      <form id="forgotPasswordForm">
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" class="form-control" id="fpPhone" required placeholder="01XXXXXXXXX">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" class="form-control" id="fpNewPassword" required placeholder="Min. 4 characters">
+          </div>
+          <div class="form-group">
+            <label>Confirm New Password</label>
+            <input type="password" class="form-control" id="fpConfirmPassword" required placeholder="Re-type new password">
+          </div>
+        </div>
+        <div class="admin-error" id="forgotPasswordError">No account found with that phone number.</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="cancelForgotPassword">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Reset Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- ================= PRE-ORDER MODAL (sourced from China, 7-15 days) ================= -->
 <div class="overlay" id="preorderOverlay">
   <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-head">
@@ -812,6 +930,10 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <button class="modal-close" id="closePreorder"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
+      <div class="video-note" style="margin-bottom:16px;">
+        <i class="fa-solid fa-plane"></i>
+        <span>This item isn't in the shop yet — once you order, we bring it in from China. Expect <b>7–15 days</b> for delivery, and a <b>50% advance payment</b> confirms your order.</span>
+      </div>
       <div class="preorder-summary">
         <img id="poImg" src="" alt="">
         <div><b id="poTitle"></b><span id="poPrice"></span></div>
@@ -827,14 +949,34 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           </div>
         </div>
 
-        <div class="advance-box">
+        <div class="form-group">
+          <label>Payment Method</label>
+          <div class="payment-method-choice" id="poPaymentMethodChoice">
+            <label class="pay-option" id="poPayBkashOption">
+              <input type="radio" name="poPayMethod" id="poPayBkash" value="bkash" checked>
+              <i class="fa-brands fa-btc" style="display:none;"></i>
+              <span><i class="fa-solid fa-mobile-screen-button"></i> bKash / Nagad <small>(50% advance)</small></span>
+            </label>
+            <label class="pay-option" id="poPayCodOption">
+              <input type="radio" name="poPayMethod" id="poPayCod" value="cod">
+              <span><i class="fa-solid fa-money-bill-wave"></i> Cash on Delivery</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="advance-box" id="poBkashBox">
           <div class="advance-row"><span>Order Total</span><b id="poTotal">৳0</b></div>
           <div class="advance-row highlight"><span><i class="fa-solid fa-triangle-exclamation"></i> 50% Advance Required</span><b id="poAdvance">৳0</b></div>
-          <p class="advance-note">Send the advance via <b>bKash / Nagad</b> to <b>01828‑697195</b> (Personal), then enter the Transaction ID below. Your pre-order is confirmed once admin verifies it. Remaining 50% is Cash on Delivery.</p>
+          <p class="advance-note">Send via <b>bKash/Nagad</b> to <b id="poMerchantNumber">01828‑697195</b>, then add the Transaction ID below.</p>
           <div class="form-group" style="margin-top:12px; margin-bottom:0;">
             <label>bKash / Nagad Transaction ID</label>
-            <input type="text" class="form-control" id="poTxnId" required placeholder="e.g. 8N7A2K9XYZ">
+            <input type="text" class="form-control" id="poTxnId" placeholder="e.g. 8N7A2K9XYZ">
           </div>
+        </div>
+
+        <div class="advance-box" id="poCodBox" style="display:none;">
+          <div class="advance-row"><span>Order Total — Pay on Delivery</span><b id="poCodTotal">৳0</b></div>
+          <p class="advance-note" id="poCodNote">Pay the full amount in cash when your order is delivered to your door.</p>
         </div>
 
         <div class="form-group">
@@ -875,6 +1017,86 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
   </div>
 </div>
 
+<!-- ================= ORDER MODAL (in-stock items — no advance, ships fast) ================= -->
+<div class="overlay" id="orderOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3><i class="fa-solid fa-bolt"></i> Order Item</h3>
+      <button class="modal-close" id="closeOrder"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="video-note" style="margin-bottom:16px;">
+        <i class="fa-solid fa-shop"></i>
+        <span>This item is already in our shop — no waiting on China, no advance payment. Pay in full by bKash/Nagad or Cash on Delivery.</span>
+      </div>
+      <div class="preorder-summary">
+        <img id="orImg" src="" alt="">
+        <div><b id="orTitle"></b><span id="orPrice"></span></div>
+      </div>
+
+      <form id="orderForm">
+        <div class="form-group">
+          <label>Quantity</label>
+          <div class="qty-control">
+            <button type="button" id="orQtyMinus">−</button>
+            <input type="number" id="orQty" value="1" min="1" readonly>
+            <button type="button" id="orQtyPlus">+</button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Payment Method</label>
+          <div class="payment-method-choice" id="orPaymentMethodChoice">
+            <label class="pay-option" id="orPayBkashOption">
+              <input type="radio" name="orPayMethod" id="orPayBkash" value="bkash" checked>
+              <span><i class="fa-solid fa-mobile-screen-button"></i> bKash / Nagad <small>(full payment)</small></span>
+            </label>
+            <label class="pay-option" id="orPayCodOption">
+              <input type="radio" name="orPayMethod" id="orPayCod" value="cod">
+              <span><i class="fa-solid fa-money-bill-wave"></i> Cash on Delivery</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="advance-box" id="orBkashBox">
+          <div class="advance-row"><span>Order Total</span><b id="orTotal">৳0</b></div>
+          <p class="advance-note">Send the <b>full amount</b> via <b>bKash/Nagad</b> to <b id="orMerchantNumber">01828‑697195</b>, then add the Transaction ID below.</p>
+          <div class="form-group" style="margin-top:12px; margin-bottom:0;">
+            <label>bKash / Nagad Transaction ID</label>
+            <input type="text" class="form-control" id="orTxnId" placeholder="e.g. 8N7A2K9XYZ">
+          </div>
+        </div>
+
+        <div class="advance-box" id="orCodBox" style="display:none;">
+          <div class="advance-row"><span>Order Total — Pay on Delivery</span><b id="orCodTotal">৳0</b></div>
+          <p class="advance-note" id="orCodNote">Pay the full amount in cash when your order is delivered to your door.</p>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-control" id="orName" required placeholder="e.g. Rahim Uddin">
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" class="form-control" id="orPhone" required placeholder="01XXXXXXXXX">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Delivery Address</label>
+          <textarea class="form-control" id="orAddress" required placeholder="Village/Road, Union, Upazila, District"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="cancelOrder">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- ================= CUSTOM REQUEST MODAL (any item, incl. electronics) ================= -->
 <div class="overlay" id="customRequestOverlay">
   <div class="modal" role="dialog" aria-modal="true">
@@ -883,7 +1105,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <button class="modal-close" id="closeCustomRequest"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
-      <p style="color:var(--muted); font-size:.85rem; margin-bottom:18px;">Want something we don't stock yet — electronics, a specific brand, anything? Tell us what you need. Admin will review, quote a price, and confirm your request.</p>
+      <p style="color:var(--muted); font-size:.85rem; margin-bottom:18px;">Tell us what you need — we'll quote a price and confirm.</p>
 
       <form id="customRequestForm">
         <div class="form-group">
@@ -928,7 +1150,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
         </div>
         <div class="pay-toggle">
           <i class="fa-solid fa-circle-info"></i>
-          <div><b>No advance needed yet</b><small>Admin will contact you with pricing & the 50% advance instructions once your request is accepted.</small></div>
+          <div><b>No advance needed yet</b><small>We'll message you with pricing once accepted.</small></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-ghost" id="cancelCustomRequest">Cancel</button>
@@ -993,7 +1215,9 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <div class="logo"><div class="mark"><img class="logo-img-small" alt="Zylo BD logo"></div><div>Zylo BD<br><small style="color:var(--muted-dim);">Admin Panel</small></div></div>
       <button class="admin-nav-item active" data-tab="overview"><i class="fa-solid fa-chart-pie"></i> Overview</button>
       <button class="admin-nav-item" data-tab="preorders"><i class="fa-solid fa-clipboard-list"></i> Pre-Orders</button>
+      <button class="admin-nav-item" data-tab="orders"><i class="fa-solid fa-bolt"></i> Orders (In Shop)</button>
       <button class="admin-nav-item" data-tab="products"><i class="fa-solid fa-boxes-stacked"></i> Products</button>
+      <button class="admin-nav-item" data-tab="models"><i class="fa-solid fa-people-arrows"></i> Models</button>
       <button class="admin-nav-item" data-tab="settings"><i class="fa-solid fa-gear"></i> Settings</button>
       <a href="#" class="btn btn-outline btn-sm" id="viewSiteBtn" style="margin-top:16px;"><i class="fa-solid fa-arrow-up-right-from-square"></i> View Site</a>
       <button class="btn btn-danger btn-sm" id="adminLogoutBtn"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
@@ -1010,6 +1234,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
         <div class="stat-grid">
           <div class="stat-card"><i class="fa-solid fa-boxes-stacked"></i><b id="statTotalProducts">0</b><span>Total Products</span></div>
           <div class="stat-card"><i class="fa-solid fa-clipboard-list"></i><b id="statTotalPreorders">0</b><span>Total Pre-Orders</span></div>
+          <div class="stat-card"><i class="fa-solid fa-bolt"></i><b id="statTotalOrders">0</b><span>Total In-Shop Orders</span></div>
           <div class="stat-card"><i class="fa-solid fa-heart"></i><b id="statTotalLoves">0</b><span>Total Love Reacts</span></div>
           <div class="stat-card"><i class="fa-solid fa-eye"></i><b id="statPublished">0</b><span>Published Live</span></div>
         </div>
@@ -1022,8 +1247,8 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <!-- PREORDERS TAB -->
       <div class="tab-content" id="tab-preorders">
         <div class="admin-top">
-          <div><h2>Pre-Order Management</h2><p>All customer pre-orders, sortable and exportable.</p></div>
-          <button class="btn btn-primary btn-sm" id="downloadCsvBtn"><i class="fa-solid fa-download"></i> Download One-Tap (CSV)</button>
+          <div><h2>Pre-Order Management</h2><p>Items sourced from China after a customer orders — 7–15 days, 50% advance.</p></div>
+          <button class="btn btn-primary btn-sm" id="downloadPreorderXlsxBtn"><i class="fa-solid fa-file-excel"></i> Download Excel (.xlsx)</button>
         </div>
         <div class="admin-panel-block">
           <div class="table-wrap">
@@ -1037,6 +1262,8 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
                   <th data-sort="qty">Qty <i class="fa-solid fa-sort"></i></th>
                   <th>Address</th>
                   <th>Photo</th>
+                  <th>Payment</th>
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -1044,6 +1271,35 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
             </table>
           </div>
           <div class="no-data" id="preorderEmpty" style="display:none;"><i class="fa-solid fa-inbox"></i>No pre-orders yet.</div>
+        </div>
+      </div>
+
+      <!-- ORDERS TAB (in-stock items) -->
+      <div class="tab-content" id="tab-orders">
+        <div class="admin-top">
+          <div><h2>Order Management</h2><p>Items already in the shop — full payment or COD, no advance, ships fast.</p></div>
+          <button class="btn btn-primary btn-sm" id="downloadOrderXlsxBtn"><i class="fa-solid fa-file-excel"></i> Download Excel (.xlsx)</button>
+        </div>
+        <div class="admin-panel-block">
+          <div class="table-wrap">
+            <table id="orderTable">
+              <thead>
+                <tr>
+                  <th data-sort="date">Date <i class="fa-solid fa-sort"></i></th>
+                  <th data-sort="name">Name <i class="fa-solid fa-sort"></i></th>
+                  <th>Phone</th>
+                  <th data-sort="product">Product <i class="fa-solid fa-sort"></i></th>
+                  <th data-sort="qty">Qty <i class="fa-solid fa-sort"></i></th>
+                  <th>Address</th>
+                  <th>Payment</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="orderTbody"></tbody>
+            </table>
+          </div>
+          <div class="no-data" id="orderEmpty" style="display:none;"><i class="fa-solid fa-inbox"></i>No orders yet.</div>
         </div>
       </div>
 
@@ -1057,11 +1313,30 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           <div class="table-wrap">
             <table>
               <thead>
-                <tr><th>Image</th><th>Title</th><th>Category</th><th>Price</th><th>Loves</th><th>Pre-Orders</th><th>Status</th><th>Show Loves</th><th>Actions</th></tr>
+                <tr><th>Image</th><th>Title</th><th>Category</th><th>Type</th><th>Price</th><th>Loves</th><th>Pre-Orders</th><th>Status</th><th>Show Loves</th><th>Actions</th></tr>
               </thead>
               <tbody id="productTbody"></tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <!-- MODELS TAB -->
+      <div class="tab-content" id="tab-models">
+        <div class="admin-top">
+          <div><h2>Model Showcase</h2><p>Manage the "Meet the faces behind the look" cards on the homepage — upload photos, edit names, tags and captions.</p></div>
+          <button class="btn btn-primary btn-sm" id="addModelBtn"><i class="fa-solid fa-plus"></i> Add Model</button>
+        </div>
+        <div class="admin-panel-block">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Photo</th><th>Name</th><th>Tag</th><th>Caption</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="modelTbody"></tbody>
+            </table>
+          </div>
+          <div class="no-data" id="modelEmpty" style="display:none;"><i class="fa-solid fa-people-arrows"></i>No models added yet.</div>
         </div>
       </div>
 
@@ -1076,13 +1351,89 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           </div>
         </div>
         <div class="admin-panel-block">
-          <h3>Homepage Product Video</h3>
-          <p style="color:var(--muted); font-size:.85rem; margin-bottom:14px;">Paste a direct video file link (.mp4) to show in the "See Zylo BD products in action" section on the homepage.</p>
-          <div class="form-group" style="margin-bottom:10px;">
-            <label>Video URL (.mp4)</label>
-            <input type="text" class="form-control" id="videoUrlInput" placeholder="https://example.com/zylo-bd-showcase.mp4">
+          <h3>Homepage Hero Video</h3>
+          <p style="color:var(--muted); font-size:.85rem; margin-bottom:14px;">Upload a video file directly — it plays in the full-width hero banner at the top of the homepage. MP4 (H.264) is recommended for the widest device support, including iPhone.</p>
+          <div class="video-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>This site has no server — the video is saved in this browser's local storage only. It will play here on this device, but won't appear for other visitors until it's hosted on a real server/CDN.</span>
           </div>
-          <button class="btn btn-primary btn-sm" id="saveVideoUrlBtn"><i class="fa-solid fa-check"></i> Save Video</button>
+          <div class="video-upload-row">
+            <label class="video-upload-btn" for="videoFileInput">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Choose Video File
+              <input type="file" id="videoFileInput" accept="video/mp4,video/quicktime,video/webm,video/*" hidden>
+            </label>
+            <span id="videoFileName">No file selected</span>
+          </div>
+          <div class="video-preview-wrap" id="videoPreviewWrap" style="display:none;">
+            <video id="videoPreviewPlayer" controls muted playsinline></video>
+          </div>
+          <div id="videoCurrentStatus"></div>
+          <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" id="saveVideoUploadBtn" disabled><i class="fa-solid fa-check"></i> Save to Hero Banner</button>
+            <button class="btn btn-outline btn-sm" id="removeVideoBtn"><i class="fa-solid fa-trash"></i> Remove Current Video</button>
+          </div>
+        </div>
+        <div class="admin-panel-block">
+          <h3><i class="fa-solid fa-money-bill-wave"></i> Payment Methods</h3>
+          <p style="color:var(--muted); font-size:.85rem; margin-bottom:14px;">Choose which payment options customers see at checkout, and the merchant number they should send bKash/Nagad payments to.</p>
+          <div style="display:flex; flex-wrap:wrap; gap:24px; margin-bottom:16px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <label class="switch"><input type="checkbox" id="bkashEnabledToggle" checked><span class="slider-toggle"></span></label>
+              <span style="font-size:.86rem; color:var(--muted);">Enable bKash / Nagad</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px;">
+              <label class="switch"><input type="checkbox" id="codEnabledToggle" checked><span class="slider-toggle"></span></label>
+              <span style="font-size:.86rem; color:var(--muted);">Enable Cash on Delivery</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>bKash Merchant Number</label>
+              <input type="text" class="form-control" id="merchantBkashInput" placeholder="01XXXXXXXXX">
+            </div>
+            <div class="form-group">
+              <label>Nagad Merchant Number</label>
+              <input type="text" class="form-control" id="merchantNagadInput" placeholder="01XXXXXXXXX">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Cash on Delivery Note (shown to customers)</label>
+            <input type="text" class="form-control" id="codNoteInput" placeholder="e.g. Pay the full amount in cash on delivery.">
+          </div>
+          <div class="video-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>This site has no server, so this merchant number only updates for <b>this browser/device</b>. See the code comment above <code>loadSettings()</code> and the included <code>database_schema.sql</code> for how to wire this up so every customer sees the same live number from a real database.</span>
+          </div>
+          <div style="margin-top:14px;">
+            <button class="btn btn-primary btn-sm" id="savePaymentSettingsBtn"><i class="fa-solid fa-check"></i> Save Payment Settings</button>
+          </div>
+        </div>
+        <div class="admin-panel-block">
+          <h3><i class="fa-solid fa-rectangle-ad"></i> Announcement Bar & Hero Banner</h3>
+          <p style="color:var(--muted); font-size:.85rem; margin-bottom:14px;">Control the top announcement strip and the text/poster image shown on the homepage hero banner.</p>
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+            <label class="switch"><input type="checkbox" id="announceEnabledToggle" checked><span class="slider-toggle"></span></label>
+            <span style="font-size:.86rem; color:var(--muted);">Show announcement bar</span>
+          </div>
+          <div class="form-group">
+            <label>Announcement Bar Text</label>
+            <input type="text" class="form-control" id="announceTextInput" placeholder="e.g. Free delivery this week!">
+          </div>
+          <div class="form-group">
+            <label>Hero Banner Headline</label>
+            <input type="text" class="form-control" id="heroHeadlineInput" placeholder="Welcome to Zylo BD">
+          </div>
+          <div class="form-group">
+            <label>Hero Banner Subtext</label>
+            <input type="text" class="form-control" id="heroSubtextInput" placeholder="Bags · Jewelry · Beauty · Home">
+          </div>
+          <div class="form-group">
+            <label>Hero Banner Poster Image URL <span style="color:var(--muted-dim); font-weight:400;">(shown before the video loads / if video fails)</span></label>
+            <input type="text" class="form-control" id="heroPosterInput" placeholder="https://...">
+          </div>
+          <div style="margin-top:14px;">
+            <button class="btn btn-primary btn-sm" id="saveBannerSettingsBtn"><i class="fa-solid fa-check"></i> Save Banner Settings</button>
+          </div>
         </div>
         <div class="admin-panel-block">
           <h3>Danger Zone</h3>
@@ -1122,9 +1473,61 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           <label>Image URL</label>
           <input type="text" class="form-control" id="pfImage" placeholder="https://...">
         </div>
+        <div class="form-group">
+          <label>Order Type</label>
+          <select class="form-control" id="pfOrderType">
+            <option value="preorder">Pre-Order — not in shop yet, I'll bring it from China (7–15 days, 50% advance)</option>
+            <option value="instock">In Shop — available now (full payment or COD, ships fast)</option>
+          </select>
+        </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-ghost" id="cancelProductModal">Cancel</button>
           <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Save Product</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODEL ADD/EDIT MODAL ================= -->
+<div class="overlay" id="modelModalOverlay">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modelModalTitle"><i class="fa-solid fa-user-plus"></i> Add Model</h3>
+      <button class="modal-close" id="closeModelModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="modelForm">
+        <input type="hidden" id="modelEditId">
+        <div class="form-group">
+          <label>Photo</label>
+          <div class="file-drop" id="modelFileDropZone">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>Click to upload a photo</span>
+            <input type="file" id="modelPhotoInput" accept="image/*" style="display:none;">
+          </div>
+          <div class="file-preview" id="modelFilePreview" style="display:none;">
+            <img id="modelFilePreviewImg" src="">
+            <span id="modelFilePreviewName">Selected photo</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Model Name</label>
+            <input type="text" class="form-control" id="mfName" required placeholder="e.g. Nabila">
+          </div>
+          <div class="form-group">
+            <label>Tag / Category</label>
+            <input type="text" class="form-control" id="mfTag" required placeholder="e.g. Bags">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Caption</label>
+          <input type="text" class="form-control" id="mfCaption" required placeholder="e.g. Everyday tote edit">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="cancelModelModal">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Save Model</button>
         </div>
       </form>
     </div>
@@ -1156,60 +1559,209 @@ function injectLogos(){
   if(fav) fav.href = LOGO_SMALL;
 }
 
+/* Applies the admin-controlled announcement bar text/visibility and hero
+   banner headline/subtext/poster image from `settings` onto the live page.
+   Called on init and again right after the admin saves Settings. */
+function applySettingsToPage(){
+  // Announcement bar
+  const bar = document.getElementById("announceBar");
+  const textEl = document.getElementById("announceTextEl");
+  if(bar && textEl){
+    textEl.textContent = settings.announceText;
+    bar.classList.toggle("hidden", settings.announceEnabled === false);
+  }
+  // Hero banner headline — highlight "Zylo BD" in gold if present, like the original markup
+  const headlineEl = document.getElementById("heroHeadlineEl");
+  if(headlineEl){
+    const headline = settings.heroHeadline || DEFAULT_SETTINGS.heroHeadline;
+    if(headline.includes("Zylo BD")){
+      headlineEl.innerHTML = escapeHtml(headline).replace("Zylo BD", "<span>Zylo BD</span>");
+    } else {
+      headlineEl.textContent = headline;
+    }
+  }
+  const subtextEl = document.getElementById("heroSubtextEl");
+  if(subtextEl) subtextEl.textContent = settings.heroSubtext || DEFAULT_SETTINGS.heroSubtext;
+  const player = document.getElementById("brandVideoPlayer");
+  if(player && settings.heroPoster) player.setAttribute("poster", settings.heroPoster);
+
+  // Payment info strip — reflect which methods the admin currently has enabled
+  const payNote = document.getElementById("paymentNoteText");
+  if(payNote){
+    const methods = [];
+    if(settings.codEnabled) methods.push("Cash on Delivery");
+    if(settings.bkashEnabled) methods.push("manual bKash/Nagad transfer");
+    payNote.textContent = methods.length
+      ? methods.join(" and ") + ". Card checkout is on its way."
+      : "Payment methods are being updated — please contact us on WhatsApp to place an order.";
+  }
+  const badges = document.querySelector(".payment-badges");
+  if(badges){
+    badges.innerHTML =
+      (settings.bkashEnabled ? "<span>bKash</span><span>Nagad</span>" : "") +
+      (settings.codEnabled ? "<span>Cash on Delivery</span>" : "");
+  }
+}
+
 const ADMIN_PASSWORD = "admin123";
 const LS_PRODUCTS = "zylo_products";
 const LS_PREORDERS = "zylo_preorders";
 const LS_SETTINGS = "zylo_settings";
 
 /* ---------- Seed / default data ---------- */
+/* orderType: "preorder" = not physically in the shop yet — we source it from
+   China after a customer orders (7–15 days, 50% advance required).
+   orderType: "instock"  = already sitting in the shop — ships fast, full
+   payment (bKash/Nagad) or Cash on Delivery, no advance needed. */
 const DEFAULT_PRODUCTS = [
   { id:"p1", title:"Quilted Chain Handbag", category:"Bags", price:1650, oldPrice:2100,
     image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&q=80",
-    published:true, showLoves:true, loves:0 },
+    published:true, showLoves:true, loves:0, orderType:"preorder" },
   { id:"p2", title:"Layered Pearl Necklace Set", category:"Jewelry", price:590, oldPrice:820,
     image:"https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&q=80",
-    published:true, showLoves:true, loves:0 },
+    published:true, showLoves:true, loves:0, orderType:"instock" },
   { id:"p3", title:"Stainless Steel Onion & Veggie Cutter", category:"Kitchen & Home", price:320, oldPrice:450,
     image:"https://images.unsplash.com/photo-1590794056226-79ef3a8147e1?w=500&q=80",
-    published:true, showLoves:true, loves:0 },
+    published:true, showLoves:true, loves:0, orderType:"instock" },
   { id:"p4", title:"Automatic Windproof Umbrella", category:"Accessories", price:490, oldPrice:650,
     image:"https://images.unsplash.com/photo-1620656798695-2ee3d0dc0da4?w=500&q=80",
-    published:true, showLoves:true, loves:0 },
+    published:true, showLoves:true, loves:0, orderType:"preorder" },
   { id:"p5", title:"Matte Liquid Lipstick Set (6pc)", category:"Beauty", price:750, oldPrice:990,
     image:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500&q=80",
-    published:true, showLoves:true, loves:0 },
+    published:true, showLoves:true, loves:0, orderType:"instock" },
   { id:"p6", title:"Rhinestone Hair Clip Set", category:"Jewelry", price:280, oldPrice:390,
     image:"https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=500&q=80",
-    published:true, showLoves:true, loves:0 },
+    published:true, showLoves:true, loves:0, orderType:"preorder" },
   { id:"p7", title:"Ladies Crossbody Sling Bag", category:"Bags", price:1150, oldPrice:1450,
     image:"https://images.unsplash.com/photo-1591561954557-26941169b49e?w=500&q=80",
-    published:true, showLoves:true, loves:0 },
+    published:true, showLoves:true, loves:0, orderType:"preorder" },
   { id:"p8", title:"Reusable Silicone Kitchen Set", category:"Kitchen & Home", price:540, oldPrice:700,
     image:"https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=500&q=80",
-    published:false, showLoves:true, loves:0 }
+    published:false, showLoves:true, loves:0, orderType:"instock" }
 ];
 
-const DEFAULT_SETTINGS = { globalLoves:true, videoUrl:"https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" };
+/* ---------- Store-wide settings (payment, banner, announcement) ----------
+   NOTE ON FUTURE BACKEND MIGRATION — MERCHANT NUMBER CONTROL:
+   Right now this entire site (products, orders, settings, the bKash/Nagad
+   merchant numbers below) lives in the visitor's own browser (localStorage).
+   That means when the admin changes the merchant number in Settings, it only
+   updates on the *admin's own device/browser* — customers on other devices
+   still see the old number until the site is wired up to a real server and
+   database.
+
+   To make merchant-number control (and every other Settings field) actually
+   admin-controlled for ALL visitors, replace loadSettings()/saveSettings()
+   below with real API calls against a backend + database (see the companion
+   database_schema.sql file for a ready-made `settings` table). Example:
+
+   async function loadSettings(){
+     const res = await fetch('/api/settings.php');           // GET current settings
+     return await res.json();
+   }
+   async function saveSettings(s){
+     await fetch('/api/settings.php', {
+       method: 'POST',
+       headers: { 'Content-Type': 'application/json' },
+       body: JSON.stringify(s)                                // { merchantBkash, merchantNagad, ... }
+     });
+   }
+   // The PHP/Node endpoint would UPDATE the `settings` table (see SQL file),
+   // so every customer's page load fetches the admin's latest merchant
+   // number, payment toggles, and banner text — no re-deploy needed.
+   ---------------------------------------------------------------------- */
+const DEFAULT_SETTINGS = {
+  globalLoves: true,
+  // Payment method controls
+  bkashEnabled: true,          // show bKash/Nagad manual-transfer option at checkout
+  codEnabled: true,            // show Cash on Delivery option at checkout
+  merchantBkash: "01828-697195",   // bKash "Send Money" number shown to customers
+  merchantNagad: "01828-697195",   // Nagad "Send Money" number shown to customers
+  codNote: "Pay the full amount in cash when your order is delivered to your door.",
+  // Announcement bar controls
+  announceEnabled: true,
+  announceText: "Pre-order today — 50% advance confirms your order, rest on delivery.",
+  // Hero banner text controls
+  heroHeadline: "Welcome to Zylo BD",
+  heroSubtext: "Bags · Jewelry · Beauty · Home — imported from China.",
+  heroPoster: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=1200&q=80"
+};
+// Shown until the admin uploads a custom video (guaranteed-compatible sample mp4)
+const DEFAULT_HERO_VIDEO = "https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4";
 
 /* ---------- Storage helpers ---------- */
 function loadProducts(){
   let data = localStorage.getItem(LS_PRODUCTS);
   if(!data){ localStorage.setItem(LS_PRODUCTS, JSON.stringify(DEFAULT_PRODUCTS)); return structuredClone(DEFAULT_PRODUCTS); }
-  return JSON.parse(data);
+  const parsed = JSON.parse(data);
+  // MIGRATION: products saved before the Pre-Order / In-Shop split won't have
+  // an orderType yet — default them to "preorder" so nothing breaks.
+  let migrated = false;
+  parsed.forEach(p=>{ if(!p.orderType){ p.orderType = "preorder"; migrated = true; } });
+  if(migrated) localStorage.setItem(LS_PRODUCTS, JSON.stringify(parsed));
+  return parsed;
 }
 function saveProducts(p){ localStorage.setItem(LS_PRODUCTS, JSON.stringify(p)); }
 function loadPreorders(){ return JSON.parse(localStorage.getItem(LS_PREORDERS) || "[]"); }
 function savePreorders(p){ localStorage.setItem(LS_PREORDERS, JSON.stringify(p)); }
 function loadSettings(){
   let s = localStorage.getItem(LS_SETTINGS);
-  if(!s){ localStorage.setItem(LS_SETTINGS, JSON.stringify(DEFAULT_SETTINGS)); return {...DEFAULT_SETTINGS}; }
-  return JSON.parse(s);
+  // BUG FIX: previously this returned ONLY whatever was already saved in
+  // localStorage, so any new settings field added later (e.g. bkashEnabled,
+  // merchantBkash) would come back as `undefined` for returning visitors who
+  // already had an old settings object saved, breaking payment/banner logic.
+  // Merging DEFAULT_SETTINGS underneath the saved object guarantees every
+  // field always exists, while still keeping the admin's saved choices.
+  const parsed = s ? JSON.parse(s) : {};
+  const merged = { ...DEFAULT_SETTINGS, ...parsed };
+  localStorage.setItem(LS_SETTINGS, JSON.stringify(merged));
+  return merged;
 }
 function saveSettings(s){ localStorage.setItem(LS_SETTINGS, JSON.stringify(s)); }
+
+/* ---------- Model Showcase (admin-editable "Meet the faces" section) ---------- */
+const LS_MODELS = "zylo_models";
+const DEFAULT_MODELS = [
+  { id:"m1", tag:"Bags", name:"Nabila", caption:"Everyday tote edit", image:"https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&q=80" },
+  { id:"m2", tag:"Jewelry", name:"Ayesha", caption:"Statement pieces", image:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=500&q=80" },
+  { id:"m3", tag:"Beauty", name:"Farzana", caption:"Everyday glow kit", image:"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=500&q=80" },
+  { id:"m4", tag:"Home", name:"Tania", caption:"Weekend essentials", image:"https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=500&q=80" }
+];
+function loadModels(){
+  let data = localStorage.getItem(LS_MODELS);
+  if(!data){ localStorage.setItem(LS_MODELS, JSON.stringify(DEFAULT_MODELS)); return structuredClone(DEFAULT_MODELS); }
+  return JSON.parse(data);
+}
+function saveModels(m){ localStorage.setItem(LS_MODELS, JSON.stringify(m)); }
+
+/* Shrinks an uploaded photo to a reasonable max width via canvas before
+   storing it as a base64 data URL, so a handful of model photos don't blow
+   past localStorage's ~5-10MB per-origin quota. */
+function resizeImageFile(file, maxWidth=700, quality=0.82){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = (ev)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const scale = Math.min(1, maxWidth / img.width);
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      img.onerror = reject;
+      img.src = ev.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
 
 let products = loadProducts();
 let preorders = loadPreorders();
 let settings = loadSettings();
+let models = loadModels();
 let lovedIds = JSON.parse(localStorage.getItem("zylo_loved_local") || "[]"); // per-browser like tracking
 let activeCategory = "All";
 let sortState = { key:"date", dir:"desc" };
@@ -1278,6 +1830,7 @@ function renderProductGrid(){
       <div class="card-img">
         <img src="${p.image}" alt="${escapeHtml(p.title)}" loading="lazy">
         ${p.oldPrice ? '<span class="card-badge">Sale</span>' : ''}
+        ${p.orderType === "instock" ? '<span class="card-badge type-instock"><i class="fa-solid fa-check"></i> In Shop</span>' : '<span class="card-badge type-preorder"><i class="fa-solid fa-clock"></i> Pre-Order</span>'}
         ${showLoveUI ? `<button class="love-btn ${isLoved?'loved':''}" data-love="${p.id}"><i class="fa-solid fa-heart"></i></button>` : ''}
       </div>
       <div class="card-body">
@@ -1290,7 +1843,9 @@ function renderProductGrid(){
         ${showLoveUI ? `<div class="card-meta"><span><i class="fa-solid fa-heart" style="color:var(--red);"></i> ${p.loves} loved this</span></div>` : ''}
       </div>
       <div class="card-actions">
-        <button class="btn btn-primary" data-preorder="${p.id}"><i class="fa-solid fa-cart-plus"></i> Pre-Order Now</button>
+        ${p.orderType === "instock"
+          ? `<button class="btn btn-primary" data-order="${p.id}"><i class="fa-solid fa-bolt"></i> Order Now</button>`
+          : `<button class="btn btn-primary" data-preorder="${p.id}"><i class="fa-solid fa-cart-plus"></i> Pre-Order Now</button>`}
       </div>
     </div>`;
   }).join("");
@@ -1301,6 +1856,23 @@ function renderProductGrid(){
   grid.querySelectorAll("[data-preorder]").forEach(btn=>{
     btn.addEventListener("click", ()=> requestPreorder(btn.dataset.preorder));
   });
+  grid.querySelectorAll("[data-order]").forEach(btn=>{
+    btn.addEventListener("click", ()=> requestOrder(btn.dataset.order));
+  });
+}
+
+function renderModelShowcase(){
+  const grid = document.getElementById("modelGrid");
+  if(!grid) return;
+  if(models.length === 0){
+    grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-people-arrows"></i><p>No models added yet.</p></div>`;
+    return;
+  }
+  grid.innerHTML = models.map(m=>`
+    <div class="model-card">
+      <img src="${m.image}" alt="Model styled with Zylo BD ${escapeHtml(m.tag)}" loading="lazy">
+      <div class="model-card-overlay"><span class="tag">${escapeHtml(m.tag)}</span><h4>${escapeHtml(m.name)}</h4><p>${escapeHtml(m.caption)}</p></div>
+    </div>`).join("");
 }
 
 function escapeHtml(str){
@@ -1344,7 +1916,30 @@ function updateAdvanceDisplay(){
   const advance = Math.ceil(total * 0.5);
   document.getElementById("poTotal").textContent = "৳" + total.toLocaleString();
   document.getElementById("poAdvance").textContent = "৳" + advance.toLocaleString();
+  document.getElementById("poCodTotal").textContent = "৳" + total.toLocaleString();
 }
+
+/* Shows the bKash/Nagad advance box or the Cash-on-Delivery box depending on
+   which radio is selected, and (un)sets the "required" attribute on the
+   Transaction ID field so COD orders aren't blocked from submitting without one. */
+function updatePreorderPaymentUI(){
+  const method = document.querySelector('input[name="poPayMethod"]:checked')?.value || "bkash";
+  const bkashBox = document.getElementById("poBkashBox");
+  const codBox = document.getElementById("poCodBox");
+  const txnInput = document.getElementById("poTxnId");
+  if(method === "cod"){
+    bkashBox.style.display = "none";
+    codBox.style.display = "block";
+    txnInput.removeAttribute("required");
+  } else {
+    bkashBox.style.display = "block";
+    codBox.style.display = "none";
+    txnInput.setAttribute("required", "required");
+  }
+}
+document.querySelectorAll('input[name="poPayMethod"]').forEach(r=>{
+  r.addEventListener("change", updatePreorderPaymentUI);
+});
 
 function openPreorderModal(id){
   currentPreorderProduct = products.find(p=>p.id===id);
@@ -1362,6 +1957,19 @@ function openPreorderModal(id){
     document.getElementById("poName").value = user.name;
     document.getElementById("poPhone").value = user.phone;
   }
+
+  // Merchant number + payment method toggles come from admin Settings
+  document.getElementById("poMerchantNumber").textContent = settings.merchantBkash || DEFAULT_SETTINGS.merchantBkash;
+  document.getElementById("poCodNote").textContent = settings.codNote || DEFAULT_SETTINGS.codNote;
+  const bkashOpt = document.getElementById("poPayBkashOption");
+  const codOpt = document.getElementById("poPayCodOption");
+  bkashOpt.hidden = settings.bkashEnabled === false;
+  codOpt.hidden = settings.codEnabled === false;
+  // Default to whichever method is actually enabled
+  if(settings.bkashEnabled !== false){ document.getElementById("poPayBkash").checked = true; }
+  else if(settings.codEnabled !== false){ document.getElementById("poPayCod").checked = true; }
+  updatePreorderPaymentUI();
+
   updateAdvanceDisplay();
   document.getElementById("preorderOverlay").classList.add("open");
 }
@@ -1407,18 +2015,27 @@ document.getElementById("preorderForm").addEventListener("submit", (e)=>{
   const qty = parseInt(document.getElementById("poQty").value || 1);
   const total = currentPreorderProduct.price * qty;
   const advance = Math.ceil(total * 0.5);
+  const paymentMethod = document.querySelector('input[name="poPayMethod"]:checked')?.value || "bkash";
+
+  // COD orders don't need a transaction ID; bKash/Nagad orders do.
+  if(paymentMethod === "bkash" && !document.getElementById("poTxnId").value.trim()){
+    showToast("Please enter your bKash/Nagad Transaction ID.", "fa-triangle-exclamation");
+    return;
+  }
+
   const order = {
     id: "ord_" + Date.now(),
     userId: user.id,
     type: "catalog",
+    orderCategory: "preorder",
     isCustom: false,
-    productId: currentPreorderProduct.id,
     productTitle: currentPreorderProduct.title,
     price: currentPreorderProduct.price,
     qty: qty,
     total: total,
-    advance: advance,
-    txnId: document.getElementById("poTxnId").value.trim(),
+    paymentMethod: paymentMethod,                 // "bkash" | "cod"
+    advance: paymentMethod === "bkash" ? advance : 0,
+    txnId: paymentMethod === "bkash" ? document.getElementById("poTxnId").value.trim() : "",
     photo: uploadedPhotoData,
     name: document.getElementById("poName").value.trim(),
     phone: document.getElementById("poPhone").value.trim(),
@@ -1429,9 +2046,235 @@ document.getElementById("preorderForm").addEventListener("submit", (e)=>{
   preorders.push(order);
   savePreorders(preorders);
   closePreorderModal();
-  showToast("Pre-order submitted! We'll verify your advance and confirm.", "fa-circle-check");
+  showToast("Pre-order submitted! We'll verify your order and confirm.", "fa-circle-check");
   renderProductGrid(); // in case admin dashboard open elsewhere relies on counts
 });
+
+/* =====================================================================
+   ORDER MODAL (in-stock items — quick order, full payment, no advance)
+   ===================================================================== */
+let currentOrderProduct = null;
+let pendingOrderId = null;
+
+function requestOrder(id){
+  const user = getCurrentUser();
+  if(!user){
+    pendingOrderId = id;
+    openUserAuth("login", "Please log in to place an order for this product.");
+    return;
+  }
+  openOrderModal(id);
+}
+
+function updateOrderTotalDisplay(){
+  const price = currentOrderProduct ? currentOrderProduct.price : 0;
+  const qty = parseInt(document.getElementById("orQty").value || 1);
+  const total = price * qty;
+  document.getElementById("orTotal").textContent = "৳" + total.toLocaleString();
+  document.getElementById("orCodTotal").textContent = "৳" + total.toLocaleString();
+}
+
+function updateOrderPaymentUI(){
+  const method = document.querySelector('input[name="orPayMethod"]:checked')?.value || "bkash";
+  const bkashBox = document.getElementById("orBkashBox");
+  const codBox = document.getElementById("orCodBox");
+  const txnInput = document.getElementById("orTxnId");
+  if(method === "cod"){
+    bkashBox.style.display = "none";
+    codBox.style.display = "block";
+    txnInput.removeAttribute("required");
+  } else {
+    bkashBox.style.display = "block";
+    codBox.style.display = "none";
+    txnInput.setAttribute("required", "required");
+  }
+}
+document.querySelectorAll('input[name="orPayMethod"]').forEach(r=>{
+  r.addEventListener("change", updateOrderPaymentUI);
+});
+
+function openOrderModal(id){
+  currentOrderProduct = products.find(p=>p.id===id);
+  if(!currentOrderProduct) return;
+  document.getElementById("orImg").src = currentOrderProduct.image;
+  document.getElementById("orTitle").textContent = currentOrderProduct.title;
+  document.getElementById("orPrice").textContent = "৳" + currentOrderProduct.price.toLocaleString();
+  document.getElementById("orderForm").reset();
+  document.getElementById("orQty").value = 1;
+  const user = getCurrentUser();
+  if(user){
+    document.getElementById("orName").value = user.name;
+    document.getElementById("orPhone").value = user.phone;
+  }
+
+  document.getElementById("orMerchantNumber").textContent = settings.merchantBkash || DEFAULT_SETTINGS.merchantBkash;
+  document.getElementById("orCodNote").textContent = settings.codNote || DEFAULT_SETTINGS.codNote;
+  const bkashOpt = document.getElementById("orPayBkashOption");
+  const codOpt = document.getElementById("orPayCodOption");
+  bkashOpt.hidden = settings.bkashEnabled === false;
+  codOpt.hidden = settings.codEnabled === false;
+  if(settings.bkashEnabled !== false){ document.getElementById("orPayBkash").checked = true; }
+  else if(settings.codEnabled !== false){ document.getElementById("orPayCod").checked = true; }
+  updateOrderPaymentUI();
+
+  updateOrderTotalDisplay();
+  document.getElementById("orderOverlay").classList.add("open");
+}
+function closeOrderModal(){ document.getElementById("orderOverlay").classList.remove("open"); }
+
+document.getElementById("closeOrder").addEventListener("click", closeOrderModal);
+document.getElementById("cancelOrder").addEventListener("click", closeOrderModal);
+document.getElementById("orderOverlay").addEventListener("click", (e)=>{ if(e.target.id==="orderOverlay") closeOrderModal(); });
+
+document.getElementById("orQtyMinus").addEventListener("click", ()=>{
+  const inp = document.getElementById("orQty");
+  inp.value = Math.max(1, parseInt(inp.value||1) - 1);
+  updateOrderTotalDisplay();
+});
+document.getElementById("orQtyPlus").addEventListener("click", ()=>{
+  const inp = document.getElementById("orQty");
+  inp.value = parseInt(inp.value||1) + 1;
+  updateOrderTotalDisplay();
+});
+
+document.getElementById("orderForm").addEventListener("submit", (e)=>{
+  e.preventDefault();
+  const user = getCurrentUser();
+  if(!user){
+    closeOrderModal();
+    openUserAuth("login", "Your session expired — please log in again to submit this order.");
+    return;
+  }
+  const qty = parseInt(document.getElementById("orQty").value || 1);
+  const total = currentOrderProduct.price * qty;
+  const paymentMethod = document.querySelector('input[name="orPayMethod"]:checked')?.value || "bkash";
+
+  if(paymentMethod === "bkash" && !document.getElementById("orTxnId").value.trim()){
+    showToast("Please enter your bKash/Nagad Transaction ID.", "fa-triangle-exclamation");
+    return;
+  }
+
+  const order = {
+    id: "ord_" + Date.now(),
+    userId: user.id,
+    type: "catalog",
+    orderCategory: "instock",
+    isCustom: false,
+    productId: currentOrderProduct.id,
+    productTitle: currentOrderProduct.title,
+    price: currentOrderProduct.price,
+    qty: qty,
+    total: total,
+    paymentMethod: paymentMethod,
+    advance: 0,
+    txnId: paymentMethod === "bkash" ? document.getElementById("orTxnId").value.trim() : "",
+    photo: null,
+    name: document.getElementById("orName").value.trim(),
+    phone: document.getElementById("orPhone").value.trim(),
+    address: document.getElementById("orAddress").value.trim(),
+    status: "pending",
+    date: new Date().toISOString()
+  };
+  preorders.push(order);
+  savePreorders(preorders);
+  closeOrderModal();
+  showToast("Order submitted! We'll confirm and ship it soon.", "fa-circle-check");
+  renderProductGrid();
+});
+
+/* =====================================================================
+   CUSTOM REQUEST (any product, incl. electronics — admin quotes & approves)
+   ===================================================================== */
+let crUploadedPhoto = null;
+
+function openCustomRequest(){
+  const user = getCurrentUser();
+  if(!user){ openUserAuth("login", "Please log in to request a product."); return; }
+  document.getElementById("customRequestForm").reset();
+  crUploadedPhoto = null;
+  document.getElementById("crFilePreview").style.display = "none";
+  document.getElementById("crName").value = user.name;
+  document.getElementById("crPhone").value = user.phone;
+  document.getElementById("customRequestOverlay").classList.add("open");
+}
+function closeCustomRequest(){ document.getElementById("customRequestOverlay").classList.remove("open"); }
+
+document.getElementById("openCustomRequestBtn").addEventListener("click", openCustomRequest);
+document.getElementById("openCustomRequestFooterLink").addEventListener("click",(e)=>{ e.preventDefault(); openCustomRequest(); });
+document.getElementById("closeCustomRequest").addEventListener("click", closeCustomRequest);
+document.getElementById("cancelCustomRequest").addEventListener("click", closeCustomRequest);
+document.getElementById("customRequestOverlay").addEventListener("click",(e)=>{ if(e.target.id==="customRequestOverlay") closeCustomRequest(); });
+
+document.getElementById("crFileDropZone").addEventListener("click", ()=> document.getElementById("crPhoto").click());
+document.getElementById("crPhoto").addEventListener("change",(e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev)=>{
+    crUploadedPhoto = ev.target.result;
+    document.getElementById("crFilePreviewImg").src = crUploadedPhoto;
+    document.getElementById("crFilePreviewName").textContent = file.name;
+    document.getElementById("crFilePreview").style.display = "flex";
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById("customRequestForm").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const user = getCurrentUser();
+  if(!user){ closeCustomRequest(); openUserAuth("login"); return; }
+  const order = {
+    id: "ord_" + Date.now(),
+    userId: user.id,
+    type: "custom",
+    orderCategory: "preorder",
+    isCustom: true,
+    productId: null,
+    productTitle: document.getElementById("crItem").value.trim(),
+    price: null,
+    qty: parseInt(document.getElementById("crQty").value || 1),
+    budget: document.getElementById("crBudget").value ? parseFloat(document.getElementById("crBudget").value) : null,
+    total: null, advance: null, txnId: null,
+    photo: crUploadedPhoto,
+    name: document.getElementById("crName").value.trim(),
+    phone: document.getElementById("crPhone").value.trim(),
+    address: document.getElementById("crAddress").value.trim(),
+    status: "pending",
+    date: new Date().toISOString()
+  };
+  preorders.push(order);
+  savePreorders(preorders);
+  closeCustomRequest();
+  showToast("Request sent! We'll message you with a quote.", "fa-circle-check");
+});
+
+/* =====================================================================
+   MY ORDERS (customer order status view)
+   ===================================================================== */
+function openMyOrders(){
+  const user = getCurrentUser();
+  if(!user){ openUserAuth("login", "Log in to see your orders."); return; }
+  const myList = preorders.filter(o=>o.userId===user.id).sort((a,b)=> new Date(b.date)-new Date(a.date));
+  const list = document.getElementById("myOrdersList");
+  if(myList.length===0){
+    list.innerHTML = `<div class="no-data"><i class="fa-solid fa-receipt"></i>No orders yet.</div>`;
+  } else {
+    list.innerHTML = myList.map(o=>`
+      <div class="my-order-card">
+        <div>
+          <b>${escapeHtml(o.productTitle)}</b>
+          <span class="my-order-meta">Qty ${o.qty} · ${new Date(o.date).toLocaleDateString()}${o.total ? " · ৳"+o.total.toLocaleString() : ""}</span>
+        </div>
+        <span class="status-pill status-${o.status}">${o.status}</span>
+      </div>
+    `).join("");
+  }
+  document.getElementById("myOrdersOverlay").classList.add("open");
+}
+document.getElementById("myOrdersBtn").addEventListener("click", openMyOrders);
+document.getElementById("footerOrderTracking").addEventListener("click",(e)=>{ e.preventDefault(); openMyOrders(); });
+document.getElementById("closeMyOrders").addEventListener("click", ()=> document.getElementById("myOrdersOverlay").classList.remove("open"));
+document.getElementById("myOrdersOverlay").addEventListener("click",(e)=>{ if(e.target.id==="myOrdersOverlay") document.getElementById("myOrdersOverlay").classList.remove("open"); });
 
 /* =====================================================================
    CUSTOMER ACCOUNTS (login required to place a pre-order)
@@ -1458,6 +2301,7 @@ function refreshUserAuthUI(){
     label.textContent = "Login";
     btn.querySelector("i").className = "fa-solid fa-user";
   }
+  document.getElementById("myOrdersBtn").style.display = user ? "inline-flex" : "none";
 }
 
 function openUserAuth(mode="login", hint=null){
@@ -1467,7 +2311,7 @@ function openUserAuth(mode="login", hint=null){
   document.getElementById("loginError").style.display = "none";
   document.getElementById("signupError").style.display = "none";
 }
-function closeUserAuth(){ document.getElementById("userAuthOverlay").classList.remove("open"); pendingPreorderId = null; }
+function closeUserAuth(){ document.getElementById("userAuthOverlay").classList.remove("open"); pendingPreorderId = null; pendingOrderId = null; }
 function showAuthForm(mode){
   const isLogin = mode === "login";
   document.getElementById("loginForm").style.display = isLogin ? "block" : "none";
@@ -1508,6 +2352,7 @@ document.getElementById("loginForm").addEventListener("submit",(e)=>{
   closeUserAuth();
   showToast("Welcome back, " + user.name.split(" ")[0] + "!", "fa-circle-check");
   if(pendingPreorderId){ openPreorderModal(pendingPreorderId); pendingPreorderId = null; }
+  if(pendingOrderId){ openOrderModal(pendingOrderId); pendingOrderId = null; }
 });
 
 document.getElementById("signupForm").addEventListener("submit",(e)=>{
@@ -1528,6 +2373,54 @@ document.getElementById("signupForm").addEventListener("submit",(e)=>{
   closeUserAuth();
   showToast("Account created — welcome, " + name.split(" ")[0] + "!", "fa-circle-check");
   if(pendingPreorderId){ openPreorderModal(pendingPreorderId); pendingPreorderId = null; }
+  if(pendingOrderId){ openOrderModal(pendingOrderId); pendingOrderId = null; }
+});
+
+/* ---------- Forgot Password ---------- */
+document.getElementById("openForgotPassword").addEventListener("click",(e)=>{
+  e.preventDefault();
+  document.getElementById("forgotPasswordForm").reset();
+  document.getElementById("forgotPasswordError").style.display = "none";
+  const phone = document.getElementById("loginPhone").value.trim();
+  if(phone) document.getElementById("fpPhone").value = phone;
+  document.getElementById("forgotPasswordOverlay").classList.add("open");
+});
+document.getElementById("closeForgotPassword").addEventListener("click", ()=> document.getElementById("forgotPasswordOverlay").classList.remove("open"));
+document.getElementById("cancelForgotPassword").addEventListener("click", ()=> document.getElementById("forgotPasswordOverlay").classList.remove("open"));
+document.getElementById("forgotPasswordOverlay").addEventListener("click",(e)=>{ if(e.target.id==="forgotPasswordOverlay") document.getElementById("forgotPasswordOverlay").classList.remove("open"); });
+
+document.getElementById("forgotPasswordForm").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const phone = document.getElementById("fpPhone").value.trim();
+  const newPassword = document.getElementById("fpNewPassword").value;
+  const confirmPassword = document.getElementById("fpConfirmPassword").value;
+  const errEl = document.getElementById("forgotPasswordError");
+
+  const users = loadUsers();
+  const user = users.find(u=>u.phone===phone);
+  if(!user){
+    errEl.textContent = "No account found with that phone number.";
+    errEl.style.display = "block";
+    return;
+  }
+  if(newPassword.length < 4){
+    errEl.textContent = "New password must be at least 4 characters.";
+    errEl.style.display = "block";
+    return;
+  }
+  if(newPassword !== confirmPassword){
+    errEl.textContent = "Passwords don't match — please re-type them.";
+    errEl.style.display = "block";
+    return;
+  }
+  errEl.style.display = "none";
+  user.password = newPassword;
+  saveUsers(users);
+  document.getElementById("forgotPasswordOverlay").classList.remove("open");
+  document.getElementById("loginPhone").value = phone;
+  document.getElementById("loginPassword").value = "";
+  showAuthForm("login");
+  showToast("Password reset — you can log in now.", "fa-circle-check");
 });
 
 /* =====================================================================
@@ -1637,17 +2530,39 @@ function refreshAdminData(){
   products = loadProducts();
   preorders = loadPreorders();
   settings = loadSettings();
+  models = loadModels();
 
   document.getElementById("statTotalProducts").textContent = products.length;
-  document.getElementById("statTotalPreorders").textContent = preorders.length;
+  document.getElementById("statTotalPreorders").textContent = getPreorderCategoryOrders().length;
+  document.getElementById("statTotalOrders").textContent = getInstockCategoryOrders().length;
   document.getElementById("statTotalLoves").textContent = products.reduce((s,p)=>s+p.loves,0);
   document.getElementById("statPublished").textContent = products.filter(p=>p.published).length;
 
   renderLeaderboard();
   renderPreorderTable();
+  renderOrderTable();
   renderProductTable();
+  renderModelTable();
   document.getElementById("globalLoveToggle").checked = settings.globalLoves;
-  document.getElementById("videoUrlInput").value = settings.videoUrl || "";
+  refreshVideoAdminUI();
+  refreshSettingsFormFields();
+}
+
+/* Fills the Payment / Banner / Announcement settings form fields with the
+   currently saved values, so the admin sees what's live whenever they open
+   or return to the Settings tab. */
+function refreshSettingsFormFields(){
+  document.getElementById("bkashEnabledToggle").checked = settings.bkashEnabled !== false;
+  document.getElementById("codEnabledToggle").checked = settings.codEnabled !== false;
+  document.getElementById("merchantBkashInput").value = settings.merchantBkash || "";
+  document.getElementById("merchantNagadInput").value = settings.merchantNagad || "";
+  document.getElementById("codNoteInput").value = settings.codNote || "";
+
+  document.getElementById("announceEnabledToggle").checked = settings.announceEnabled !== false;
+  document.getElementById("announceTextInput").value = settings.announceText || "";
+  document.getElementById("heroHeadlineInput").value = settings.heroHeadline || "";
+  document.getElementById("heroSubtextInput").value = settings.heroSubtext || "";
+  document.getElementById("heroPosterInput").value = settings.heroPoster || "";
 }
 
 function renderLeaderboard(){
@@ -1678,8 +2593,13 @@ function renderLeaderboard(){
 /* =====================================================================
    ADMIN — PREORDER TABLE
    ===================================================================== */
-function renderPreorderTable(){
-  let list = [...preorders];
+/* Renders the given orders (already filtered to one category) into the
+   given table body. Shared by the Pre-Orders tab (7-15 day China sourcing)
+   and the Orders tab (in-stock, ships fast) so both tables stay in sync
+   without duplicating the row-building logic. `showPhoto` controls whether
+   the Photo column is included (pre-orders only). */
+function renderOrdersInto(list, tbodyId, emptyId, showPhoto){
+  list = [...list];
   list.sort((a,b)=>{
     let av,bv;
     switch(sortState.key){
@@ -1693,34 +2613,74 @@ function renderPreorderTable(){
     return 0;
   });
 
-  const tbody = document.getElementById("preorderTbody");
-  document.getElementById("preorderEmpty").style.display = list.length ? "none":"block";
+  const tbody = document.getElementById(tbodyId);
+  document.getElementById(emptyId).style.display = list.length ? "none":"block";
 
   tbody.innerHTML = list.map(o=>{
     const d = new Date(o.date);
+    const status = o.status || "pending";
     return `<tr>
       <td>${d.toLocaleDateString()} <br><small style="color:var(--muted-dim);">${d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</small></td>
       <td>${escapeHtml(o.name)}</td>
       <td>${escapeHtml(o.phone)}</td>
-      <td>${escapeHtml(o.productTitle)}</td>
+      <td>${escapeHtml(o.productTitle)}${o.isCustom ? ' <span style="color:var(--gold-light); font-size:.7rem;">(Custom)</span>' : ''}</td>
       <td>${o.qty}</td>
-      <td style="max-width:180px; white-space:normal;">${escapeHtml(o.address)}</td>
-      <td>${o.photo ? `<img src="${o.photo}" class="thumb-sm" data-zoom="${o.photo}">` : '<span style="color:var(--muted-dim); font-size:.78rem;">No photo</span>'}</td>
-      <td><button class="icon-btn" data-del-order="${o.id}"><i class="fa-solid fa-trash"></i></button></td>
+      <td style="max-width:180px; white-space:normal;">${o.address ? escapeHtml(o.address) : '<span style="color:var(--muted-dim); font-size:.78rem;">No address given</span>'}</td>
+      ${showPhoto ? `<td>${o.photo ? `<img src="${o.photo}" class="thumb-sm" data-zoom="${o.photo}">` : '<span style="color:var(--muted-dim); font-size:.78rem;">No photo</span>'}</td>` : ''}
+      <td>${o.paymentMethod === "cod"
+            ? '<span class="status-pill" style="background:rgba(154,163,184,.15); color:var(--muted);"><i class="fa-solid fa-money-bill-wave"></i> COD</span>'
+            : `<span class="status-pill" style="background:rgba(212,175,55,.15); color:var(--gold-light);"><i class="fa-solid fa-mobile-screen-button"></i> bKash/Nagad</span>${o.txnId ? `<br><small style="color:var(--muted-dim);">TxnID: ${escapeHtml(o.txnId)}</small>` : ''}`}</td>
+      <td><span class="status-pill status-${status}">${status}</span></td>
+      <td class="row-actions">
+        <button class="icon-btn" data-accept-order="${o.id}" title="Accept"><i class="fa-solid fa-check"></i></button>
+        <button class="icon-btn" data-reject-order="${o.id}" title="Reject"><i class="fa-solid fa-ban"></i></button>
+        <button class="icon-btn" data-del-order="${o.id}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+      </td>
     </tr>`;
   }).join("");
 
   tbody.querySelectorAll("[data-zoom]").forEach(img=> img.addEventListener("click", ()=> openImageZoom(img.dataset.zoom)));
+  tbody.querySelectorAll("[data-accept-order]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const o = preorders.find(x=>x.id===btn.dataset.acceptOrder);
+      o.status = "accepted";
+      savePreorders(preorders);
+      refreshAdminData();
+      showToast("Order accepted.", "fa-check");
+    });
+  });
+  tbody.querySelectorAll("[data-reject-order]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const o = preorders.find(x=>x.id===btn.dataset.rejectOrder);
+      o.status = "rejected";
+      savePreorders(preorders);
+      refreshAdminData();
+      showToast("Order rejected.", "fa-ban");
+    });
+  });
   tbody.querySelectorAll("[data-del-order]").forEach(btn=>{
     btn.addEventListener("click", ()=>{
-      if(confirm("Delete this pre-order record?")){
+      if(confirm("Delete this order record?")){
         preorders = preorders.filter(o=>o.id !== btn.dataset.delOrder);
         savePreorders(preorders);
         refreshAdminData();
-        showToast("Pre-order deleted.", "fa-trash");
+        showToast("Order deleted.", "fa-trash");
       }
     });
   });
+}
+
+/* Records saved before the Pre-Order / In-Shop split won't have an
+   orderCategory yet — treat them as pre-orders (that was the only flow
+   that existed at the time) so nothing goes missing from either tab. */
+function getPreorderCategoryOrders(){ return preorders.filter(o => (o.orderCategory || "preorder") === "preorder"); }
+function getInstockCategoryOrders(){ return preorders.filter(o => o.orderCategory === "instock"); }
+
+function renderPreorderTable(){
+  renderOrdersInto(getPreorderCategoryOrders(), "preorderTbody", "preorderEmpty", true);
+}
+function renderOrderTable(){
+  renderOrdersInto(getInstockCategoryOrders(), "orderTbody", "orderEmpty", false);
 }
 
 document.querySelectorAll("#preorderTable th[data-sort]").forEach(th=>{
@@ -1731,29 +2691,50 @@ document.querySelectorAll("#preorderTable th[data-sort]").forEach(th=>{
     renderPreorderTable();
   });
 });
-
-/* ---------- CSV Download (One-Tap) ---------- */
-document.getElementById("downloadCsvBtn").addEventListener("click", ()=>{
-  if(preorders.length === 0){ showToast("No pre-orders to export yet.", "fa-circle-info"); return; }
-  const headers = ["Date","Name","Phone","Product","Quantity","Address"];
-  const rows = preorders.map(o => [
-    new Date(o.date).toLocaleString(),
-    o.name, o.phone, o.productTitle, o.qty, o.address
-  ]);
-  let csv = headers.join(",") + "\n";
-  rows.forEach(r=>{
-    csv += r.map(field => `"${String(field).replace(/"/g,'""')}"`).join(",") + "\n";
+document.querySelectorAll("#orderTable th[data-sort]").forEach(th=>{
+  th.addEventListener("click", ()=>{
+    const key = th.dataset.sort;
+    if(sortState.key === key){ sortState.dir = sortState.dir === "asc" ? "desc" : "asc"; }
+    else { sortState.key = key; sortState.dir = "asc"; }
+    renderOrderTable();
   });
-  const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `zylo-bd-preorders-${new Date().toISOString().slice(0,10)}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  showToast("Pre-order list downloaded!", "fa-download");
+});
+
+/* ---------- Real Excel (.xlsx) export ----------
+   Earlier this was a hand-built CSV. Bengali/Bangla addresses and names
+   would often show up blank or garbled when the CSV was opened directly in
+   Excel, because a plain CSV has no way to tell Excel it's UTF-8 text.
+   Building an actual .xlsx workbook (via the SheetJS library loaded in
+   <head>) sidesteps that entirely — Bengali text, emoji, everything shows
+   up correctly, and it opens as a normal formatted spreadsheet. */
+function exportOrdersToExcel(list, filenamePrefix, emptyMsg){
+  if(list.length === 0){ showToast(emptyMsg, "fa-circle-info"); return; }
+  const rows = list.map(o => ({
+    "Date": new Date(o.date).toLocaleString(),
+    "Name": o.name || "",
+    "Phone": o.phone || "",
+    "Product": o.productTitle + (o.isCustom ? " (Custom Request)" : ""),
+    "Quantity": o.qty,
+    "Address": o.address || "",
+    "Payment Method": o.paymentMethod === "cod" ? "Cash on Delivery" : "bKash/Nagad",
+    "Status": o.status || "pending",
+    "Total (৳)": o.total ?? "",
+    "Advance (৳)": o.advance || "",
+    "Transaction ID": o.txnId || ""
+  }));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws["!cols"] = [ {wch:16},{wch:20},{wch:14},{wch:30},{wch:9},{wch:36},{wch:16},{wch:11},{wch:11},{wch:11},{wch:16} ];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Orders");
+  XLSX.writeFile(wb, `${filenamePrefix}-${new Date().toISOString().slice(0,10)}.xlsx`);
+  showToast("Excel file downloaded!", "fa-file-excel");
+}
+
+document.getElementById("downloadPreorderXlsxBtn").addEventListener("click", ()=>{
+  exportOrdersToExcel(getPreorderCategoryOrders(), "zylo-bd-preorders", "No pre-orders to export yet.");
+});
+document.getElementById("downloadOrderXlsxBtn").addEventListener("click", ()=>{
+  exportOrdersToExcel(getInstockCategoryOrders(), "zylo-bd-orders", "No orders to export yet.");
 });
 
 /* =====================================================================
@@ -1767,6 +2748,7 @@ function renderProductTable(){
       <td><img src="${p.image}" class="thumb-sm" data-zoom="${p.image}"></td>
       <td>${escapeHtml(p.title)}</td>
       <td>${escapeHtml(p.category)}</td>
+      <td>${p.orderType === "instock" ? '<span class="status-pill" style="background:rgba(62,207,142,.15); color:var(--success);"><i class="fa-solid fa-check"></i> In Shop</span>' : '<span class="status-pill" style="background:rgba(212,175,55,.15); color:var(--gold-light);"><i class="fa-solid fa-clock"></i> Pre-Order</span>'}</td>
       <td>৳${p.price.toLocaleString()}</td>
       <td><i class="fa-solid fa-heart" style="color:var(--red);"></i> ${p.loves}</td>
       <td>${orderCount}</td>
@@ -1826,9 +2808,11 @@ function openProductModal(id=null){
     document.getElementById("pfCategory").value = p.category;
     document.getElementById("pfPrice").value = p.price;
     document.getElementById("pfImage").value = p.image;
+    document.getElementById("pfOrderType").value = p.orderType || "preorder";
   } else {
     document.getElementById("productModalTitle").innerHTML = '<i class="fa-solid fa-plus"></i> Add Product';
     document.getElementById("productEditId").value = "";
+    document.getElementById("pfOrderType").value = "preorder";
   }
   document.getElementById("productModalOverlay").classList.add("open");
 }
@@ -1845,15 +2829,16 @@ document.getElementById("productForm").addEventListener("submit",(e)=>{
   const category = document.getElementById("pfCategory").value.trim();
   const price = parseFloat(document.getElementById("pfPrice").value);
   const image = document.getElementById("pfImage").value.trim() || "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=500&q=80";
+  const orderType = document.getElementById("pfOrderType").value === "instock" ? "instock" : "preorder";
 
   if(id){
     const p = products.find(x=>x.id===id);
-    Object.assign(p, { title, category, price, image });
+    Object.assign(p, { title, category, price, image, orderType });
     showToast("Product updated.", "fa-check");
   } else {
     products.push({
       id:"p_"+Date.now(), title, category, price, oldPrice:null, image,
-      published:true, showLoves:true, loves:0
+      published:true, showLoves:true, loves:0, orderType
     });
     showToast("Product added.", "fa-check");
   }
@@ -1861,6 +2846,111 @@ document.getElementById("productForm").addEventListener("submit",(e)=>{
   closeProductModal();
   refreshAdminData();
   renderFilterBar(); renderProductGrid();
+});
+
+/* =====================================================================
+   ADMIN — MODEL SHOWCASE MANAGEMENT
+   ===================================================================== */
+let modelUploadedPhoto = null;
+
+function renderModelTable(){
+  const tbody = document.getElementById("modelTbody");
+  document.getElementById("modelEmpty").style.display = models.length ? "none" : "block";
+  tbody.innerHTML = models.map(m=>`<tr>
+      <td><img src="${m.image}" class="thumb-sm" data-zoom="${m.image}"></td>
+      <td>${escapeHtml(m.name)}</td>
+      <td>${escapeHtml(m.tag)}</td>
+      <td>${escapeHtml(m.caption)}</td>
+      <td class="row-actions">
+        <button class="icon-btn" data-edit-model="${m.id}" title="Edit"><i class="fa-solid fa-pen"></i></button>
+        <button class="icon-btn" data-del-model="${m.id}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+      </td>
+    </tr>`).join("");
+
+  tbody.querySelectorAll("[data-zoom]").forEach(img=> img.addEventListener("click", ()=> openImageZoom(img.dataset.zoom)));
+  tbody.querySelectorAll("[data-edit-model]").forEach(btn=>{
+    btn.addEventListener("click", ()=> openModelModal(btn.dataset.editModel));
+  });
+  tbody.querySelectorAll("[data-del-model]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      if(confirm("Remove this model from the homepage showcase?")){
+        models = models.filter(x=>x.id!==btn.dataset.delModel);
+        saveModels(models);
+        renderModelTable();
+        renderModelShowcase();
+        showToast("Model removed.", "fa-trash");
+      }
+    });
+  });
+}
+
+function openModelModal(id=null){
+  document.getElementById("modelForm").reset();
+  modelUploadedPhoto = null;
+  document.getElementById("modelFilePreview").style.display = "none";
+  if(id){
+    const m = models.find(x=>x.id===id);
+    document.getElementById("modelModalTitle").innerHTML = '<i class="fa-solid fa-pen"></i> Edit Model';
+    document.getElementById("modelEditId").value = m.id;
+    document.getElementById("mfName").value = m.name;
+    document.getElementById("mfTag").value = m.tag;
+    document.getElementById("mfCaption").value = m.caption;
+    modelUploadedPhoto = m.image;
+    document.getElementById("modelFilePreviewImg").src = m.image;
+    document.getElementById("modelFilePreviewName").textContent = "Current photo (upload a new one to replace it)";
+    document.getElementById("modelFilePreview").style.display = "flex";
+  } else {
+    document.getElementById("modelModalTitle").innerHTML = '<i class="fa-solid fa-user-plus"></i> Add Model';
+    document.getElementById("modelEditId").value = "";
+  }
+  document.getElementById("modelModalOverlay").classList.add("open");
+}
+function closeModelModal(){ document.getElementById("modelModalOverlay").classList.remove("open"); }
+document.getElementById("addModelBtn").addEventListener("click", ()=> openModelModal());
+document.getElementById("closeModelModal").addEventListener("click", closeModelModal);
+document.getElementById("cancelModelModal").addEventListener("click", closeModelModal);
+document.getElementById("modelModalOverlay").addEventListener("click",(e)=>{ if(e.target.id==="modelModalOverlay") closeModelModal(); });
+
+document.getElementById("modelFileDropZone").addEventListener("click", ()=> document.getElementById("modelPhotoInput").click());
+document.getElementById("modelPhotoInput").addEventListener("change", async (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith("image/")){ showToast("Please choose an image file.", "fa-circle-info"); return; }
+  try{
+    modelUploadedPhoto = await resizeImageFile(file);
+    document.getElementById("modelFilePreviewImg").src = modelUploadedPhoto;
+    document.getElementById("modelFilePreviewName").textContent = file.name;
+    document.getElementById("modelFilePreview").style.display = "flex";
+  }catch(err){
+    console.error(err);
+    showToast("Couldn't read that photo — try a different file.", "fa-triangle-exclamation");
+  }
+});
+
+document.getElementById("modelForm").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const id = document.getElementById("modelEditId").value;
+  const name = document.getElementById("mfName").value.trim();
+  const tag = document.getElementById("mfTag").value.trim();
+  const caption = document.getElementById("mfCaption").value.trim();
+
+  if(!modelUploadedPhoto){
+    showToast("Please upload a photo for this model.", "fa-triangle-exclamation");
+    return;
+  }
+
+  if(id){
+    const m = models.find(x=>x.id===id);
+    Object.assign(m, { name, tag, caption, image: modelUploadedPhoto });
+    showToast("Model updated.", "fa-check");
+  } else {
+    models.push({ id:"m_"+Date.now(), name, tag, caption, image: modelUploadedPhoto });
+    showToast("Model added.", "fa-check");
+  }
+  saveModels(models);
+  closeModelModal();
+  renderModelTable();
+  renderModelShowcase();
 });
 
 /* =====================================================================
@@ -1873,29 +2963,215 @@ document.getElementById("globalLoveToggle").addEventListener("change",(e)=>{
   showToast("Global love-react visibility updated.", "fa-gear");
 });
 
-document.getElementById("saveVideoUrlBtn").addEventListener("click", ()=>{
-  const url = document.getElementById("videoUrlInput").value.trim();
-  if(!url){ showToast("Please paste a video URL first.", "fa-circle-info"); return; }
-  settings.videoUrl = url;
+/* ---------- Payment Settings ----------
+   Persists bKash/COD toggles + merchant numbers to `settings`, then re-runs
+   applySettingsToPage() so the live storefront (payment info strip, footer
+   badges) and the pre-order modal immediately reflect the change — no page
+   reload needed. See the big comment above loadSettings() for how to make
+   this admin-controlled for every visitor, not just this browser. */
+document.getElementById("savePaymentSettingsBtn").addEventListener("click", ()=>{
+  settings.bkashEnabled = document.getElementById("bkashEnabledToggle").checked;
+  settings.codEnabled = document.getElementById("codEnabledToggle").checked;
+  settings.merchantBkash = document.getElementById("merchantBkashInput").value.trim() || DEFAULT_SETTINGS.merchantBkash;
+  settings.merchantNagad = document.getElementById("merchantNagadInput").value.trim() || DEFAULT_SETTINGS.merchantNagad;
+  settings.codNote = document.getElementById("codNoteInput").value.trim() || DEFAULT_SETTINGS.codNote;
+
+  if(!settings.bkashEnabled && !settings.codEnabled){
+    showToast("At least one payment method should stay enabled.", "fa-triangle-exclamation");
+  }
+
   saveSettings(settings);
-  renderBrandVideo();
-  showToast("Homepage video updated.", "fa-check");
+  applySettingsToPage();
+  showToast("Payment settings saved.", "fa-check");
 });
 
-function renderBrandVideo(){
-  const player = document.getElementById("brandVideoPlayer");
-  if(player && settings.videoUrl){ player.src = settings.videoUrl; }
+/* ---------- Announcement Bar & Hero Banner Settings ---------- */
+document.getElementById("saveBannerSettingsBtn").addEventListener("click", ()=>{
+  settings.announceEnabled = document.getElementById("announceEnabledToggle").checked;
+  settings.announceText = document.getElementById("announceTextInput").value.trim() || DEFAULT_SETTINGS.announceText;
+  settings.heroHeadline = document.getElementById("heroHeadlineInput").value.trim() || DEFAULT_SETTINGS.heroHeadline;
+  settings.heroSubtext = document.getElementById("heroSubtextInput").value.trim() || DEFAULT_SETTINGS.heroSubtext;
+  settings.heroPoster = document.getElementById("heroPosterInput").value.trim() || DEFAULT_SETTINGS.heroPoster;
+
+  saveSettings(settings);
+  applySettingsToPage();
+  showToast("Banner & announcement settings saved.", "fa-check");
+});
+
+/* =====================================================================
+   HERO VIDEO — direct upload, stored in IndexedDB (large-file capable,
+   unlike localStorage which caps out around 5-10MB)
+   ===================================================================== */
+const MEDIA_DB_NAME = "zylo_media_db";
+const MEDIA_STORE = "media";
+const HERO_VIDEO_KEY = "heroVideo";
+
+function openMediaDB(){
+  return new Promise((resolve,reject)=>{
+    if(!("indexedDB" in window)){ reject(new Error("IndexedDB not supported in this browser")); return; }
+    const req = indexedDB.open(MEDIA_DB_NAME, 1);
+    req.onupgradeneeded = ()=>{ req.result.createObjectStore(MEDIA_STORE); };
+    req.onsuccess = ()=> resolve(req.result);
+    req.onerror = ()=> reject(req.error);
+  });
+}
+async function idbSetMedia(key, blob){
+  const db = await openMediaDB();
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(MEDIA_STORE, "readwrite");
+    tx.objectStore(MEDIA_STORE).put(blob, key);
+    tx.oncomplete = ()=> resolve(true);
+    tx.onerror = ()=> reject(tx.error);
+  });
+}
+async function idbGetMedia(key){
+  const db = await openMediaDB();
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(MEDIA_STORE, "readonly");
+    const req = tx.objectStore(MEDIA_STORE).get(key);
+    req.onsuccess = ()=> resolve(req.result || null);
+    req.onerror = ()=> reject(req.error);
+  });
+}
+async function idbDeleteMedia(key){
+  const db = await openMediaDB();
+  return new Promise((resolve,reject)=>{
+    const tx = db.transaction(MEDIA_STORE, "readwrite");
+    tx.objectStore(MEDIA_STORE).delete(key);
+    tx.oncomplete = ()=> resolve(true);
+    tx.onerror = ()=> reject(tx.error);
+  });
 }
 
-document.getElementById("resetDataBtn").addEventListener("click", ()=>{
-  if(confirm("This will erase ALL products, pre-orders and reacts. Continue?")){
+let heroVideoObjectUrl = null;
+
+/* Renders whatever video is currently stored (or the default sample) into
+   the homepage hero banner, with iOS-safe fallback handling. */
+async function renderBrandVideo(){
+  const player = document.getElementById("brandVideoPlayer");
+  const source = document.getElementById("brandVideoSource");
+  const fallback = document.getElementById("heroVideoFallback");
+  if(!player || !source) return;
+
+  let blob = null;
+  try{ blob = await idbGetMedia(HERO_VIDEO_KEY); }
+  catch(e){ console.warn("Hero video: IndexedDB unavailable, using default video.", e); }
+
+  if(heroVideoObjectUrl){ URL.revokeObjectURL(heroVideoObjectUrl); heroVideoObjectUrl = null; }
+
+  const url = blob ? URL.createObjectURL(blob) : DEFAULT_HERO_VIDEO;
+  if(blob) heroVideoObjectUrl = url;
+
+  source.src = url;
+  player.muted = true; // required for autoplay on iOS/Chrome, must be set before play()
+  player.load();
+  fallback.classList.remove("show");
+
+  const playPromise = player.play();
+  if(playPromise !== undefined){
+    playPromise.catch(()=>{
+      // Autoplay was blocked (common on some iOS/Safari versions) — reveal a
+      // tap-to-play button. Tapping it plays the video via a real user
+      // gesture, which browsers always allow.
+      fallback.classList.add("show");
+    });
+  }
+}
+document.getElementById("brandVideoPlayer").addEventListener("error", ()=>{
+  document.getElementById("heroVideoFallback").classList.add("show");
+});
+document.getElementById("heroVideoFallback").addEventListener("click", ()=>{
+  const player = document.getElementById("brandVideoPlayer");
+  player.muted = true;
+  player.play().then(()=>{
+    document.getElementById("heroVideoFallback").classList.remove("show");
+  }).catch(()=>{ /* still blocked; leave fallback visible */ });
+});
+
+/* ---------- Admin: file picker -> preview -> save to IndexedDB ---------- */
+let selectedVideoFile = null;
+
+document.getElementById("videoFileInput").addEventListener("change",(e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith("video/")){
+    showToast("Please choose a valid video file.", "fa-circle-info");
+    e.target.value = "";
+    return;
+  }
+  const sizeMb = file.size / (1024*1024);
+  if(sizeMb > 120){
+    showToast("That's a big file ("+sizeMb.toFixed(1)+"MB) — saving may be slow on this device.", "fa-triangle-exclamation");
+  }
+  selectedVideoFile = file;
+  document.getElementById("videoFileName").textContent = file.name + " (" + sizeMb.toFixed(1) + " MB)";
+
+  const previewUrl = URL.createObjectURL(file);
+  const preview = document.getElementById("videoPreviewPlayer");
+  preview.src = previewUrl;
+  document.getElementById("videoPreviewWrap").style.display = "block";
+  document.getElementById("saveVideoUploadBtn").disabled = false;
+});
+
+document.getElementById("saveVideoUploadBtn").addEventListener("click", async ()=>{
+  if(!selectedVideoFile) return;
+  const btn = document.getElementById("saveVideoUploadBtn");
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+  try{
+    await idbSetMedia(HERO_VIDEO_KEY, selectedVideoFile);
+    await renderBrandVideo();
+    await refreshVideoAdminUI();
+    showToast("Hero banner video updated.", "fa-check");
+  }catch(err){
+    console.error(err);
+    showToast("Couldn't save the video — it may be too large for this browser's storage.", "fa-triangle-exclamation");
+  }
+  btn.disabled = false;
+  btn.innerHTML = original;
+});
+
+document.getElementById("removeVideoBtn").addEventListener("click", async ()=>{
+  if(!confirm("Remove the current hero video and revert to the default sample?")) return;
+  try{
+    await idbDeleteMedia(HERO_VIDEO_KEY);
+    selectedVideoFile = null;
+    document.getElementById("videoFileInput").value = "";
+    document.getElementById("videoFileName").textContent = "No file selected";
+    document.getElementById("videoPreviewWrap").style.display = "none";
+    document.getElementById("saveVideoUploadBtn").disabled = true;
+    await renderBrandVideo();
+    await refreshVideoAdminUI();
+    showToast("Reverted to the default hero video.", "fa-rotate-left");
+  }catch(err){ console.error(err); }
+});
+
+/* Shows whether a custom video is currently active when the Settings tab opens */
+async function refreshVideoAdminUI(){
+  const statusEl = document.getElementById("videoCurrentStatus");
+  if(!statusEl) return;
+  let blob = null;
+  try{ blob = await idbGetMedia(HERO_VIDEO_KEY); }catch(e){ /* ignore */ }
+  statusEl.innerHTML = blob
+    ? '<span class="video-current-tag"><i class="fa-solid fa-circle-check"></i> Custom video is live on the hero banner ('+(blob.size/(1024*1024)).toFixed(1)+' MB)</span>'
+    : '<span class="video-current-tag" style="color:var(--muted);"><i class="fa-solid fa-circle-info"></i> Using the default sample video</span>';
+}
+
+document.getElementById("resetDataBtn").addEventListener("click", async ()=>{
+  if(confirm("This will erase ALL products, pre-orders, reacts and the uploaded hero video. Continue?")){
     localStorage.removeItem(LS_PRODUCTS);
     localStorage.removeItem(LS_PREORDERS);
     localStorage.removeItem(LS_SETTINGS);
+    localStorage.removeItem(LS_MODELS);
     localStorage.removeItem("zylo_loved_local");
+    try{ await idbDeleteMedia(HERO_VIDEO_KEY); }catch(e){ /* ignore */ }
     products = loadProducts(); preorders = loadPreorders(); settings = loadSettings(); lovedIds = [];
+    models = loadModels();
+    await renderBrandVideo();
     refreshAdminData();
     renderFilterBar(); renderProductGrid();
+    renderModelShowcase();
     showToast("All data reset to defaults.", "fa-rotate-left");
   }
 });
@@ -1904,10 +3180,12 @@ document.getElementById("resetDataBtn").addEventListener("click", ()=>{
    INIT
    ===================================================================== */
 injectLogos();
+applySettingsToPage();
 refreshUserAuthUI();
-renderBrandVideo();
+renderBrandVideo(); // async, fire-and-forget is fine here — it self-updates the DOM when ready
 renderFilterBar();
 renderProductGrid();
+renderModelShowcase();
 
 // Resume admin session if already authenticated this tab session
 if(sessionStorage.getItem("zylo_admin_auth") === "1"){
