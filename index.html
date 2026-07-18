@@ -668,6 +668,55 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
 @media (max-width:360px){
   .product-grid{grid-template-columns:1fr 1fr; gap:8px;}
 }
+
+/* ============ Extra mobile polish: header + hero banner ============ */
+/* Prevents the logo/nav-cta from wrapping into a tall, broken header
+   and stops the hero CTA buttons from being clipped by the floating
+   WhatsApp/Messenger buttons on short mobile viewports. */
+@media (max-width:980px){
+  .nav-wrap{padding:12px 0; gap:10px;}
+  .logo{min-width:0;}
+  .logo > div{min-width:0;}
+}
+@media (max-width:768px){
+  .nav-wrap{flex-wrap:nowrap;}
+  .nav-cta{gap:6px; flex-shrink:0;}
+  .nav-cta .btn-sm{padding:8px 12px; font-size:.78rem;}
+  .nav-cta .btn i{font-size:.82rem;}
+  .brand-tagline{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:190px;}
+  .hero-banner-inner{padding-bottom:64px;}
+  .hero-banner-actions{width:100%; gap:10px;}
+  .hero-banner-actions .btn{flex:1 1 160px;}
+  .hero-banner-inner p{padding:0 8px;}
+}
+@media (max-width:560px){
+  .logo{font-size:1.05rem; gap:8px;}
+  .logo .mark{width:34px; height:34px; font-size:1rem;}
+  .brand-tagline{font-size:.55rem; letter-spacing:.09em; max-width:130px;}
+  .nav-cta{gap:5px;}
+  #myOrdersBtn .btn-label,
+  #userAuthBtnLabel{display:none;}
+  #myOrdersBtn,
+  #userAuthBtn{padding:8px 10px;}
+  .theme-toggle-btn{width:32px; height:32px; font-size:.85rem;}
+  .icon-btn#adminAccessBtn{width:32px; height:32px; font-size:.78rem;}
+  .hero-banner-actions{flex-direction:column; max-width:280px; margin:0 auto;}
+  .hero-banner-actions .btn{width:100%;}
+  .hero-banner-inner{padding-bottom:78px;}
+  .float-chat-stack{left:12px; bottom:16px; gap:10px;}
+  .float-chat-btn{width:42px; height:42px; font-size:1.05rem;}
+  .banner-sound-btn{width:36px; height:36px; bottom:14px; right:14px; font-size:.82rem;}
+  .route-clock span{font-size:.62rem;}
+  .route-clock b{font-size:.92rem;}
+}
+@media (max-width:420px){
+  .brand-tagline{display:none;}
+  .logo{font-size:.98rem;}
+  .icon-btn#adminAccessBtn{display:none;}
+  .nav-cta .btn-sm{padding:7px 9px; font-size:.74rem;}
+  .hero-banner-inner h1{font-size:clamp(1.7rem,7vw,2.4rem);}
+  .hero-banner-inner p{font-size:.88rem;}
+}
 </style>
 </head>
 <body>
@@ -700,9 +749,9 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
         <a href="#contact">Contact</a>
       </nav>
       <div class="nav-cta">
-        <button class="btn btn-ghost btn-sm" id="myOrdersBtn" style="display:none;"><i class="fa-solid fa-receipt"></i> My Orders</button>
-        <button class="btn btn-outline btn-sm" id="userAuthBtn"><i class="fa-solid fa-user"></i> <span id="userAuthBtnLabel">Login</span></button>
-        <a href="#shop" class="btn btn-primary btn-sm"><i class="fa-solid fa-bag-shopping"></i> Shop Now</a>
+        <button class="btn btn-ghost btn-sm" id="myOrdersBtn" style="display:none;"><i class="fa-solid fa-receipt"></i> <span class="btn-label">My Orders</span></button>
+        <button class="btn btn-outline btn-sm" id="userAuthBtn"><i class="fa-solid fa-user"></i> <span id="userAuthBtnLabel" class="btn-label">Login</span></button>
+        <a href="#shop" class="btn btn-primary btn-sm"><i class="fa-solid fa-bag-shopping"></i> <span class="btn-label">Shop Now</span></a>
         <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle day/night mode"><i class="fa-solid fa-moon" id="themeToggleIcon"></i></button>
         <button class="icon-btn" id="adminAccessBtn" title="Admin Panel"><i class="fa-solid fa-user-shield"></i></button>
         <button class="burger" id="burgerBtn"><i class="fa-solid fa-bars"></i></button>
@@ -947,7 +996,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       </div>
       <div class="footer-bottom">
         <span>© 2026 Zylo BD. All rights reserved.</span>
-        <span class="dev-credit"><i class="fa-solid fa-code"></i> Developed by <a href="https://tawsif790.github.io/Tawsif790-My_portgfolio_3D/" target="_blank" rel="noopener">Tawsif</a></span>
+        <span class="dev-credit"><i class="fa-solid fa-code"></i> Developed by <a href="https://tawsif790.github.io/My_portgfolio_3D/" target="_blank" rel="noopener">Tawsif</a></span>
       </div>
     </div>
   </footer>
