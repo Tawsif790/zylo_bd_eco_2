@@ -32,7 +32,55 @@
   --font-body:'Inter',sans-serif;
   --radius:14px;
   --shadow-lg:0 20px 60px -20px rgba(0,0,0,.6);
+  --hairline:var(--hairline);
+  --hairline-strong:rgba(255,255,255,.15);
 }
+/* ============ Day mode (light theme) — overrides core tokens ============ */
+body.day-mode{
+  --navy-950:#f6f3ea;
+  --navy-900:#ffffff;
+  --navy-800:#eef0ec;
+  --navy-700:#dfe3df90;
+  --navy-600:#dfe3df90;
+  --cream:#181f2e;
+  --muted:#535b70;
+  --muted-dim:#747c90;
+  --gold:#a97406;
+  --gold-light:#8a6206;
+  --success:#1f9d68;
+  --hairline:rgba(24,31,46,.10);
+  --hairline-strong:rgba(24,31,46,.18);
+  --tint-1:rgba(24,31,46,.045);
+  --tint-2:rgba(24,31,46,.09);
+  --tint-3:rgba(24,31,46,.14);
+  --tint-4:rgba(24,31,46,.22);
+  --shadow-lg:0 20px 50px -24px rgba(24,31,46,.22);
+}
+body.day-mode header{background:rgba(246,243,234,.92); border-bottom-color:var(--hairline);}
+body.day-mode .trust-strip,
+body.day-mode .stock-view-tabs,
+body.day-mode .route-card,
+body.day-mode footer{border-color:var(--hairline);}
+body.day-mode .card,
+body.day-mode .category-tile,
+body.day-mode .modal,
+body.day-mode .admin-panel-block,
+body.day-mode .admin-sidebar,
+body.day-mode .stat-card{box-shadow:0 10px 30px -18px rgba(24,31,46,.14); border-color:var(--hairline);}
+body.day-mode .quote-box,
+body.day-mode .preorder-summary,
+body.day-mode .advance-box,
+body.day-mode .advance-pay-form,
+body.day-mode .lb-rank{background:var(--navy-800); border-color:var(--hairline-strong);}
+body.day-mode .hero::before{opacity:.5;}
+body.day-mode .route-path{stroke:rgba(24,31,46,.18);}
+.theme-toggle-btn{
+  display:flex; align-items:center; justify-content:center;
+  width:38px; height:38px; border-radius:50%;
+  background:var(--navy-800); color:var(--gold-light);
+  border:1px solid rgba(212,175,55,.25); font-size:1rem; transition:.2s;
+}
+.theme-toggle-btn:hover{border-color:var(--gold); transform:translateY(-1px);}
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
 body{
@@ -94,12 +142,14 @@ header{
 }
 .btn-primary{background:linear-gradient(135deg,var(--gold-light),var(--gold)); color:var(--navy-950); box-shadow:0 8px 24px -6px rgba(212,175,55,.5);}
 .btn-primary:hover{transform:translateY(-2px); box-shadow:0 14px 30px -6px rgba(212,175,55,.6);}
-.btn-outline{background:transparent; color:var(--cream); border:1px solid rgba(245,241,230,.25);}
+.btn-outline{background:transparent; color:var(--cream); border:1px solid var(--tint-4);}
 .btn-outline:hover{border-color:var(--gold); color:var(--gold-light);}
+.btn-credits{border-color:rgba(212,175,55,.4); color:var(--gold-light);}
+.btn-credits:hover{background:rgba(212,175,55,.1);}
 .btn-danger{background:linear-gradient(135deg,var(--red),var(--red-dark)); color:#fff;}
 .btn-danger:hover{transform:translateY(-2px); box-shadow:0 12px 26px -8px rgba(200,16,46,.55);}
-.btn-ghost{background:rgba(245,241,230,.06); color:var(--cream);}
-.btn-ghost:hover{background:rgba(245,241,230,.12);}
+.btn-ghost{background:var(--tint-1); color:var(--cream);}
+.btn-ghost:hover{background:var(--tint-2);}
 .btn-sm{padding:7px 14px; font-size:.78rem;}
 .btn:disabled{opacity:.5; cursor:not-allowed; transform:none !important;}
 .burger{display:none; font-size:1.4rem; color:var(--cream); background:none;}
@@ -144,6 +194,11 @@ header{
 .route-plane-icon path{filter:drop-shadow(0 0 3px rgba(200,16,46,.6));}
 .route-labels{display:flex; justify-content:space-between; margin-top:14px; font-size:.78rem; color:var(--muted-dim);}
 .route-labels b{color:var(--cream); display:block; font-size:.86rem;}
+.route-clocks{display:flex; justify-content:space-between; gap:12px; margin-top:14px;}
+.route-clock{flex:1; background:var(--tint-1); border:1px solid var(--hairline-strong); border-radius:12px; padding:10px 14px;}
+.route-clock:last-child{text-align:right;}
+.route-clock span{display:block; font-size:.7rem; color:var(--muted-dim); text-transform:uppercase; letter-spacing:.08em; margin-bottom:3px;}
+.route-clock b{font-family:var(--font-display); font-size:1.05rem; color:var(--gold-light); letter-spacing:.02em;}
 
 /* ============ Section shells ============ */
 .section{padding:70px 0;}
@@ -152,7 +207,7 @@ header{
 .section-head p{color:var(--muted); max-width:460px; font-size:.94rem;}
 
 /* Trust strip */
-.trust-strip{border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06); background:var(--navy-900);}
+.trust-strip{border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline); background:var(--navy-900);}
 .trust-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; padding:26px 0;}
 .trust-item{display:flex; align-items:center; gap:12px; font-size:.85rem; color:var(--muted);}
 .trust-item i{color:var(--gold); font-size:1.15rem;}
@@ -201,7 +256,7 @@ header{
 .model-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
 .model-card{
   position:relative; border-radius:16px; overflow:hidden; aspect-ratio:3/4.1;
-  background:var(--navy-900); border:1px solid rgba(255,255,255,.06); transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  background:var(--navy-900); border:1px solid var(--hairline); transition:transform .35s cubic-bezier(.2,.8,.2,1);
 }
 .model-card:hover{transform:translateY(-6px);}
 .model-card img{width:100%; height:100%; object-fit:cover; transition:transform .6s;}
@@ -226,9 +281,9 @@ header{
 .video-upload-row{display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
 .video-upload-btn{
   display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:999px; cursor:pointer;
-  background:rgba(245,241,230,.06); color:var(--cream); font-size:.85rem; font-weight:600; border:1px solid rgba(255,255,255,.12); transition:.2s;
+  background:var(--tint-1); color:var(--cream); font-size:.85rem; font-weight:600; border:1px solid var(--hairline-strong); transition:.2s;
 }
-.video-upload-btn:hover{background:rgba(245,241,230,.12);}
+.video-upload-btn:hover{background:var(--tint-2);}
 #videoFileName{font-size:.82rem; color:var(--muted);}
 .video-preview-wrap video{width:100%; max-width:360px; border-radius:10px; margin-top:14px; background:#000; display:block;}
 .video-current-tag{display:inline-flex; align-items:center; gap:6px; font-size:.76rem; color:var(--success); margin-top:8px;}
@@ -245,7 +300,7 @@ header{
 .category-tile:hover span{color:var(--gold-light);}
 
 /* ============ Floating chat buttons ============ */
-.float-chat-stack{position:fixed; right:20px; bottom:24px; z-index:400; display:flex; flex-direction:column; gap:12px;}
+.float-chat-stack{position:fixed; left:20px; bottom:24px; z-index:400; display:flex; flex-direction:column; gap:12px;}
 .float-chat-btn{
   width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
   font-size:1.35rem; color:#fff; box-shadow:0 10px 24px -6px rgba(0,0,0,.5); transition:transform .2s;
@@ -256,12 +311,43 @@ header{
 
 /* ============ Product grid ============ */
 .filter-bar{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;}
-.chip{padding:8px 16px; border-radius:999px; background:var(--navy-800); border:1px solid rgba(255,255,255,.08); font-size:.82rem; color:var(--muted); transition:.2s;}
+.chip{padding:8px 16px; border-radius:999px; background:var(--navy-800); border:1px solid var(--hairline); font-size:.82rem; color:var(--muted); transition:.2s;}
 .chip.active,.chip:hover{background:rgba(212,175,55,.15); border-color:var(--gold); color:var(--gold-light);}
 
 .product-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:22px;}
+
+/* Stock-view segmented tabs (In-Stock / Pre-Order / All) */
+.stock-view-tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; background:var(--navy-900); border:1px solid var(--hairline); border-radius:999px; padding:5px; width:max-content; max-width:100%;}
+.stock-view-tab{padding:9px 18px; border-radius:999px; font-size:.82rem; font-weight:600; color:var(--muted); background:transparent; transition:.2s; white-space:nowrap;}
+.stock-view-tab i{margin-right:6px;}
+.stock-view-tab.active{background:linear-gradient(135deg,var(--gold-light),var(--gold)); color:var(--navy-950);}
+.stock-view-tab:not(.active):hover{color:var(--gold-light);}
+
+/* Request summary (product auto-attached to the request modal) */
+.request-summary{display:flex; gap:14px; align-items:center; background:var(--navy-800); border-radius:12px; padding:14px; margin-bottom:20px;}
+.request-summary img{width:60px; height:60px; object-fit:cover; border-radius:8px; flex-shrink:0;}
+.request-summary b{font-family:var(--font-display); font-size:.95rem; display:block;}
+.request-summary span{color:var(--muted); font-size:.8rem;}
+
+/* Quotation card (shown to customer in My Orders + admin table) */
+.quote-box{background:var(--navy-800); border:1px solid rgba(212,175,55,.25); border-radius:12px; padding:14px; margin-top:10px;}
+.quote-box .quote-row{display:flex; justify-content:space-between; font-size:.82rem; padding:4px 0; color:var(--muted);}
+.quote-box .quote-row b{color:var(--cream);}
+.quote-box .quote-note{font-size:.78rem; color:var(--muted-dim); margin-top:6px; font-style:italic;}
+.quote-expiry{font-size:.72rem; color:var(--gold-light); margin-top:8px; display:flex; align-items:center; gap:6px;}
+.order-timer-box{margin-top:12px; display:flex; flex-direction:column; gap:8px;}
+.order-timer-row{display:flex; justify-content:space-between; align-items:center; gap:10px; background:var(--tint-1); border:1px solid var(--hairline-strong); border-radius:10px; padding:9px 12px; font-size:.78rem; color:var(--muted);}
+.order-timer-row b.order-countdown{font-family:var(--font-display); font-size:.92rem; color:var(--gold-light); letter-spacing:.02em;}
+.order-timer-row.auto-delete b.order-countdown{color:var(--red);}
+.quote-actions{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;}
+.status-pill.status-quoted{background:rgba(212,175,55,.15); color:var(--gold-light);}
+.status-pill.status-awaiting-confirmation{background:rgba(62,133,207,.15); color:#5fa8ef;}
+.status-pill.status-advance-paid{background:rgba(62,207,142,.15); color:var(--success);}
+.status-pill.status-completed{background:rgba(62,207,142,.2); color:var(--success);}
+.status-pill.status-declined{background:rgba(200,16,46,.15); color:#ff6b7d;}
+.status-pill.status-expired{background:rgba(154,163,184,.15); color:var(--muted);}
 .card{
-  background:var(--navy-900); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius);
+  background:var(--navy-900); border:1px solid var(--hairline); border-radius:var(--radius);
   overflow:hidden; display:flex; flex-direction:column; transition:transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s, border-color .3s;
   position:relative;
 }
@@ -275,7 +361,7 @@ header{
 .love-btn{
   position:absolute; top:10px; right:10px; width:38px; height:38px; border-radius:50%;
   background:rgba(8,11,20,.65); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;
-  color:var(--cream); transition:.2s; border:1px solid rgba(255,255,255,.12);
+  color:var(--cream); transition:.2s; border:1px solid var(--hairline-strong);
 }
 .love-btn:hover{transform:scale(1.1);}
 .love-btn.loved{color:var(--red); background:rgba(255,255,255,.92);}
@@ -305,7 +391,7 @@ header{
 
 /* ============ About / Why ============ */
 .why-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
-.why-card{background:var(--navy-900); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:26px;}
+.why-card{background:var(--navy-900); border:1px solid var(--hairline); border-radius:var(--radius); padding:26px;}
 .why-card i{font-size:1.5rem; color:var(--gold); margin-bottom:14px; display:block;}
 .why-card h3{font-family:var(--font-display); font-size:1.05rem; margin-bottom:8px;}
 .why-card p{color:var(--muted); font-size:.88rem;}
@@ -322,7 +408,7 @@ header{
 .soon-tag{margin-left:auto; background:rgba(212,175,55,.15); color:var(--gold-light); font-size:.72rem; font-weight:700; padding:6px 12px; border-radius:999px; text-transform:uppercase; letter-spacing:.06em;}
 
 /* ============ Footer ============ */
-footer{background:var(--navy-900); border-top:1px solid rgba(255,255,255,.06); padding:56px 0 24px; margin-top:40px;}
+footer{background:var(--navy-900); border-top:1px solid var(--hairline); padding:56px 0 24px; margin-top:40px;}
 .footer-grid{display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:32px; margin-bottom:40px;}
 .footer-brand p{color:var(--muted); font-size:.86rem; margin:14px 0 18px; max-width:280px;}
 .footer-social{display:flex; gap:10px;}
@@ -332,12 +418,15 @@ footer{background:var(--navy-900); border-top:1px solid rgba(255,255,255,.06); p
 .footer-col ul li{margin-bottom:10px;}
 .footer-col ul li a,.footer-col p{color:var(--muted); font-size:.86rem;}
 .footer-col ul li a:hover{color:var(--gold-light);}
-.footer-bottom{display:flex; justify-content:space-between; align-items:center; padding-top:22px; border-top:1px solid rgba(255,255,255,.06); font-size:.78rem; color:var(--muted-dim); flex-wrap:wrap; gap:10px;}
+.footer-bottom{display:flex; justify-content:space-between; align-items:center; padding-top:22px; border-top:1px solid var(--hairline); font-size:.78rem; color:var(--muted-dim); flex-wrap:wrap; gap:10px;}
 .footer-bottom a{color:var(--gold-light); font-weight:600; transition:.2s;}
 .footer-bottom a:hover{color:var(--gold);}
+.dev-credit{display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:999px; background:rgba(212,175,55,.08); border:1px solid rgba(212,175,55,.3);}
+.dev-credit i{color:var(--gold);}
+.dev-credit a{font-family:var(--font-display); font-weight:800; font-size:.92rem; letter-spacing:.02em; background:linear-gradient(135deg,var(--gold-light),var(--gold)); -webkit-background-clip:text; background-clip:text; color:transparent;}
 
 /* ============ Outlet / visit us card ============ */
-.outlet-card{display:flex; gap:0; background:var(--navy-800); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); overflow:hidden; max-width:820px; margin:0 auto;}
+.outlet-card{display:flex; gap:0; background:var(--navy-800); border:1px solid var(--hairline); border-radius:var(--radius); overflow:hidden; max-width:820px; margin:0 auto;}
 .outlet-card img{width:280px; flex-shrink:0; object-fit:cover; height:auto;}
 .outlet-info{padding:26px; display:flex; flex-direction:column; gap:8px; justify-content:center;}
 .outlet-info h3{font-family:var(--font-display); font-size:1.1rem;}
@@ -348,7 +437,7 @@ footer{background:var(--navy-900); border-top:1px solid rgba(255,255,255,.06); p
 .payment-badges{display:flex; gap:8px; flex-wrap:wrap; margin-top:16px;}
 .payment-badges span{
   display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:8px;
-  background:var(--navy-800); border:1px solid rgba(255,255,255,.08); font-size:.72rem; color:var(--muted);
+  background:var(--navy-800); border:1px solid var(--hairline); font-size:.72rem; color:var(--muted);
 }
 .admin-link{color:var(--muted-dim); font-size:.76rem; opacity:.7; transition:.2s;}
 .admin-link:hover{opacity:1; color:var(--gold-light);}
@@ -361,15 +450,15 @@ footer{background:var(--navy-900); border-top:1px solid rgba(255,255,255,.06); p
 .overlay.open{display:flex; animation:fadeIn .2s ease;}
 @keyframes fadeIn{from{opacity:0;} to{opacity:1;}}
 .modal{
-  background:var(--navy-900); border:1px solid rgba(255,255,255,.08); border-radius:18px;
+  background:var(--navy-900); border:1px solid var(--hairline); border-radius:18px;
   width:100%; max-width:520px; max-height:90vh; overflow-y:auto; box-shadow:var(--shadow-lg);
   animation:slideUp .3s cubic-bezier(.2,.8,.2,1);
 }
 .modal.modal-wide{max-width:960px;}
 @keyframes slideUp{from{transform:translateY(24px); opacity:0;} to{transform:translateY(0); opacity:1;}}
-.modal-head{display:flex; align-items:center; justify-content:space-between; padding:20px 22px; border-bottom:1px solid rgba(255,255,255,.06); position:sticky; top:0; background:var(--navy-900); z-index:2;}
+.modal-head{display:flex; align-items:center; justify-content:space-between; padding:20px 22px; border-bottom:1px solid var(--hairline); position:sticky; top:0; background:var(--navy-900); z-index:2;}
 .modal-head h3{font-family:var(--font-display); font-size:1.1rem;}
-.modal-close{width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.06); color:var(--cream); font-size:1rem; display:flex; align-items:center; justify-content:center; transition:.2s;}
+.modal-close{width:34px; height:34px; border-radius:50%; background:var(--hairline); color:var(--cream); font-size:1rem; display:flex; align-items:center; justify-content:center; transition:.2s;}
 .modal-close:hover{background:var(--red);}
 .modal-body{padding:22px;}
 
@@ -383,16 +472,16 @@ footer{background:var(--navy-900); border-top:1px solid rgba(255,255,255,.06); p
 .form-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
 .form-control{
   width:100%; padding:11px 14px; border-radius:10px; background:var(--navy-800);
-  border:1px solid rgba(255,255,255,.1); color:var(--cream); font-size:.9rem; font-family:inherit; transition:.2s;
+  border:1px solid var(--hairline-strong); color:var(--cream); font-size:.9rem; font-family:inherit; transition:.2s;
 }
 .form-control:focus{outline:none; border-color:var(--gold);}
 textarea.form-control{resize:vertical; min-height:70px;}
-.qty-control{display:flex; align-items:center; gap:0; width:fit-content; border:1px solid rgba(255,255,255,.1); border-radius:10px; overflow:hidden;}
+.qty-control{display:flex; align-items:center; gap:0; width:fit-content; border:1px solid var(--hairline-strong); border-radius:10px; overflow:hidden;}
 .qty-control button{width:38px; height:38px; background:var(--navy-800); color:var(--cream); font-size:1rem;}
 .qty-control button:hover{background:rgba(212,175,55,.2);}
 .qty-control input{width:52px; text-align:center; background:var(--navy-900); border:none; color:var(--cream); font-weight:700; height:38px;}
 .file-drop{
-  border:1.5px dashed rgba(255,255,255,.18); border-radius:12px; padding:22px; text-align:center;
+  border:1.5px dashed var(--hairline-strong); border-radius:12px; padding:22px; text-align:center;
   cursor:pointer; transition:.2s; background:var(--navy-800);
 }
 .file-drop:hover{border-color:var(--gold);}
@@ -411,9 +500,19 @@ textarea.form-control{resize:vertical; min-height:70px;}
 .pay-toggle small{color:var(--muted-dim); font-size:.75rem;}
 
 .advance-box{background:var(--navy-800); border:1px solid rgba(200,16,46,.3); border-radius:12px; padding:16px; margin-bottom:18px;}
+.advance-pay-form{
+  background:rgba(212,175,55,.06); border:1px solid rgba(212,175,55,.25);
+  border-radius:12px; padding:14px; margin-top:12px;
+}
+.advance-pay-form-title{
+  font-family:var(--font-display); font-weight:700; font-size:.88rem;
+  color:var(--gold-light); display:flex; align-items:center; gap:8px; margin-bottom:10px;
+}
+.advance-pay-form-note{font-size:.8rem; color:var(--muted); margin-bottom:10px; line-height:1.5;}
+.advance-pay-form-note b{color:var(--cream);}
 .advance-row{display:flex; justify-content:space-between; align-items:center; font-size:.85rem; color:var(--muted); padding:5px 0;}
 .advance-row b{color:var(--cream); font-family:var(--font-display);}
-.advance-row.highlight{border-top:1px dashed rgba(255,255,255,.12); margin-top:4px; padding-top:10px; color:var(--gold-light); font-weight:600;}
+.advance-row.highlight{border-top:1px dashed var(--hairline-strong); margin-top:4px; padding-top:10px; color:var(--gold-light); font-weight:600;}
 .advance-row.highlight b{color:var(--gold-light); font-size:1.05rem;}
 .advance-note{font-size:.78rem; color:var(--muted-dim); margin-top:8px; line-height:1.5;}
 .advance-note b{color:var(--cream);}
@@ -422,7 +521,7 @@ textarea.form-control{resize:vertical; min-height:70px;}
 .payment-method-choice{display:flex; gap:10px; flex-wrap:wrap;}
 .pay-option{
   flex:1 1 160px; display:flex; align-items:center; gap:8px; padding:11px 14px;
-  border-radius:10px; border:1px solid rgba(245,241,230,.16); background:var(--navy-800);
+  border-radius:10px; border:1px solid var(--tint-3); background:var(--navy-800);
   font-size:.84rem; color:var(--muted); cursor:pointer; transition:border-color .2s, color .2s, background .2s;
 }
 .pay-option input{accent-color:var(--gold); margin:0;}
@@ -448,11 +547,11 @@ textarea.form-control{resize:vertical; min-height:70px;}
 
 #adminPanel{display:none; min-height:100vh; background:var(--navy-950);}
 .admin-shell{display:grid; grid-template-columns:230px 1fr; min-height:100vh;}
-.admin-sidebar{background:var(--navy-900); border-right:1px solid rgba(255,255,255,.06); padding:24px 16px; display:flex; flex-direction:column; gap:6px;}
+.admin-sidebar{background:var(--navy-900); border-right:1px solid var(--hairline); padding:24px 16px; display:flex; flex-direction:column; gap:6px;}
 .admin-sidebar .logo{margin-bottom:24px; padding:0 8px;}
 .admin-nav-item{display:flex; align-items:center; gap:12px; padding:11px 14px; border-radius:10px; color:var(--muted); font-size:.88rem; font-weight:500; transition:.2s; background:none; width:100%; text-align:left;}
 .admin-nav-item i{width:18px; text-align:center;}
-.admin-nav-item:hover{background:rgba(255,255,255,.05); color:var(--cream);}
+.admin-nav-item:hover{background:var(--hairline); color:var(--cream);}
 .admin-nav-item.active{background:linear-gradient(135deg,rgba(212,175,55,.18),rgba(212,175,55,.05)); color:var(--gold-light); border:1px solid rgba(212,175,55,.25);}
 .admin-sidebar .btn{margin-top:auto;}
 
@@ -462,15 +561,15 @@ textarea.form-control{resize:vertical; min-height:70px;}
 .admin-top p{color:var(--muted); font-size:.85rem;}
 
 .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:18px; margin-bottom:30px;}
-.stat-card{background:var(--navy-900); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:20px;}
+.stat-card{background:var(--navy-900); border:1px solid var(--hairline); border-radius:14px; padding:20px;}
 .stat-card i{font-size:1.2rem; color:var(--gold); margin-bottom:10px; display:block;}
 .stat-card b{font-family:var(--font-display); font-size:1.7rem; display:block;}
 .stat-card span{font-size:.78rem; color:var(--muted); text-transform:uppercase; letter-spacing:.06em;}
 
-.admin-panel-block{background:var(--navy-900); border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:22px; margin-bottom:24px;}
+.admin-panel-block{background:var(--navy-900); border:1px solid var(--hairline); border-radius:14px; padding:22px; margin-bottom:24px;}
 .admin-panel-block h3{font-family:var(--font-display); font-size:1.05rem; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
 
-.leaderboard-item{display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.05);}
+.leaderboard-item{display:flex; align-items:center; gap:14px; padding:12px 0; border-bottom:1px solid var(--hairline);}
 .leaderboard-item:last-child{border:none;}
 .lb-rank{width:26px; height:26px; border-radius:50%; background:var(--navy-800); display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; color:var(--gold-light); flex-shrink:0;}
 .lb-rank.gold{background:linear-gradient(135deg,var(--gold-light),var(--gold)); color:var(--navy-950);}
@@ -483,10 +582,10 @@ textarea.form-control{resize:vertical; min-height:70px;}
 
 .table-wrap{overflow-x:auto;}
 table{width:100%; border-collapse:collapse; font-size:.85rem;}
-th{text-align:left; padding:10px 12px; color:var(--muted); font-weight:600; text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; border-bottom:1px solid rgba(255,255,255,.08); cursor:pointer; white-space:nowrap;}
+th{text-align:left; padding:10px 12px; color:var(--muted); font-weight:600; text-transform:uppercase; font-size:.7rem; letter-spacing:.05em; border-bottom:1px solid var(--hairline); cursor:pointer; white-space:nowrap;}
 th:hover{color:var(--gold-light);}
-td{padding:12px; border-bottom:1px solid rgba(255,255,255,.05); vertical-align:middle;}
-tr:hover td{background:rgba(255,255,255,.02);}
+td{padding:12px; border-bottom:1px solid var(--hairline); vertical-align:middle;}
+tr:hover td{background:var(--hairline);}
 .thumb-sm{width:42px; height:42px; border-radius:8px; object-fit:cover; cursor:pointer;}
 .status-pill{padding:4px 10px; border-radius:999px; font-size:.7rem; font-weight:700; text-transform:uppercase;}
 .status-pill.published{background:rgba(62,207,142,.15); color:var(--success);}
@@ -494,8 +593,9 @@ tr:hover td{background:rgba(255,255,255,.02);}
 .status-pill.status-pending{background:rgba(212,175,55,.15); color:var(--gold-light);}
 .status-pill.status-accepted{background:rgba(62,207,142,.15); color:var(--success);}
 .status-pill.status-rejected{background:rgba(200,16,46,.15); color:#ff6b7d;}
-.my-order-card{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:14px 0; border-bottom:1px solid rgba(255,255,255,.06);}
+.my-order-card{padding:14px 0; border-bottom:1px solid var(--hairline);}
 .my-order-card:last-child{border:none;}
+.my-order-head{display:flex; align-items:center; justify-content:space-between; gap:14px;}
 .my-order-card b{font-size:.9rem; display:block;}
 .my-order-meta{font-size:.76rem; color:var(--muted-dim);}
 .row-actions{display:flex; gap:8px; flex-wrap:wrap;}
@@ -533,7 +633,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
 @media (max-width:768px){
   .nav-links{
     position:fixed; top:70px; left:0; right:0; background:var(--navy-900); flex-direction:column;
-    padding:20px; gap:18px; border-bottom:1px solid rgba(255,255,255,.08); transform:translateY(-150%); transition:.3s; z-index:150;
+    padding:20px; gap:18px; border-bottom:1px solid var(--hairline); transform:translateY(-150%); transition:.3s; z-index:150;
   }
   .nav-links.open{transform:translateY(0);}
   .burger{display:block;}
@@ -543,7 +643,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
   .payment-note{flex-direction:column; align-items:flex-start;}
   .soon-tag{margin-left:0;}
   .hero-banner{min-height:66vh;}
-  .float-chat-stack{right:14px; bottom:18px;}
+  .float-chat-stack{left:14px; bottom:18px;}
   .float-chat-btn{width:46px; height:46px; font-size:1.2rem;}
   .outlet-card{flex-direction:column;}
   .outlet-card img{width:100%; height:180px;}
@@ -556,6 +656,17 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
   .section{padding:50px 0;}
   .hero-banner{min-height:58vh;}
   .announce-inner{font-size:.72rem; padding-right:34px;}
+  /* Product showcase: keep 2 columns on phones instead of collapsing to 1 */
+  .product-grid{grid-template-columns:repeat(2,1fr); gap:12px;}
+  .card-body{padding:10px 10px 12px; gap:5px;}
+  .card-title{font-size:.82rem;}
+  .card-cat{font-size:.6rem;}
+  .card-actions{padding:0 10px 12px;}
+  .card-actions .btn{padding:9px 8px; font-size:.74rem;}
+  .love-btn{width:30px; height:30px; font-size:.8rem;}
+}
+@media (max-width:360px){
+  .product-grid{grid-template-columns:1fr 1fr; gap:8px;}
 }
 </style>
 </head>
@@ -592,6 +703,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
         <button class="btn btn-ghost btn-sm" id="myOrdersBtn" style="display:none;"><i class="fa-solid fa-receipt"></i> My Orders</button>
         <button class="btn btn-outline btn-sm" id="userAuthBtn"><i class="fa-solid fa-user"></i> <span id="userAuthBtnLabel">Login</span></button>
         <a href="#shop" class="btn btn-primary btn-sm"><i class="fa-solid fa-bag-shopping"></i> Shop Now</a>
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle day/night mode"><i class="fa-solid fa-moon" id="themeToggleIcon"></i></button>
         <button class="icon-btn" id="adminAccessBtn" title="Admin Panel"><i class="fa-solid fa-user-shield"></i></button>
         <button class="burger" id="burgerBtn"><i class="fa-solid fa-bars"></i></button>
       </div>
@@ -696,6 +808,10 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
             </g>
           </svg>
         </div>
+        <div class="route-clocks">
+          <div class="route-clock"><span><i class="fa-solid fa-clock"></i> Guangzhou, China</span><b id="routeChinaClock">--:--:--</b></div>
+          <div class="route-clock"><span>Chattogram, BD <i class="fa-solid fa-clock"></i></span><b id="routeBdClock">--:--:--</b></div>
+        </div>
         <div class="route-labels">
           <div><b>3,200 km</b>Sourcing distance</div>
           <div style="text-align:right;"><b>Air &amp; Sea</b>Freight options</div>
@@ -720,9 +836,14 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <div class="section-head">
         <div>
           <span class="eyebrow">Catalog</span>
-          <h2>Fresh imports, ready to pre-order</h2>
+          <h2>Fresh imports, ready to request</h2>
         </div>
-        <p>Tap the heart to save favorites, or pre-order in a click.</p>
+        <p>Tap the heart to save favorites, then send us a quick request.</p>
+      </div>
+      <div class="stock-view-tabs" id="stockViewTabs">
+        <button class="stock-view-tab" data-view="instock"><i class="fa-solid fa-check"></i>In-Stock Products</button>
+        <button class="stock-view-tab" data-view="preorder"><i class="fa-solid fa-clock"></i>Pre-Order Products</button>
+        <button class="stock-view-tab active" data-view="all"><i class="fa-solid fa-layer-group"></i>All Products</button>
       </div>
       <div class="filter-bar" id="filterBar"></div>
       <div class="product-grid" id="productGrid"></div>
@@ -826,7 +947,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       </div>
       <div class="footer-bottom">
         <span>© 2026 Zylo BD. All rights reserved.</span>
-        <span>Developed by <a href="https://tawsif790.github.io/My_portgfolio_3D/" target="_blank" rel="noopener">Tawsif</a></span>
+        <span class="dev-credit"><i class="fa-solid fa-code"></i> Developed by <a href="https://tawsif790.github.io/Tawsif790-My_portgfolio_3D/" target="_blank" rel="noopener">Tawsif</a></span>
       </div>
     </div>
   </footer>
@@ -873,7 +994,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           </div>
           <div class="form-group">
             <label>Password</label>
-            <input type="password" class="form-control" id="signupPassword" required placeholder="Min. 4 characters">
+            <input type="password" class="form-control" id="signupPassword" required placeholder="Min. 6 characters">
           </div>
         </div>
         <div class="admin-error" id="signupError">That phone number is already registered.</div>
@@ -906,7 +1027,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
         <div class="form-row">
           <div class="form-group">
             <label>New Password</label>
-            <input type="password" class="form-control" id="fpNewPassword" required placeholder="Min. 4 characters">
+            <input type="password" class="form-control" id="fpNewPassword" required placeholder="Min. 6 characters">
           </div>
           <div class="form-group">
             <label>Confirm New Password</label>
@@ -922,175 +1043,41 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
     </div>
   </div>
 </div>
-<!-- ================= PRE-ORDER MODAL (sourced from China, 7-15 days) ================= -->
-<div class="overlay" id="preorderOverlay">
+<!-- ================= PRODUCT REQUEST MODAL (unified — product/qty/delivery location only) ================= -->
+<div class="overlay" id="requestOverlay">
   <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-head">
-      <h3><i class="fa-solid fa-box"></i> Pre-Order Item</h3>
-      <button class="modal-close" id="closePreorder"><i class="fa-solid fa-xmark"></i></button>
+      <h3><i class="fa-solid fa-paper-plane"></i> Request This Product</h3>
+      <button class="modal-close" id="closeRequest"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="modal-body">
       <div class="video-note" style="margin-bottom:16px;">
-        <i class="fa-solid fa-plane"></i>
-        <span>This item isn't in the shop yet — once you order, we bring it in from China. Expect <b>7–15 days</b> for delivery, and a <b>50% advance payment</b> confirms your order.</span>
+        <i class="fa-solid fa-circle-info"></i>
+        <span>Just tell us the quantity and where to deliver — the product photo &amp; details are attached automatically. Our admin will review your request and send back a quotation (price, shipping cost, delivery time).</span>
       </div>
-      <div class="preorder-summary">
-        <img id="poImg" src="" alt="">
-        <div><b id="poTitle"></b><span id="poPrice"></span></div>
+      <div class="request-summary">
+        <img id="reqImg" src="" alt="">
+        <div><b id="reqTitle"></b><span id="reqCategory"></span></div>
       </div>
 
-      <form id="preorderForm">
+      <form id="requestForm">
         <div class="form-group">
           <label>Quantity</label>
           <div class="qty-control">
-            <button type="button" id="qtyMinus">−</button>
-            <input type="number" id="poQty" value="1" min="1" readonly>
-            <button type="button" id="qtyPlus">+</button>
+            <button type="button" id="reqQtyMinus">−</button>
+            <input type="number" id="reqQty" value="1" min="1" readonly>
+            <button type="button" id="reqQtyPlus">+</button>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Payment Method</label>
-          <div class="payment-method-choice" id="poPaymentMethodChoice">
-            <label class="pay-option" id="poPayBkashOption">
-              <input type="radio" name="poPayMethod" id="poPayBkash" value="bkash" checked>
-              <i class="fa-brands fa-btc" style="display:none;"></i>
-              <span><i class="fa-solid fa-mobile-screen-button"></i> bKash / Nagad <small>(50% advance)</small></span>
-            </label>
-            <label class="pay-option" id="poPayCodOption">
-              <input type="radio" name="poPayMethod" id="poPayCod" value="cod">
-              <span><i class="fa-solid fa-money-bill-wave"></i> Cash on Delivery</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="advance-box" id="poBkashBox">
-          <div class="advance-row"><span>Order Total</span><b id="poTotal">৳0</b></div>
-          <div class="advance-row highlight"><span><i class="fa-solid fa-triangle-exclamation"></i> 50% Advance Required</span><b id="poAdvance">৳0</b></div>
-          <p class="advance-note">Send via <b>bKash/Nagad</b> to <b id="poMerchantNumber">01828‑697195</b>, then add the Transaction ID below.</p>
-          <div class="form-group" style="margin-top:12px; margin-bottom:0;">
-            <label>bKash / Nagad Transaction ID</label>
-            <input type="text" class="form-control" id="poTxnId" placeholder="e.g. 8N7A2K9XYZ">
-          </div>
-        </div>
-
-        <div class="advance-box" id="poCodBox" style="display:none;">
-          <div class="advance-row"><span>Order Total — Pay on Delivery</span><b id="poCodTotal">৳0</b></div>
-          <p class="advance-note" id="poCodNote">Pay the full amount in cash when your order is delivered to your door.</p>
-        </div>
-
-        <div class="form-group">
-          <label>Reference Photo (optional screenshot)</label>
-          <div class="file-drop" id="fileDropZone">
-            <i class="fa-solid fa-cloud-arrow-up"></i>
-            <span>Click to upload a photo / screenshot</span>
-            <input type="file" id="poPhoto" accept="image/*" style="display:none;">
-          </div>
-          <div class="file-preview" id="filePreview" style="display:none;">
-            <img id="filePreviewImg" src="">
-            <span id="filePreviewName"></span>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" class="form-control" id="poName" required placeholder="e.g. Rahim Uddin">
-          </div>
-          <div class="form-group">
-            <label>Phone Number</label>
-            <input type="tel" class="form-control" id="poPhone" required placeholder="01XXXXXXXXX">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Delivery Address</label>
-          <textarea class="form-control" id="poAddress" required placeholder="Village/Road, Union, Upazila, District"></textarea>
+          <label>Delivery Location</label>
+          <textarea class="form-control" id="reqAddress" required placeholder="Village/Road, Union, Upazila, District"></textarea>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" id="cancelPreorder">Cancel</button>
-          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit Pre-Order</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- ================= ORDER MODAL (in-stock items — no advance, ships fast) ================= -->
-<div class="overlay" id="orderOverlay">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-head">
-      <h3><i class="fa-solid fa-bolt"></i> Order Item</h3>
-      <button class="modal-close" id="closeOrder"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div class="modal-body">
-      <div class="video-note" style="margin-bottom:16px;">
-        <i class="fa-solid fa-shop"></i>
-        <span>This item is already in our shop — no waiting on China, no advance payment. Pay in full by bKash/Nagad or Cash on Delivery.</span>
-      </div>
-      <div class="preorder-summary">
-        <img id="orImg" src="" alt="">
-        <div><b id="orTitle"></b><span id="orPrice"></span></div>
-      </div>
-
-      <form id="orderForm">
-        <div class="form-group">
-          <label>Quantity</label>
-          <div class="qty-control">
-            <button type="button" id="orQtyMinus">−</button>
-            <input type="number" id="orQty" value="1" min="1" readonly>
-            <button type="button" id="orQtyPlus">+</button>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Payment Method</label>
-          <div class="payment-method-choice" id="orPaymentMethodChoice">
-            <label class="pay-option" id="orPayBkashOption">
-              <input type="radio" name="orPayMethod" id="orPayBkash" value="bkash" checked>
-              <span><i class="fa-solid fa-mobile-screen-button"></i> bKash / Nagad <small>(full payment)</small></span>
-            </label>
-            <label class="pay-option" id="orPayCodOption">
-              <input type="radio" name="orPayMethod" id="orPayCod" value="cod">
-              <span><i class="fa-solid fa-money-bill-wave"></i> Cash on Delivery</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="advance-box" id="orBkashBox">
-          <div class="advance-row"><span>Order Total</span><b id="orTotal">৳0</b></div>
-          <p class="advance-note">Send the <b>full amount</b> via <b>bKash/Nagad</b> to <b id="orMerchantNumber">01828‑697195</b>, then add the Transaction ID below.</p>
-          <div class="form-group" style="margin-top:12px; margin-bottom:0;">
-            <label>bKash / Nagad Transaction ID</label>
-            <input type="text" class="form-control" id="orTxnId" placeholder="e.g. 8N7A2K9XYZ">
-          </div>
-        </div>
-
-        <div class="advance-box" id="orCodBox" style="display:none;">
-          <div class="advance-row"><span>Order Total — Pay on Delivery</span><b id="orCodTotal">৳0</b></div>
-          <p class="advance-note" id="orCodNote">Pay the full amount in cash when your order is delivered to your door.</p>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Full Name</label>
-            <input type="text" class="form-control" id="orName" required placeholder="e.g. Rahim Uddin">
-          </div>
-          <div class="form-group">
-            <label>Phone Number</label>
-            <input type="tel" class="form-control" id="orPhone" required placeholder="01XXXXXXXXX">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Delivery Address</label>
-          <textarea class="form-control" id="orAddress" required placeholder="Village/Road, Union, Upazila, District"></textarea>
-        </div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" id="cancelOrder">Cancel</button>
-          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit Order</button>
+          <button type="button" class="btn btn-ghost" id="cancelRequest">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Send Request</button>
         </div>
       </form>
     </div>
@@ -1112,15 +1099,9 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           <label>What do you want to order?</label>
           <textarea class="form-control" id="crItem" required placeholder="e.g. iPhone charger 20W original, or a specific electronics model"></textarea>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Quantity</label>
-            <input type="number" class="form-control" id="crQty" min="1" value="1" required>
-          </div>
-          <div class="form-group">
-            <label>Your Budget (approx. ৳, optional)</label>
-            <input type="number" class="form-control" id="crBudget" placeholder="e.g. 2000">
-          </div>
+        <div class="form-group">
+          <label>Quantity</label>
+          <input type="number" class="form-control" id="crQty" min="1" value="1" required>
         </div>
         <div class="form-group">
           <label>Reference Photo (optional)</label>
@@ -1150,7 +1131,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
         </div>
         <div class="pay-toggle">
           <i class="fa-solid fa-circle-info"></i>
-          <div><b>No advance needed yet</b><small>We'll message you with pricing once accepted.</small></div>
+          <div><b>We'll send you a quotation</b><small>Price, shipping cost &amp; delivery time — check "My Orders" once it arrives. You'll then choose to pay a 50% advance (bKash/Nagad) or, if available, Cash on Delivery.</small></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-ghost" id="cancelCustomRequest">Cancel</button>
@@ -1238,8 +1219,16 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           <div class="stat-card"><i class="fa-solid fa-heart"></i><b id="statTotalLoves">0</b><span>Total Love Reacts</span></div>
           <div class="stat-card"><i class="fa-solid fa-eye"></i><b id="statPublished">0</b><span>Published Live</span></div>
         </div>
+        <div class="admin-top" style="margin-top:6px;"><div><h2 style="font-size:1.15rem;">Quotation Pipeline</h2><p>Where every request stands right now.</p></div></div>
+        <div class="stat-grid">
+          <div class="stat-card"><i class="fa-solid fa-inbox"></i><b id="statAwaitingQuote">0</b><span>Awaiting Your Quote</span></div>
+          <div class="stat-card"><i class="fa-solid fa-hourglass-half"></i><b id="statAwaitingResponse">0</b><span>Awaiting Customer Response</span></div>
+          <div class="stat-card"><i class="fa-solid fa-magnifying-glass-dollar"></i><b id="statAwaitingVerification">0</b><span>Payment To Verify</span></div>
+          <div class="stat-card"><i class="fa-solid fa-money-bill-transfer"></i><b id="statAdvancePaid">0</b><span>50% Advance Paid</span></div>
+          <div class="stat-card"><i class="fa-solid fa-circle-check"></i><b id="statCompleted">0</b><span>Completed</span></div>
+        </div>
         <div class="admin-panel-block">
-          <h3><i class="fa-solid fa-fire"></i> Popularity Leaderboard <span style="font-size:.72rem; color:var(--muted-dim); font-weight:400; text-transform:none;">Score = Love Reacts + Pre-Orders</span></h3>
+          <h3><i class="fa-solid fa-fire"></i> Top Liked Products <span style="font-size:.72rem; color:var(--muted-dim); font-weight:400; text-transform:none;">Ranked by Love Reacts</span></h3>
           <div id="leaderboardList"></div>
         </div>
       </div>
@@ -1247,7 +1236,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <!-- PREORDERS TAB -->
       <div class="tab-content" id="tab-preorders">
         <div class="admin-top">
-          <div><h2>Pre-Order Management</h2><p>Items sourced from China after a customer orders — 7–15 days, 50% advance.</p></div>
+          <div><h2>Pre-Order Requests</h2><p>Requests for items sourced from China. Review, send a quotation, then track the 50% advance / 50% on delivery.</p></div>
           <button class="btn btn-primary btn-sm" id="downloadPreorderXlsxBtn"><i class="fa-solid fa-file-excel"></i> Download Excel (.xlsx)</button>
         </div>
         <div class="admin-panel-block">
@@ -1260,9 +1249,9 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
                   <th>Phone</th>
                   <th data-sort="product">Product <i class="fa-solid fa-sort"></i></th>
                   <th data-sort="qty">Qty <i class="fa-solid fa-sort"></i></th>
-                  <th>Address</th>
+                  <th>Delivery Location</th>
                   <th>Photo</th>
-                  <th>Payment</th>
+                  <th>Quotation</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -1270,14 +1259,14 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
               <tbody id="preorderTbody"></tbody>
             </table>
           </div>
-          <div class="no-data" id="preorderEmpty" style="display:none;"><i class="fa-solid fa-inbox"></i>No pre-orders yet.</div>
+          <div class="no-data" id="preorderEmpty" style="display:none;"><i class="fa-solid fa-inbox"></i>No pre-order requests yet.</div>
         </div>
       </div>
 
       <!-- ORDERS TAB (in-stock items) -->
       <div class="tab-content" id="tab-orders">
         <div class="admin-top">
-          <div><h2>Order Management</h2><p>Items already in the shop — full payment or COD, no advance, ships fast.</p></div>
+          <div><h2>In-Stock Requests <span style="font-size:.72rem; color:var(--muted-dim); font-weight:400; text-transform:none;">(archive)</span></h2><p>Legacy requests for items already in the shop. New in-stock requests are no longer accepted — customers now only submit requests for Pre-Order / China-sourced items.</p></div>
           <button class="btn btn-primary btn-sm" id="downloadOrderXlsxBtn"><i class="fa-solid fa-file-excel"></i> Download Excel (.xlsx)</button>
         </div>
         <div class="admin-panel-block">
@@ -1290,8 +1279,8 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
                   <th>Phone</th>
                   <th data-sort="product">Product <i class="fa-solid fa-sort"></i></th>
                   <th data-sort="qty">Qty <i class="fa-solid fa-sort"></i></th>
-                  <th>Address</th>
-                  <th>Payment</th>
+                  <th>Delivery Location</th>
+                  <th>Quotation</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -1299,7 +1288,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
               <tbody id="orderTbody"></tbody>
             </table>
           </div>
-          <div class="no-data" id="orderEmpty" style="display:none;"><i class="fa-solid fa-inbox"></i>No orders yet.</div>
+          <div class="no-data" id="orderEmpty" style="display:none;"><i class="fa-solid fa-inbox"></i>No in-stock requests yet.</div>
         </div>
       </div>
 
@@ -1309,15 +1298,21 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
           <div><h2>Product Management</h2><p>Publish, hide, or add new products to your storefront.</p></div>
           <button class="btn btn-primary btn-sm" id="addProductBtn"><i class="fa-solid fa-plus"></i> Add Product</button>
         </div>
+        <div class="stock-view-tabs" id="adminProductViewTabs" style="margin-bottom:16px;">
+          <button class="stock-view-tab active" data-admin-view="all"><i class="fa-solid fa-layer-group"></i>All Products</button>
+          <button class="stock-view-tab" data-admin-view="instock"><i class="fa-solid fa-check"></i>In-Stock Products</button>
+          <button class="stock-view-tab" data-admin-view="preorder"><i class="fa-solid fa-clock"></i>Pre-Order Products</button>
+        </div>
         <div class="admin-panel-block">
           <div class="table-wrap">
             <table>
               <thead>
-                <tr><th>Image</th><th>Title</th><th>Category</th><th>Type</th><th>Price</th><th>Loves</th><th>Pre-Orders</th><th>Status</th><th>Show Loves</th><th>Actions</th></tr>
+                <tr><th>Image</th><th>Title</th><th>Category</th><th>Type</th><th>Price</th><th>Credits</th><th>Loves</th><th>Pre-Orders</th><th>Status</th><th>Show Loves</th><th>Actions</th></tr>
               </thead>
               <tbody id="productTbody"></tbody>
             </table>
           </div>
+          <div class="no-data" id="productEmpty" style="display:none;"><i class="fa-solid fa-box-open"></i>No products in this view yet.</div>
         </div>
       </div>
 
@@ -1343,6 +1338,24 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
       <!-- SETTINGS TAB -->
       <div class="tab-content" id="tab-settings">
         <div class="admin-top"><div><h2>Store Settings</h2><p>Global controls for the storefront.</p></div></div>
+        <div class="admin-panel-block">
+          <h3><i class="fa-solid fa-lock"></i> Admin Password</h3>
+          <p style="color:var(--muted); font-size:.85rem; margin-bottom:14px;">Change the password used to access this Admin Panel. Choose something only you know — it's stored as a hash, never in plain text.</p>
+          <form id="changeAdminPasswordForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Current Password</label>
+                <input type="password" class="form-control" id="capCurrent" required autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label>New Password (min. 6 characters)</label>
+                <input type="password" class="form-control" id="capNew" required minlength="6" autocomplete="off">
+              </div>
+            </div>
+            <div class="admin-error" id="capError">Incorrect current password.</div>
+            <button type="submit" class="btn btn-primary btn-sm"><i class="fa-solid fa-key"></i> Update Admin Password</button>
+          </form>
+        </div>
         <div class="admin-panel-block">
           <h3>Global Love Reacts</h3>
           <div style="display:flex; align-items:center; gap:14px;">
@@ -1445,6 +1458,55 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
   </div>
 </div>
 
+<!-- ================= ADMIN: SEND QUOTATION MODAL ================= -->
+<div class="overlay" id="quoteModalOverlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <h3><i class="fa-solid fa-file-invoice-dollar"></i> Send Quotation</h3>
+      <button class="modal-close" id="closeQuoteModal"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="request-summary">
+        <img id="qmImg" src="" alt="">
+        <div><b id="qmTitle"></b><span id="qmMeta"></span></div>
+      </div>
+      <div class="video-note" style="margin-bottom:16px;">
+        <i class="fa-solid fa-circle-info"></i>
+        <span>The customer has <b>7 days</b> to accept or decline once this quotation is sent. If they don't respond in time, the request auto-expires and is removed.</span>
+      </div>
+      <form id="quoteForm">
+        <input type="hidden" id="qmOrderId">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Product Price (৳, per unit)</label>
+            <input type="number" class="form-control" id="qmPrice" required min="0" placeholder="e.g. 1650">
+          </div>
+          <div class="form-group">
+            <label>Shipping Cost (৳, if applicable)</label>
+            <input type="number" class="form-control" id="qmShipping" min="0" placeholder="e.g. 120">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Estimated Delivery Time</label>
+          <input type="text" class="form-control" id="qmDeliveryTime" required placeholder="e.g. 7–15 days">
+        </div>
+        <div class="form-group">
+          <label>Additional Notes</label>
+          <textarea class="form-control" id="qmNotes" placeholder="Anything else the customer should know"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Reward Credits <span style="color:var(--muted-dim); font-weight:400;">— credits the customer earns once this order is completed</span></label>
+          <input type="number" class="form-control" id="qmCredits" min="0" placeholder="0">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="cancelQuoteModal">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Send Quotation</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- ADD/EDIT PRODUCT MODAL -->
 <div class="overlay" id="productModalOverlay">
   <div class="modal">
@@ -1465,7 +1527,7 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
             <input type="text" class="form-control" id="pfCategory" required placeholder="Electronics">
           </div>
           <div class="form-group">
-            <label>Price (৳)</label>
+            <label>Price (৳) <span style="color:var(--muted-dim); font-weight:400;">— internal, used as your default quote price</span></label>
             <input type="number" class="form-control" id="pfPrice" required placeholder="1500">
           </div>
         </div>
@@ -1475,10 +1537,27 @@ input:checked + .slider-toggle::before{transform:translateX(18px);}
         </div>
         <div class="form-group">
           <label>Order Type</label>
-          <select class="form-control" id="pfOrderType">
-            <option value="preorder">Pre-Order — not in shop yet, I'll bring it from China (7–15 days, 50% advance)</option>
-            <option value="instock">In Shop — available now (full payment or COD, ships fast)</option>
-          </select>
+          <div style="display:flex; align-items:center; gap:14px; background:var(--navy-800); border-radius:12px; padding:12px 14px;">
+            <span id="pfOrderTypeLabelLeft" style="font-size:.82rem; font-weight:600; color:var(--gold-light);"><i class="fa-solid fa-clock"></i> Pre-Order</span>
+            <label class="switch"><input type="checkbox" id="pfOrderType"><span class="slider-toggle"></span></label>
+            <span id="pfOrderTypeLabelRight" style="font-size:.82rem; font-weight:600; color:var(--muted);"><i class="fa-solid fa-check"></i> In Shop</span>
+          </div>
+          <span style="display:block; margin-top:6px; font-size:.78rem; color:var(--muted-dim);" id="pfOrderTypeHint">Pre-Order — not in shop yet, sourced from China (7–15 days, 50% advance)</span>
+        </div>
+        <div class="form-group">
+          <label>Reward Credits <span style="color:var(--muted-dim); font-weight:400;">— credits the buyer earns when this order is completed</span></label>
+          <input type="number" class="form-control" id="pfCreditsEarned" min="0" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Accept Payment By Credits</label>
+          <div style="display:flex; align-items:center; gap:14px; background:var(--navy-800); border-radius:12px; padding:12px 14px;">
+            <label class="switch"><input type="checkbox" id="pfAcceptsCredits"><span class="slider-toggle"></span></label>
+            <span style="font-size:.82rem; color:var(--muted);">Money is always accepted. Turn this on to let customers <b style="color:var(--cream);">also</b> buy this product directly using their credit balance.</span>
+          </div>
+          <div id="pfCreditsCostWrap" style="display:none; margin-top:10px;">
+            <label>Credits Required To Buy 1 Unit</label>
+            <input type="number" class="form-control" id="pfCreditsCost" min="0" placeholder="e.g. 500">
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-ghost" id="cancelProductModal">Cancel</button>
@@ -1603,7 +1682,56 @@ function applySettingsToPage(){
   }
 }
 
-const ADMIN_PASSWORD = "admin123";
+/* =====================================================================
+   SECURITY — password hashing & brute-force lockout helpers
+   NOTE: This is a client-only, static site (no backend/server). True
+   security (rate limiting that can't be bypassed via devtools, secret
+   storage, etc.) requires a real server. These helpers still meaningfully
+   raise the bar: passwords are never stored in plaintext, and repeated
+   failed logins are throttled — but a technical user with devtools access
+   to this browser profile can still bypass client-side checks. For a
+   production deployment, move auth to a real backend.
+   ===================================================================== */
+async function hashPassword(pw, salt){
+  const raw = String(pw) + "::" + String(salt||"") + "::zylo_bd_v1";
+  try{
+    if(window.crypto && crypto.subtle){
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw));
+      return "sha256:" + Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+    }
+  }catch(e){ /* fall through to the non-crypto fallback below */ }
+  // Fallback for browsers/contexts without SubtleCrypto — still avoids raw plaintext storage.
+  let hash = 5381;
+  for(let i=0;i<raw.length;i++){ hash = ((hash*33) ^ raw.charCodeAt(i)) >>> 0; }
+  return "fb32:" + hash.toString(16);
+}
+
+const LOGIN_MAX_ATTEMPTS = 5;
+const LOGIN_LOCK_MS = 5 * 60 * 1000; // 5 minutes
+function getAttemptState(key){
+  try{ return JSON.parse(localStorage.getItem(key) || '{"count":0,"lockUntil":0}'); }
+  catch(e){ return {count:0, lockUntil:0}; }
+}
+function recordFailedAttempt(key){
+  const st = getAttemptState(key);
+  st.count = (st.count||0) + 1;
+  if(st.count >= LOGIN_MAX_ATTEMPTS){ st.lockUntil = Date.now() + LOGIN_LOCK_MS; st.count = 0; }
+  localStorage.setItem(key, JSON.stringify(st));
+}
+function clearAttempts(key){ localStorage.removeItem(key); }
+function isLocked(key){ return getAttemptState(key).lockUntil > Date.now(); }
+function lockRemainingSec(key){ return Math.max(0, Math.ceil((getAttemptState(key).lockUntil - Date.now())/1000)); }
+
+const LS_ADMIN_PASS_HASH = "zylo_admin_pass_hash";
+async function getAdminPasswordHash(){
+  let h = localStorage.getItem(LS_ADMIN_PASS_HASH);
+  if(!h){
+    h = await hashPassword("admin123", "admin"); // first-run default — change it in Settings
+    localStorage.setItem(LS_ADMIN_PASS_HASH, h);
+  }
+  return h;
+}
+
 const LS_PRODUCTS = "zylo_products";
 const LS_PREORDERS = "zylo_preorders";
 const LS_SETTINGS = "zylo_settings";
@@ -1696,7 +1824,14 @@ function loadProducts(){
   // MIGRATION: products saved before the Pre-Order / In-Shop split won't have
   // an orderType yet — default them to "preorder" so nothing breaks.
   let migrated = false;
-  parsed.forEach(p=>{ if(!p.orderType){ p.orderType = "preorder"; migrated = true; } });
+  parsed.forEach(p=>{
+    if(!p.orderType){ p.orderType = "preorder"; migrated = true; }
+    // MIGRATION: products saved before the Credit Point System won't have these — default
+    // to "money only, earns nothing" so existing products behave exactly as before.
+    if(p.creditsEarned === undefined){ p.creditsEarned = 0; migrated = true; }
+    if(p.acceptsCredits === undefined){ p.acceptsCredits = false; migrated = true; }
+    if(p.creditsCost === undefined){ p.creditsCost = 0; migrated = true; }
+  });
   if(migrated) localStorage.setItem(LS_PRODUCTS, JSON.stringify(parsed));
   return parsed;
 }
@@ -1764,6 +1899,7 @@ let settings = loadSettings();
 let models = loadModels();
 let lovedIds = JSON.parse(localStorage.getItem("zylo_loved_local") || "[]"); // per-browser like tracking
 let activeCategory = "All";
+let activeStockView = "all"; // "instock" | "preorder" | "all"
 let sortState = { key:"date", dir:"desc" };
 
 /* ---------- Toast ---------- */
@@ -1788,6 +1924,15 @@ function renderFilterBar(){
   });
   renderCategoryStrip();
 }
+
+/* In-Stock Products / Pre-Order Products / All Products segmented tabs */
+document.querySelectorAll("#stockViewTabs .stock-view-tab").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    activeStockView = btn.dataset.view;
+    document.querySelectorAll("#stockViewTabs .stock-view-tab").forEach(b=> b.classList.toggle("active", b===btn));
+    renderProductGrid();
+  });
+});
 
 function renderCategoryStrip(){
   const strip = document.getElementById("categoryStrip");
@@ -1814,11 +1959,13 @@ function renderProductGrid(){
   const grid = document.getElementById("productGrid");
   let list = products.filter(p => p.published);
   if(activeCategory !== "All") list = list.filter(p => p.category === activeCategory);
+  if(activeStockView === "instock") list = list.filter(p => p.orderType === "instock");
+  else if(activeStockView === "preorder") list = list.filter(p => p.orderType === "preorder");
 
   document.getElementById("statProductsHero").textContent = products.filter(p=>p.published).length;
 
   if(list.length === 0){
-    grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>No products found in this category yet.</p></div>`;
+    grid.innerHTML = `<div class="empty-state"><i class="fa-solid fa-box-open"></i><p>No products found here yet.</p></div>`;
     return;
   }
 
@@ -1829,23 +1976,21 @@ function renderProductGrid(){
     <div class="card" data-id="${p.id}">
       <div class="card-img">
         <img src="${p.image}" alt="${escapeHtml(p.title)}" loading="lazy">
-        ${p.oldPrice ? '<span class="card-badge">Sale</span>' : ''}
         ${p.orderType === "instock" ? '<span class="card-badge type-instock"><i class="fa-solid fa-check"></i> In Shop</span>' : '<span class="card-badge type-preorder"><i class="fa-solid fa-clock"></i> Pre-Order</span>'}
         ${showLoveUI ? `<button class="love-btn ${isLoved?'loved':''}" data-love="${p.id}"><i class="fa-solid fa-heart"></i></button>` : ''}
       </div>
       <div class="card-body">
         <span class="card-cat">${escapeHtml(p.category)}</span>
         <h3 class="card-title">${escapeHtml(p.title)}</h3>
-        <div class="card-price">
-          <span class="price-now">৳${p.price.toLocaleString()}</span>
-          ${p.oldPrice ? `<span class="price-old">৳${p.oldPrice.toLocaleString()}</span>` : ''}
-        </div>
         ${showLoveUI ? `<div class="card-meta"><span><i class="fa-solid fa-heart" style="color:var(--red);"></i> ${p.loves} loved this</span></div>` : ''}
       </div>
       <div class="card-actions">
         ${p.orderType === "instock"
-          ? `<button class="btn btn-primary" data-order="${p.id}"><i class="fa-solid fa-bolt"></i> Order Now</button>`
-          : `<button class="btn btn-primary" data-preorder="${p.id}"><i class="fa-solid fa-cart-plus"></i> Pre-Order Now</button>`}
+          ? `<span class="btn btn-ghost" style="cursor:default; opacity:.85;"><i class="fa-solid fa-shop"></i> Available In Shop</span>`
+          : `<button class="btn btn-primary" data-request="${p.id}"><i class="fa-solid fa-paper-plane"></i> Request This</button>`}
+        ${p.acceptsCredits && p.creditsCost > 0
+          ? `<button class="btn btn-outline btn-credits" data-buy-credits="${p.id}" style="margin-top:8px;"><i class="fa-solid fa-coins"></i> Buy with ${p.creditsCost.toLocaleString()} Credits</button>`
+          : ''}
       </div>
     </div>`;
   }).join("");
@@ -1853,11 +1998,11 @@ function renderProductGrid(){
   grid.querySelectorAll("[data-love]").forEach(btn=>{
     btn.addEventListener("click", ()=> toggleLove(btn.dataset.love));
   });
-  grid.querySelectorAll("[data-preorder]").forEach(btn=>{
-    btn.addEventListener("click", ()=> requestPreorder(btn.dataset.preorder));
+  grid.querySelectorAll("[data-request]").forEach(btn=>{
+    btn.addEventListener("click", ()=> requestProduct(btn.dataset.request));
   });
-  grid.querySelectorAll("[data-order]").forEach(btn=>{
-    btn.addEventListener("click", ()=> requestOrder(btn.dataset.order));
+  grid.querySelectorAll("[data-buy-credits]").forEach(btn=>{
+    btn.addEventListener("click", ()=> buyWithCredits(btn.dataset.buyCredits));
   });
 }
 
@@ -1893,292 +2038,84 @@ function toggleLove(id){
 }
 
 /* =====================================================================
-   PRE-ORDER MODAL
+   PRODUCT REQUEST MODAL (unified for In-Stock + Pre-Order products)
+   Customers submit ONLY product (auto-attached), quantity and delivery
+   location — no price is entered or shown here. The admin reviews the
+   request and sends back a quotation (price, shipping, delivery time,
+   notes); see the Quotation flow further below.
    ===================================================================== */
-let currentPreorderProduct = null;
-let uploadedPhotoData = null;
-let pendingPreorderId = null;
+let currentRequestProduct = null;
+let pendingRequestId = null;
 
-function requestPreorder(id){
+function requestProduct(id){
+  const product = products.find(p=>p.id===id);
+  if(!product || product.orderType === "instock") return; // in-stock products no longer accept requests
   const user = getCurrentUser();
   if(!user){
-    pendingPreorderId = id;
-    openUserAuth("login", "Please log in to place a pre-order for this product.");
+    pendingRequestId = id;
+    openUserAuth("login", "Please log in to request this product.");
     return;
   }
-  openPreorderModal(id);
+  openRequestModal(id);
 }
 
-function updateAdvanceDisplay(){
-  const price = currentPreorderProduct ? currentPreorderProduct.price : 0;
-  const qty = parseInt(document.getElementById("poQty").value || 1);
-  const total = price * qty;
-  const advance = Math.ceil(total * 0.5);
-  document.getElementById("poTotal").textContent = "৳" + total.toLocaleString();
-  document.getElementById("poAdvance").textContent = "৳" + advance.toLocaleString();
-  document.getElementById("poCodTotal").textContent = "৳" + total.toLocaleString();
+function openRequestModal(id){
+  currentRequestProduct = products.find(p=>p.id===id);
+  if(!currentRequestProduct) return;
+  document.getElementById("reqImg").src = currentRequestProduct.image;
+  document.getElementById("reqTitle").textContent = currentRequestProduct.title;
+  document.getElementById("reqCategory").textContent = currentRequestProduct.category +
+    (currentRequestProduct.orderType === "instock" ? " · In Shop" : " · Pre-Order (7–15 days)");
+  document.getElementById("requestForm").reset();
+  document.getElementById("reqQty").value = 1;
+  document.getElementById("requestOverlay").classList.add("open");
 }
+function closeRequestModal(){ document.getElementById("requestOverlay").classList.remove("open"); }
 
-/* Shows the bKash/Nagad advance box or the Cash-on-Delivery box depending on
-   which radio is selected, and (un)sets the "required" attribute on the
-   Transaction ID field so COD orders aren't blocked from submitting without one. */
-function updatePreorderPaymentUI(){
-  const method = document.querySelector('input[name="poPayMethod"]:checked')?.value || "bkash";
-  const bkashBox = document.getElementById("poBkashBox");
-  const codBox = document.getElementById("poCodBox");
-  const txnInput = document.getElementById("poTxnId");
-  if(method === "cod"){
-    bkashBox.style.display = "none";
-    codBox.style.display = "block";
-    txnInput.removeAttribute("required");
-  } else {
-    bkashBox.style.display = "block";
-    codBox.style.display = "none";
-    txnInput.setAttribute("required", "required");
-  }
-}
-document.querySelectorAll('input[name="poPayMethod"]').forEach(r=>{
-  r.addEventListener("change", updatePreorderPaymentUI);
-});
+document.getElementById("closeRequest").addEventListener("click", closeRequestModal);
+document.getElementById("cancelRequest").addEventListener("click", closeRequestModal);
+document.getElementById("requestOverlay").addEventListener("click", (e)=>{ if(e.target.id==="requestOverlay") closeRequestModal(); });
 
-function openPreorderModal(id){
-  currentPreorderProduct = products.find(p=>p.id===id);
-  if(!currentPreorderProduct) return;
-  document.getElementById("poImg").src = currentPreorderProduct.image;
-  document.getElementById("poTitle").textContent = currentPreorderProduct.title;
-  document.getElementById("poPrice").textContent = "৳" + currentPreorderProduct.price.toLocaleString();
-  document.getElementById("poQty").value = 1;
-  document.getElementById("preorderForm").reset();
-  document.getElementById("poQty").value = 1;
-  uploadedPhotoData = null;
-  document.getElementById("filePreview").style.display = "none";
-  const user = getCurrentUser();
-  if(user){
-    document.getElementById("poName").value = user.name;
-    document.getElementById("poPhone").value = user.phone;
-  }
-
-  // Merchant number + payment method toggles come from admin Settings
-  document.getElementById("poMerchantNumber").textContent = settings.merchantBkash || DEFAULT_SETTINGS.merchantBkash;
-  document.getElementById("poCodNote").textContent = settings.codNote || DEFAULT_SETTINGS.codNote;
-  const bkashOpt = document.getElementById("poPayBkashOption");
-  const codOpt = document.getElementById("poPayCodOption");
-  bkashOpt.hidden = settings.bkashEnabled === false;
-  codOpt.hidden = settings.codEnabled === false;
-  // Default to whichever method is actually enabled
-  if(settings.bkashEnabled !== false){ document.getElementById("poPayBkash").checked = true; }
-  else if(settings.codEnabled !== false){ document.getElementById("poPayCod").checked = true; }
-  updatePreorderPaymentUI();
-
-  updateAdvanceDisplay();
-  document.getElementById("preorderOverlay").classList.add("open");
-}
-function closePreorderModal(){ document.getElementById("preorderOverlay").classList.remove("open"); }
-
-document.getElementById("closePreorder").addEventListener("click", closePreorderModal);
-document.getElementById("cancelPreorder").addEventListener("click", closePreorderModal);
-document.getElementById("preorderOverlay").addEventListener("click", (e)=>{ if(e.target.id==="preorderOverlay") closePreorderModal(); });
-
-document.getElementById("qtyMinus").addEventListener("click", ()=>{
-  const inp = document.getElementById("poQty");
+document.getElementById("reqQtyMinus").addEventListener("click", ()=>{
+  const inp = document.getElementById("reqQty");
   inp.value = Math.max(1, parseInt(inp.value||1) - 1);
-  updateAdvanceDisplay();
 });
-document.getElementById("qtyPlus").addEventListener("click", ()=>{
-  const inp = document.getElementById("poQty");
+document.getElementById("reqQtyPlus").addEventListener("click", ()=>{
+  const inp = document.getElementById("reqQty");
   inp.value = parseInt(inp.value||1) + 1;
-  updateAdvanceDisplay();
 });
 
-document.getElementById("fileDropZone").addEventListener("click", ()=> document.getElementById("poPhoto").click());
-document.getElementById("poPhoto").addEventListener("change", (e)=>{
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = (ev)=>{
-    uploadedPhotoData = ev.target.result;
-    document.getElementById("filePreviewImg").src = uploadedPhotoData;
-    document.getElementById("filePreviewName").textContent = file.name;
-    document.getElementById("filePreview").style.display = "flex";
-  };
-  reader.readAsDataURL(file);
-});
-
-document.getElementById("preorderForm").addEventListener("submit", (e)=>{
+document.getElementById("requestForm").addEventListener("submit", (e)=>{
   e.preventDefault();
   const user = getCurrentUser();
   if(!user){
-    closePreorderModal();
-    openUserAuth("login", "Your session expired — please log in again to submit this pre-order.");
+    closeRequestModal();
+    openUserAuth("login", "Your session expired — please log in again to send this request.");
     return;
   }
-  const qty = parseInt(document.getElementById("poQty").value || 1);
-  const total = currentPreorderProduct.price * qty;
-  const advance = Math.ceil(total * 0.5);
-  const paymentMethod = document.querySelector('input[name="poPayMethod"]:checked')?.value || "bkash";
-
-  // COD orders don't need a transaction ID; bKash/Nagad orders do.
-  if(paymentMethod === "bkash" && !document.getElementById("poTxnId").value.trim()){
-    showToast("Please enter your bKash/Nagad Transaction ID.", "fa-triangle-exclamation");
-    return;
-  }
-
   const order = {
     id: "ord_" + Date.now(),
     userId: user.id,
     type: "catalog",
-    orderCategory: "preorder",
+    orderCategory: currentRequestProduct.orderType === "instock" ? "instock" : "preorder",
     isCustom: false,
-    productTitle: currentPreorderProduct.title,
-    price: currentPreorderProduct.price,
-    qty: qty,
-    total: total,
-    paymentMethod: paymentMethod,                 // "bkash" | "cod"
-    advance: paymentMethod === "bkash" ? advance : 0,
-    txnId: paymentMethod === "bkash" ? document.getElementById("poTxnId").value.trim() : "",
-    photo: uploadedPhotoData,
-    name: document.getElementById("poName").value.trim(),
-    phone: document.getElementById("poPhone").value.trim(),
-    address: document.getElementById("poAddress").value.trim(),
-    status: "pending",
-    date: new Date().toISOString()
-  };
-  preorders.push(order);
-  savePreorders(preorders);
-  closePreorderModal();
-  showToast("Pre-order submitted! We'll verify your order and confirm.", "fa-circle-check");
-  renderProductGrid(); // in case admin dashboard open elsewhere relies on counts
-});
-
-/* =====================================================================
-   ORDER MODAL (in-stock items — quick order, full payment, no advance)
-   ===================================================================== */
-let currentOrderProduct = null;
-let pendingOrderId = null;
-
-function requestOrder(id){
-  const user = getCurrentUser();
-  if(!user){
-    pendingOrderId = id;
-    openUserAuth("login", "Please log in to place an order for this product.");
-    return;
-  }
-  openOrderModal(id);
-}
-
-function updateOrderTotalDisplay(){
-  const price = currentOrderProduct ? currentOrderProduct.price : 0;
-  const qty = parseInt(document.getElementById("orQty").value || 1);
-  const total = price * qty;
-  document.getElementById("orTotal").textContent = "৳" + total.toLocaleString();
-  document.getElementById("orCodTotal").textContent = "৳" + total.toLocaleString();
-}
-
-function updateOrderPaymentUI(){
-  const method = document.querySelector('input[name="orPayMethod"]:checked')?.value || "bkash";
-  const bkashBox = document.getElementById("orBkashBox");
-  const codBox = document.getElementById("orCodBox");
-  const txnInput = document.getElementById("orTxnId");
-  if(method === "cod"){
-    bkashBox.style.display = "none";
-    codBox.style.display = "block";
-    txnInput.removeAttribute("required");
-  } else {
-    bkashBox.style.display = "block";
-    codBox.style.display = "none";
-    txnInput.setAttribute("required", "required");
-  }
-}
-document.querySelectorAll('input[name="orPayMethod"]').forEach(r=>{
-  r.addEventListener("change", updateOrderPaymentUI);
-});
-
-function openOrderModal(id){
-  currentOrderProduct = products.find(p=>p.id===id);
-  if(!currentOrderProduct) return;
-  document.getElementById("orImg").src = currentOrderProduct.image;
-  document.getElementById("orTitle").textContent = currentOrderProduct.title;
-  document.getElementById("orPrice").textContent = "৳" + currentOrderProduct.price.toLocaleString();
-  document.getElementById("orderForm").reset();
-  document.getElementById("orQty").value = 1;
-  const user = getCurrentUser();
-  if(user){
-    document.getElementById("orName").value = user.name;
-    document.getElementById("orPhone").value = user.phone;
-  }
-
-  document.getElementById("orMerchantNumber").textContent = settings.merchantBkash || DEFAULT_SETTINGS.merchantBkash;
-  document.getElementById("orCodNote").textContent = settings.codNote || DEFAULT_SETTINGS.codNote;
-  const bkashOpt = document.getElementById("orPayBkashOption");
-  const codOpt = document.getElementById("orPayCodOption");
-  bkashOpt.hidden = settings.bkashEnabled === false;
-  codOpt.hidden = settings.codEnabled === false;
-  if(settings.bkashEnabled !== false){ document.getElementById("orPayBkash").checked = true; }
-  else if(settings.codEnabled !== false){ document.getElementById("orPayCod").checked = true; }
-  updateOrderPaymentUI();
-
-  updateOrderTotalDisplay();
-  document.getElementById("orderOverlay").classList.add("open");
-}
-function closeOrderModal(){ document.getElementById("orderOverlay").classList.remove("open"); }
-
-document.getElementById("closeOrder").addEventListener("click", closeOrderModal);
-document.getElementById("cancelOrder").addEventListener("click", closeOrderModal);
-document.getElementById("orderOverlay").addEventListener("click", (e)=>{ if(e.target.id==="orderOverlay") closeOrderModal(); });
-
-document.getElementById("orQtyMinus").addEventListener("click", ()=>{
-  const inp = document.getElementById("orQty");
-  inp.value = Math.max(1, parseInt(inp.value||1) - 1);
-  updateOrderTotalDisplay();
-});
-document.getElementById("orQtyPlus").addEventListener("click", ()=>{
-  const inp = document.getElementById("orQty");
-  inp.value = parseInt(inp.value||1) + 1;
-  updateOrderTotalDisplay();
-});
-
-document.getElementById("orderForm").addEventListener("submit", (e)=>{
-  e.preventDefault();
-  const user = getCurrentUser();
-  if(!user){
-    closeOrderModal();
-    openUserAuth("login", "Your session expired — please log in again to submit this order.");
-    return;
-  }
-  const qty = parseInt(document.getElementById("orQty").value || 1);
-  const total = currentOrderProduct.price * qty;
-  const paymentMethod = document.querySelector('input[name="orPayMethod"]:checked')?.value || "bkash";
-
-  if(paymentMethod === "bkash" && !document.getElementById("orTxnId").value.trim()){
-    showToast("Please enter your bKash/Nagad Transaction ID.", "fa-triangle-exclamation");
-    return;
-  }
-
-  const order = {
-    id: "ord_" + Date.now(),
-    userId: user.id,
-    type: "catalog",
-    orderCategory: "instock",
-    isCustom: false,
-    productId: currentOrderProduct.id,
-    productTitle: currentOrderProduct.title,
-    price: currentOrderProduct.price,
-    qty: qty,
-    total: total,
-    paymentMethod: paymentMethod,
-    advance: 0,
-    txnId: paymentMethod === "bkash" ? document.getElementById("orTxnId").value.trim() : "",
+    productId: currentRequestProduct.id,
+    productTitle: currentRequestProduct.title,
+    productImage: currentRequestProduct.image,   // attached automatically, never entered by the customer
+    qty: parseInt(document.getElementById("reqQty").value || 1),
+    address: document.getElementById("reqAddress").value.trim(),
+    name: user.name,
+    phone: user.phone,
     photo: null,
-    name: document.getElementById("orName").value.trim(),
-    phone: document.getElementById("orPhone").value.trim(),
-    address: document.getElementById("orAddress").value.trim(),
-    status: "pending",
+    status: "pending",   // pending -> quoted -> advance-paid -> completed | declined | rejected | (auto) expired
+    quote: null,         // { price, shipping, deliveryTime, notes, quotedAt }
+    advanceTxnId: null,
     date: new Date().toISOString()
   };
   preorders.push(order);
   savePreorders(preorders);
-  closeOrderModal();
-  showToast("Order submitted! We'll confirm and ship it soon.", "fa-circle-check");
+  closeRequestModal();
+  showToast("Request sent! We'll review it and send you a quotation soon.", "fa-circle-check");
   renderProductGrid();
 });
 
@@ -2231,15 +2168,15 @@ document.getElementById("customRequestForm").addEventListener("submit",(e)=>{
     isCustom: true,
     productId: null,
     productTitle: document.getElementById("crItem").value.trim(),
-    price: null,
+    productImage: null,
     qty: parseInt(document.getElementById("crQty").value || 1),
-    budget: document.getElementById("crBudget").value ? parseFloat(document.getElementById("crBudget").value) : null,
-    total: null, advance: null, txnId: null,
     photo: crUploadedPhoto,
     name: document.getElementById("crName").value.trim(),
     phone: document.getElementById("crPhone").value.trim(),
     address: document.getElementById("crAddress").value.trim(),
-    status: "pending",
+    status: "pending",   // pending -> quoted -> advance-paid -> completed | declined | rejected | (auto) expired
+    quote: null,         // { price, shipping, deliveryTime, notes, quotedAt }
+    advanceTxnId: null,
     date: new Date().toISOString()
   };
   preorders.push(order);
@@ -2251,25 +2188,207 @@ document.getElementById("customRequestForm").addEventListener("submit",(e)=>{
 /* =====================================================================
    MY ORDERS (customer order status view)
    ===================================================================== */
+function daysLeft(quotedAt){
+  const deadline = new Date(quotedAt).getTime() + 7*24*60*60*1000;
+  return Math.max(0, Math.ceil((deadline - Date.now()) / (24*60*60*1000)));
+}
+
+/* Auto-expire: if a customer doesn't respond to a quotation within 7 days,
+   the request is deleted entirely (per the store's quotation policy).
+   Also auto-deletes CONFIRMED orders (advance-paid / COD-confirmed) that sit
+   without an admin update (still not marked delivered) for more than 7 days. */
+const CONFIRMED_AUTO_DELETE_MS = 7*24*60*60*1000;
+// 14 days, 23 hours, 59 minutes, 59 seconds — delivery countdown started once an order is confirmed (payment accepted)
+const DELIVERY_COUNTDOWN_MS = (14*24*60*60 + 23*60*60 + 59*60 + 59) * 1000;
+function checkExpiredQuotes(){
+  const now = Date.now();
+  const before = preorders.length;
+  preorders = preorders.filter(o=>{
+    if(o.status === "quoted" && o.quote && o.quote.quotedAt){
+      const age = now - new Date(o.quote.quotedAt).getTime();
+      if(age > 7*24*60*60*1000) return false; // expired -> deleted
+    }
+    if(o.status === "advance-paid" && o.advancePaidAt){
+      const age = now - new Date(o.advancePaidAt).getTime();
+      if(age > CONFIRMED_AUTO_DELETE_MS) return false; // no admin update within 7 days -> deleted
+    }
+    return true;
+  });
+  if(preorders.length !== before) savePreorders(preorders);
+}
+
+function renderMyOrderCard(o){
+  const total = o.quote ? (o.quote.price * o.qty + (o.quote.shipping||0)) : null;
+  const advance = total !== null ? Math.ceil(total*0.5) : null;
+  let quoteHtml = "";
+  if(o.status === "pending"){
+    quoteHtml = `<div class="quote-box"><div class="quote-note"><i class="fa-solid fa-clock"></i> Waiting for the admin to review and send a quotation.</div></div>`;
+  } else if(o.status === "quoted" && o.quote){
+    const dLeft = daysLeft(o.quote.quotedAt);
+    const codOk = settings.codEnabled !== false;
+    const bkashOk = settings.bkashEnabled !== false;
+    const payChoiceHtml = (codOk || bkashOk) ? `
+        <div class="payment-method-choice" id="payChoice_${o.id}">
+          ${bkashOk ? `<label class="pay-option"><input type="radio" name="payMethod_${o.id}" value="advance" checked><span><b>bKash / Nagad</b><br><small>Pay ৳${advance.toLocaleString()} (50%) advance now, rest on delivery</small></span></label>` : ''}
+          ${codOk ? `<label class="pay-option"><input type="radio" name="payMethod_${o.id}" value="cod"${!bkashOk ? ' checked' : ''}><span><b>Cash on Delivery</b><br><small>${escapeHtml(settings.codNote || DEFAULT_SETTINGS.codNote)}</small></span></label>` : ''}
+        </div>` : `<div class="quote-note"><i class="fa-solid fa-triangle-exclamation"></i> No payment methods are currently available — please contact us on WhatsApp to complete this order.</div>`;
+    quoteHtml = `
+      <div class="quote-box">
+        <div class="quote-row"><span>Product Price</span><b>৳${o.quote.price.toLocaleString()} × ${o.qty}</b></div>
+        ${o.quote.shipping ? `<div class="quote-row"><span>Shipping Cost</span><b>৳${o.quote.shipping.toLocaleString()}</b></div>` : ''}
+        <div class="quote-row"><span>Estimated Delivery</span><b>${escapeHtml(o.quote.deliveryTime)}</b></div>
+        <div class="quote-row"><span>Total</span><b>৳${total.toLocaleString()}</b></div>
+        ${o.quote.creditsEarned > 0 ? `<div class="quote-row" style="color:var(--gold-light);"><span>Credits You'll Earn</span><b>+${o.quote.creditsEarned.toLocaleString()} pts</b></div>` : ''}
+        ${o.quote.notes ? `<div class="quote-note"><i class="fa-solid fa-note-sticky"></i> ${escapeHtml(o.quote.notes)}</div>` : ''}
+        <div class="quote-expiry"><i class="fa-solid fa-hourglass-half"></i> ${dLeft > 0 ? `Respond within ${dLeft} day${dLeft===1?'':'s'} or this request auto-expires` : 'Expiring very soon'}</div>
+        ${payChoiceHtml}
+        <div class="quote-actions">
+          ${(codOk || bkashOk) ? `<button class="btn btn-primary btn-sm" data-accept-quote="${o.id}"><i class="fa-solid fa-check"></i> Accept Quotation</button>` : ''}
+          <button class="btn btn-ghost btn-sm" data-decline-quote="${o.id}"><i class="fa-solid fa-xmark"></i> Decline</button>
+        </div>
+        <div class="advance-pay-form" id="advPayForm_${o.id}" style="display:none;">
+          <div class="advance-pay-form-title"><i class="fa-solid fa-money-bill-transfer"></i> Advance Payment Transaction</div>
+          <div class="form-group" style="margin-bottom:10px;">
+            <label>bKash / Nagad Transaction ID for the ৳${advance.toLocaleString()} advance</label>
+            <input type="text" class="form-control" id="advTxn_${o.id}" placeholder="e.g. 8N7A2K9XYZ">
+          </div>
+          <p class="advance-pay-form-note">Send <b>৳${advance.toLocaleString()}</b> to <b>${settings.merchantBkash || DEFAULT_SETTINGS.merchantBkash}</b>, then confirm below.</p>
+          <button class="btn btn-primary btn-sm" data-confirm-advance="${o.id}"><i class="fa-solid fa-paper-plane"></i> Confirm Advance Payment</button>
+        </div>
+      </div>`;
+  } else if(o.status === "awaiting-confirmation" && o.quote){
+    quoteHtml = `<div class="quote-box">
+      <div class="quote-row"><span>Total</span><b>৳${total.toLocaleString()}</b></div>
+      <div class="quote-row"><span>50% Advance Submitted</span><b>৳${advance.toLocaleString()}</b></div>
+      <div class="advance-pay-form" style="margin-top:10px;">
+        <div class="advance-pay-form-title"><i class="fa-solid fa-hourglass-half"></i> Waiting for Admin Confirmation</div>
+        <p class="advance-pay-form-note">We received your transaction ID <b>${escapeHtml(o.advanceTxnId || "")}</b> and are verifying it against our records. Your order will move to "Advance Paid" once confirmed — usually within a few hours.</p>
+      </div>
+    </div>`;
+  } else if(o.status === "advance-paid" && o.quote){
+    const paidAtMs = o.advancePaidAt ? new Date(o.advancePaidAt).getTime() : Date.now();
+    const deliveryDeadlineIso = new Date(paidAtMs + DELIVERY_COUNTDOWN_MS).toISOString();
+    const autoDeleteDeadlineIso = new Date(paidAtMs + CONFIRMED_AUTO_DELETE_MS).toISOString();
+    const orderTimersHtml = `
+      <div class="order-timer-box">
+        <div class="order-timer-row">
+          <span><i class="fa-solid fa-truck-fast"></i> Estimated Delivery In</span>
+          <b class="order-countdown" data-deadline="${deliveryDeadlineIso}">--</b>
+        </div>
+        <div class="order-timer-row auto-delete">
+          <span><i class="fa-solid fa-hourglass-half"></i> Auto-removed If No Update In</span>
+          <b class="order-countdown" data-deadline="${autoDeleteDeadlineIso}">--</b>
+        </div>
+      </div>`;
+    quoteHtml = o.paymentMethod === "cod" ? `<div class="quote-box">
+      <div class="quote-row"><span>Total (Cash on Delivery)</span><b>৳${total.toLocaleString()}</b></div>
+      <div class="quote-note"><i class="fa-solid fa-truck"></i> Order confirmed. We're preparing it — pay the full amount in cash when it's delivered.</div>
+      ${orderTimersHtml}
+    </div>` : `<div class="quote-box">
+      <div class="quote-row"><span>Total</span><b>৳${total.toLocaleString()}</b></div>
+      <div class="quote-row"><span>50% Advance Paid</span><b>৳${advance.toLocaleString()}</b></div>
+      <div class="quote-row"><span>Remaining (on delivery)</span><b>৳${(total-advance).toLocaleString()}</b></div>
+      <div class="quote-note"><i class="fa-solid fa-truck"></i> We're preparing your order. Pay the remaining 50% on delivery.</div>
+      ${orderTimersHtml}
+    </div>`;
+  } else if(o.status === "completed" && o.quote){
+    quoteHtml = `<div class="quote-box"><div class="quote-note"><i class="fa-solid fa-circle-check"></i> Delivered — thanks for ordering with Zylo BD!</div></div>`;
+  } else if(o.status === "declined"){
+    quoteHtml = `<div class="quote-box"><div class="quote-note">You declined this quotation.</div></div>`;
+  } else if(o.status === "rejected"){
+    quoteHtml = `<div class="quote-box"><div class="quote-note">This request was declined by the shop. Contact us if you have questions.</div></div>`;
+  }
+  return `
+    <div class="my-order-card">
+      <div class="my-order-head">
+        <div>
+          <b>${escapeHtml(o.productTitle)}</b>
+          <span class="my-order-meta">Qty ${o.qty} · ${new Date(o.date).toLocaleDateString()}</span>
+        </div>
+        <span class="status-pill status-${o.status}">${o.status.replace(/-/g,' ')}</span>
+      </div>
+      ${quoteHtml}
+    </div>`;
+}
+
 function openMyOrders(){
   const user = getCurrentUser();
   if(!user){ openUserAuth("login", "Log in to see your orders."); return; }
+  checkExpiredQuotes();
   const myList = preorders.filter(o=>o.userId===user.id).sort((a,b)=> new Date(b.date)-new Date(a.date));
   const list = document.getElementById("myOrdersList");
   if(myList.length===0){
     list.innerHTML = `<div class="no-data"><i class="fa-solid fa-receipt"></i>No orders yet.</div>`;
   } else {
-    list.innerHTML = myList.map(o=>`
-      <div class="my-order-card">
-        <div>
-          <b>${escapeHtml(o.productTitle)}</b>
-          <span class="my-order-meta">Qty ${o.qty} · ${new Date(o.date).toLocaleDateString()}${o.total ? " · ৳"+o.total.toLocaleString() : ""}</span>
-        </div>
-        <span class="status-pill status-${o.status}">${o.status}</span>
-      </div>
-    `).join("");
+    list.innerHTML = myList.map(renderMyOrderCard).join("");
   }
   document.getElementById("myOrdersOverlay").classList.add("open");
+
+  list.querySelectorAll("[data-accept-quote]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.dataset.acceptQuote;
+      const o = preorders.find(x=>x.id===id);
+      if(!o) return;
+      const chosen = document.querySelector(`input[name="payMethod_${id}"]:checked`);
+      const method = chosen ? chosen.value : null;
+      if(method === "cod"){
+        // Defensive re-check: never allow a COD order if the admin has since disabled it
+        if(!settings.codEnabled){
+          showToast("Cash on Delivery is no longer available — please choose bKash/Nagad instead.", "fa-triangle-exclamation");
+          openMyOrders();
+          return;
+        }
+        if(!confirm("Confirm your order? You'll pay the full amount in cash when it's delivered — no advance needed.")) return;
+        o.paymentMethod = "cod";
+        o.status = "advance-paid"; // reused status: order confirmed & being prepared, full payment due on delivery
+        o.advancePaidAt = new Date().toISOString();
+        savePreorders(preorders);
+        showToast("Order confirmed! Pay the full amount in cash on delivery.", "fa-circle-check");
+        openMyOrders();
+        return;
+      }
+      if(!settings.bkashEnabled){
+        showToast("bKash/Nagad payment is currently unavailable — please choose Cash on Delivery instead.", "fa-triangle-exclamation");
+        openMyOrders();
+        return;
+      }
+      o.paymentMethod = "advance";
+      savePreorders(preorders);
+      const formEl = document.getElementById("advPayForm_"+id);
+      if(formEl) formEl.style.display = "block";
+      const choiceEl = document.getElementById("payChoice_"+id);
+      if(choiceEl) choiceEl.style.display = "none";
+      const actionsEl = btn.closest(".quote-actions");
+      if(actionsEl) actionsEl.style.display = "none";
+    });
+  });
+  list.querySelectorAll("[data-decline-quote]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      if(!confirm("Decline this quotation? This request will be closed.")) return;
+      const o = preorders.find(x=>x.id===btn.dataset.declineQuote);
+      if(!o) return;
+      o.status = "declined";
+      savePreorders(preorders);
+      showToast("Quotation declined.", "fa-ban");
+      openMyOrders();
+    });
+  });
+  list.querySelectorAll("[data-confirm-advance]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.dataset.confirmAdvance;
+      const txnInput = document.getElementById("advTxn_"+id);
+      const txn = txnInput ? txnInput.value.trim() : "";
+      if(!txn){ showToast("Please enter your bKash/Nagad Transaction ID.", "fa-triangle-exclamation"); return; }
+      const o = preorders.find(x=>x.id===id);
+      if(!o) return;
+      o.status = "awaiting-confirmation"; // admin must verify the txn ID matches before this becomes advance-paid
+      o.advanceTxnId = txn;
+      o.advanceSubmittedAt = new Date().toISOString();
+      savePreorders(preorders);
+      showToast("Transaction submitted! We'll verify it and confirm your order shortly.", "fa-circle-check");
+      openMyOrders();
+    });
+  });
 }
 document.getElementById("myOrdersBtn").addEventListener("click", openMyOrders);
 document.getElementById("footerOrderTracking").addEventListener("click",(e)=>{ e.preventDefault(); openMyOrders(); });
@@ -2282,7 +2401,13 @@ document.getElementById("myOrdersOverlay").addEventListener("click",(e)=>{ if(e.
 const LS_USERS = "zylo_users";
 const LS_ACTIVE_USER = "zylo_active_user_id";
 
-function loadUsers(){ return JSON.parse(localStorage.getItem(LS_USERS) || "[]"); }
+function loadUsers(){
+  const users = JSON.parse(localStorage.getItem(LS_USERS) || "[]");
+  let migrated = false;
+  users.forEach(u=>{ if(u.credits === undefined){ u.credits = 0; migrated = true; } });
+  if(migrated) localStorage.setItem(LS_USERS, JSON.stringify(users));
+  return users;
+}
 function saveUsers(u){ localStorage.setItem(LS_USERS, JSON.stringify(u)); }
 function getCurrentUser(){
   const id = localStorage.getItem(LS_ACTIVE_USER);
@@ -2311,7 +2436,7 @@ function openUserAuth(mode="login", hint=null){
   document.getElementById("loginError").style.display = "none";
   document.getElementById("signupError").style.display = "none";
 }
-function closeUserAuth(){ document.getElementById("userAuthOverlay").classList.remove("open"); pendingPreorderId = null; pendingOrderId = null; }
+function closeUserAuth(){ document.getElementById("userAuthOverlay").classList.remove("open"); pendingRequestId = null; }
 function showAuthForm(mode){
   const isLogin = mode === "login";
   document.getElementById("loginForm").style.display = isLogin ? "block" : "none";
@@ -2338,42 +2463,77 @@ document.getElementById("userAuthOverlay").addEventListener("click",(e)=>{ if(e.
 document.getElementById("switchToSignup").addEventListener("click", ()=> showAuthForm("signup"));
 document.getElementById("switchToLogin").addEventListener("click", ()=> showAuthForm("login"));
 
-document.getElementById("loginForm").addEventListener("submit",(e)=>{
+document.getElementById("loginForm").addEventListener("submit", async (e)=>{
   e.preventDefault();
   const phone = document.getElementById("loginPhone").value.trim();
   const pass = document.getElementById("loginPassword").value;
-  const user = loadUsers().find(u=>u.phone===phone && u.password===pass);
-  if(!user){
-    document.getElementById("loginError").style.display = "block";
+  const errEl = document.getElementById("loginError");
+  const lockKey = "zylo_login_lock_" + phone;
+  if(isLocked(lockKey)){
+    errEl.textContent = "Too many failed attempts for this account. Try again in " + lockRemainingSec(lockKey) + "s.";
+    errEl.style.display = "block";
     return;
   }
+  const users = loadUsers();
+  const user = users.find(u=>u.phone===phone);
+  let ok = false;
+  if(user){
+    if(user.passwordHash){
+      ok = (await hashPassword(pass, user.phone)) === user.passwordHash;
+    } else if(user.password !== undefined){
+      // Legacy account created before password hashing was added — verify against
+      // the old plaintext field once, then migrate it to a hash and drop the plaintext.
+      ok = user.password === pass;
+      if(ok){
+        user.passwordHash = await hashPassword(pass, user.phone);
+        delete user.password;
+        saveUsers(users);
+      }
+    }
+  }
+  if(!ok){
+    recordFailedAttempt(lockKey);
+    errEl.textContent = isLocked(lockKey)
+      ? "Too many failed attempts for this account. Try again in " + lockRemainingSec(lockKey) + "s."
+      : "Incorrect phone or password.";
+    errEl.style.display = "block";
+    return;
+  }
+  clearAttempts(lockKey);
   localStorage.setItem(LS_ACTIVE_USER, user.id);
   refreshUserAuthUI();
   closeUserAuth();
   showToast("Welcome back, " + user.name.split(" ")[0] + "!", "fa-circle-check");
-  if(pendingPreorderId){ openPreorderModal(pendingPreorderId); pendingPreorderId = null; }
-  if(pendingOrderId){ openOrderModal(pendingOrderId); pendingOrderId = null; }
+  if(pendingRequestId){ openRequestModal(pendingRequestId); pendingRequestId = null; }
 });
 
-document.getElementById("signupForm").addEventListener("submit",(e)=>{
+document.getElementById("signupForm").addEventListener("submit", async (e)=>{
   e.preventDefault();
   const name = document.getElementById("signupName").value.trim();
   const phone = document.getElementById("signupPhone").value.trim();
   const password = document.getElementById("signupPassword").value;
+  const errEl = document.getElementById("signupError");
   const users = loadUsers();
   if(users.some(u=>u.phone===phone)){
-    document.getElementById("signupError").style.display = "block";
+    errEl.textContent = "An account with this phone number already exists.";
+    errEl.style.display = "block";
     return;
   }
-  const newUser = { id:"u_"+Date.now(), name, phone, password, createdAt:new Date().toISOString() };
+  if(password.length < 6){
+    errEl.textContent = "Password must be at least 6 characters.";
+    errEl.style.display = "block";
+    return;
+  }
+  errEl.style.display = "none";
+  const passwordHash = await hashPassword(password, phone);
+  const newUser = { id:"u_"+Date.now(), name, phone, passwordHash, credits:0, createdAt:new Date().toISOString() };
   users.push(newUser);
   saveUsers(users);
   localStorage.setItem(LS_ACTIVE_USER, newUser.id);
   refreshUserAuthUI();
   closeUserAuth();
   showToast("Account created — welcome, " + name.split(" ")[0] + "!", "fa-circle-check");
-  if(pendingPreorderId){ openPreorderModal(pendingPreorderId); pendingPreorderId = null; }
-  if(pendingOrderId){ openOrderModal(pendingOrderId); pendingOrderId = null; }
+  if(pendingRequestId){ openRequestModal(pendingRequestId); pendingRequestId = null; }
 });
 
 /* ---------- Forgot Password ---------- */
@@ -2389,7 +2549,7 @@ document.getElementById("closeForgotPassword").addEventListener("click", ()=> do
 document.getElementById("cancelForgotPassword").addEventListener("click", ()=> document.getElementById("forgotPasswordOverlay").classList.remove("open"));
 document.getElementById("forgotPasswordOverlay").addEventListener("click",(e)=>{ if(e.target.id==="forgotPasswordOverlay") document.getElementById("forgotPasswordOverlay").classList.remove("open"); });
 
-document.getElementById("forgotPasswordForm").addEventListener("submit",(e)=>{
+document.getElementById("forgotPasswordForm").addEventListener("submit", async (e)=>{
   e.preventDefault();
   const phone = document.getElementById("fpPhone").value.trim();
   const newPassword = document.getElementById("fpNewPassword").value;
@@ -2403,8 +2563,8 @@ document.getElementById("forgotPasswordForm").addEventListener("submit",(e)=>{
     errEl.style.display = "block";
     return;
   }
-  if(newPassword.length < 4){
-    errEl.textContent = "New password must be at least 4 characters.";
+  if(newPassword.length < 6){
+    errEl.textContent = "New password must be at least 6 characters.";
     errEl.style.display = "block";
     return;
   }
@@ -2414,7 +2574,8 @@ document.getElementById("forgotPasswordForm").addEventListener("submit",(e)=>{
     return;
   }
   errEl.style.display = "none";
-  user.password = newPassword;
+  user.passwordHash = await hashPassword(newPassword, user.phone);
+  delete user.password; // clear any legacy plaintext field
   saveUsers(users);
   document.getElementById("forgotPasswordOverlay").classList.remove("open");
   document.getElementById("loginPhone").value = phone;
@@ -2472,17 +2633,31 @@ document.getElementById("adminAccessBtn").addEventListener("click", ()=>{
 document.getElementById("closeAdminLogin").addEventListener("click", ()=> document.getElementById("adminLoginOverlay").classList.remove("open"));
 document.getElementById("adminLoginOverlay").addEventListener("click",(e)=>{ if(e.target.id==="adminLoginOverlay") document.getElementById("adminLoginOverlay").classList.remove("open"); });
 
-document.getElementById("adminLoginForm").addEventListener("submit",(e)=>{
+document.getElementById("adminLoginForm").addEventListener("submit", async (e)=>{
   e.preventDefault();
+  const errEl = document.getElementById("adminError");
+  const lockKey = "zylo_admin_login_lock";
+  if(isLocked(lockKey)){
+    errEl.textContent = "Too many failed attempts. Try again in " + lockRemainingSec(lockKey) + "s.";
+    errEl.style.display = "block";
+    return;
+  }
   const pass = document.getElementById("adminPassword").value;
-  if(pass === ADMIN_PASSWORD){
+  const enteredHash = await hashPassword(pass, "admin");
+  const storedHash = await getAdminPasswordHash();
+  if(enteredHash === storedHash){
+    clearAttempts(lockKey);
     sessionStorage.setItem("zylo_admin_auth","1");
     document.getElementById("adminLoginOverlay").classList.remove("open");
     document.getElementById("adminError").style.display = "none";
     document.getElementById("adminPassword").value = "";
     enterAdminPanel();
   } else {
-    document.getElementById("adminError").style.display = "block";
+    recordFailedAttempt(lockKey);
+    errEl.textContent = isLocked(lockKey)
+      ? "Too many failed attempts. Try again in " + lockRemainingSec(lockKey) + "s."
+      : "Incorrect password. Try again.";
+    errEl.style.display = "block";
   }
 });
 
@@ -2497,6 +2672,21 @@ document.getElementById("viewSiteBtn").addEventListener("click",(e)=>{
   document.getElementById("adminPanel").style.display = "none";
   document.getElementById("publicSite").style.display = "block";
 });
+
+/* Auto-logout the admin session after a period of inactivity */
+let adminIdleTimer = null;
+const ADMIN_IDLE_LIMIT_MS = 20 * 60 * 1000; // 20 minutes
+function resetAdminIdleTimer(){
+  if(sessionStorage.getItem("zylo_admin_auth") !== "1") return;
+  clearTimeout(adminIdleTimer);
+  adminIdleTimer = setTimeout(()=>{
+    sessionStorage.removeItem("zylo_admin_auth");
+    document.getElementById("adminPanel").style.display = "none";
+    document.getElementById("publicSite").style.display = "block";
+    showToast("Admin session timed out after inactivity — please log in again.", "fa-lock");
+  }, ADMIN_IDLE_LIMIT_MS);
+}
+["click","keydown","mousemove","scroll"].forEach(evt=> document.addEventListener(evt, resetAdminIdleTimer, {passive:true}));
 
 function enterAdminPanel(){
   document.getElementById("publicSite").style.display = "none";
@@ -2531,12 +2721,18 @@ function refreshAdminData(){
   preorders = loadPreorders();
   settings = loadSettings();
   models = loadModels();
+  checkExpiredQuotes();
 
   document.getElementById("statTotalProducts").textContent = products.length;
   document.getElementById("statTotalPreorders").textContent = getPreorderCategoryOrders().length;
   document.getElementById("statTotalOrders").textContent = getInstockCategoryOrders().length;
   document.getElementById("statTotalLoves").textContent = products.reduce((s,p)=>s+p.loves,0);
   document.getElementById("statPublished").textContent = products.filter(p=>p.published).length;
+  document.getElementById("statAwaitingQuote").textContent = preorders.filter(o=>o.status==="pending").length;
+  document.getElementById("statAwaitingResponse").textContent = preorders.filter(o=>o.status==="quoted").length;
+  document.getElementById("statAwaitingVerification").textContent = preorders.filter(o=>o.status==="awaiting-confirmation").length;
+  document.getElementById("statAdvancePaid").textContent = preorders.filter(o=>o.status==="advance-paid").length;
+  document.getElementById("statCompleted").textContent = preorders.filter(o=>o.status==="completed").length;
 
   renderLeaderboard();
   renderPreorderTable();
@@ -2568,8 +2764,8 @@ function refreshSettingsFormFields(){
 function renderLeaderboard(){
   const withScore = products.map(p=>{
     const orderCount = preorders.filter(o=>o.productId===p.id).reduce((s,o)=>s+o.qty,0);
-    return { ...p, orderCount, score: p.loves + orderCount };
-  }).sort((a,b)=> b.score - a.score);
+    return { ...p, orderCount, score: p.loves };
+  }).sort((a,b)=> b.loves - a.loves); // ranked by Loves, ascending rank order (#1 = most liked)
 
   const maxScore = Math.max(1, ...withScore.map(p=>p.score));
   const el = document.getElementById("leaderboardList");
@@ -2619,35 +2815,50 @@ function renderOrdersInto(list, tbodyId, emptyId, showPhoto){
   tbody.innerHTML = list.map(o=>{
     const d = new Date(o.date);
     const status = o.status || "pending";
+
+    let quoteCell;
+    if(o.quote){
+      const total = o.quote.price * o.qty + (o.quote.shipping||0);
+      const payTag = o.paymentMethod === "cod" ? "COD (full on delivery)" : (o.paymentMethod === "advance" ? "50% adv. ৳"+Math.ceil(total*0.5).toLocaleString() : "50% adv. ৳"+Math.ceil(total*0.5).toLocaleString()+" (not chosen yet)");
+      quoteCell = `<span style="font-size:.78rem;">৳${o.quote.price.toLocaleString()}/unit${o.quote.shipping ? " + ৳"+o.quote.shipping.toLocaleString()+" ship" : ""}<br>
+        <b>Total ৳${total.toLocaleString()}</b> · ${payTag}<br>
+        <small style="color:var(--muted-dim);">${escapeHtml(o.quote.deliveryTime)}</small>
+        ${o.quote.creditsEarned > 0 ? `<br><small style="color:var(--gold-light);"><i class="fa-solid fa-coins"></i> +${o.quote.creditsEarned.toLocaleString()} pts on completion</small>` : ''}
+        ${status==="quoted" ? `<br><small style="color:var(--gold-light);">${daysLeft(o.quote.quotedAt)}d left to respond</small>` : ''}</span>`;
+    } else {
+      quoteCell = '<span style="color:var(--muted-dim); font-size:.78rem;">Not sent yet</span>';
+    }
+
+    let actions = `<button class="icon-btn" data-del-order="${o.id}" title="Delete"><i class="fa-solid fa-trash"></i></button>`;
+    if(status === "pending"){
+      actions = `<button class="icon-btn" data-send-quote="${o.id}" title="Send Quotation"><i class="fa-solid fa-file-invoice-dollar"></i></button>
+        <button class="icon-btn" data-reject-order="${o.id}" title="Reject"><i class="fa-solid fa-ban"></i></button>` + actions;
+    } else if(status === "quoted"){
+      actions = `<button class="icon-btn" data-send-quote="${o.id}" title="Edit Quotation"><i class="fa-solid fa-pen"></i></button>` + actions;
+    } else if(status === "awaiting-confirmation"){
+      actions = `<button class="icon-btn" data-verify-payment="${o.id}" title="Verify transaction matches & confirm" style="color:var(--success);"><i class="fa-solid fa-check-double"></i></button>
+        <button class="icon-btn" data-reject-payment="${o.id}" title="Transaction doesn't match — send back for resubmission"><i class="fa-solid fa-triangle-exclamation"></i></button>` + actions;
+    } else if(status === "advance-paid"){
+      actions = `<button class="icon-btn" data-mark-delivered="${o.id}" title="Mark Delivered / Completed"><i class="fa-solid fa-truck-fast"></i></button>` + actions;
+    }
+
     return `<tr>
       <td>${d.toLocaleDateString()} <br><small style="color:var(--muted-dim);">${d.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</small></td>
       <td>${escapeHtml(o.name)}</td>
       <td>${escapeHtml(o.phone)}</td>
       <td>${escapeHtml(o.productTitle)}${o.isCustom ? ' <span style="color:var(--gold-light); font-size:.7rem;">(Custom)</span>' : ''}</td>
       <td>${o.qty}</td>
-      <td style="max-width:180px; white-space:normal;">${o.address ? escapeHtml(o.address) : '<span style="color:var(--muted-dim); font-size:.78rem;">No address given</span>'}</td>
+      <td style="max-width:180px; white-space:normal;">${o.address ? escapeHtml(o.address) : '<span style="color:var(--muted-dim); font-size:.78rem;">No location given</span>'}</td>
       ${showPhoto ? `<td>${o.photo ? `<img src="${o.photo}" class="thumb-sm" data-zoom="${o.photo}">` : '<span style="color:var(--muted-dim); font-size:.78rem;">No photo</span>'}</td>` : ''}
-      <td>${o.paymentMethod === "cod"
-            ? '<span class="status-pill" style="background:rgba(154,163,184,.15); color:var(--muted);"><i class="fa-solid fa-money-bill-wave"></i> COD</span>'
-            : `<span class="status-pill" style="background:rgba(212,175,55,.15); color:var(--gold-light);"><i class="fa-solid fa-mobile-screen-button"></i> bKash/Nagad</span>${o.txnId ? `<br><small style="color:var(--muted-dim);">TxnID: ${escapeHtml(o.txnId)}</small>` : ''}`}</td>
-      <td><span class="status-pill status-${status}">${status}</span></td>
-      <td class="row-actions">
-        <button class="icon-btn" data-accept-order="${o.id}" title="Accept"><i class="fa-solid fa-check"></i></button>
-        <button class="icon-btn" data-reject-order="${o.id}" title="Reject"><i class="fa-solid fa-ban"></i></button>
-        <button class="icon-btn" data-del-order="${o.id}" title="Delete"><i class="fa-solid fa-trash"></i></button>
-      </td>
+      <td>${quoteCell}</td>
+      <td><span class="status-pill status-${status}">${status.replace(/-/g,' ')}</span>${o.advanceTxnId ? `<br><small style="color:var(--muted-dim);">Adv. TxnID: ${escapeHtml(o.advanceTxnId)}</small>` : ''}</td>
+      <td class="row-actions">${actions}</td>
     </tr>`;
   }).join("");
 
   tbody.querySelectorAll("[data-zoom]").forEach(img=> img.addEventListener("click", ()=> openImageZoom(img.dataset.zoom)));
-  tbody.querySelectorAll("[data-accept-order]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const o = preorders.find(x=>x.id===btn.dataset.acceptOrder);
-      o.status = "accepted";
-      savePreorders(preorders);
-      refreshAdminData();
-      showToast("Order accepted.", "fa-check");
-    });
+  tbody.querySelectorAll("[data-send-quote]").forEach(btn=>{
+    btn.addEventListener("click", ()=> openQuoteModal(btn.dataset.sendQuote));
   });
   tbody.querySelectorAll("[data-reject-order]").forEach(btn=>{
     btn.addEventListener("click", ()=>{
@@ -2655,7 +2866,56 @@ function renderOrdersInto(list, tbodyId, emptyId, showPhoto){
       o.status = "rejected";
       savePreorders(preorders);
       refreshAdminData();
-      showToast("Order rejected.", "fa-ban");
+      showToast("Request rejected.", "fa-ban");
+    });
+  });
+  tbody.querySelectorAll("[data-verify-payment]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const o = preorders.find(x=>x.id===btn.dataset.verifyPayment);
+      if(!o) return;
+      if(!confirm("Confirm that Transaction ID \""+(o.advanceTxnId||"")+"\" matches the advance payment received?")) return;
+      o.status = "advance-paid";
+      o.advancePaidAt = new Date().toISOString();
+      savePreorders(preorders);
+      refreshAdminData();
+      showToast("Payment verified — order confirmed as Advance Paid.", "fa-check-double");
+    });
+  });
+  tbody.querySelectorAll("[data-reject-payment]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const o = preorders.find(x=>x.id===btn.dataset.rejectPayment);
+      if(!o) return;
+      if(!confirm("This transaction doesn't match — send it back to the customer to resubmit?")) return;
+      o.status = "quoted"; // back to quoted so the customer can resubmit a corrected transaction ID
+      o.advanceTxnId = null;
+      savePreorders(preorders);
+      refreshAdminData();
+      showToast("Sent back to customer for a corrected transaction ID.", "fa-triangle-exclamation");
+    });
+  });
+  tbody.querySelectorAll("[data-mark-delivered]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const o = preorders.find(x=>x.id===btn.dataset.markDelivered);
+      const confirmMsg = o && o.paymentMethod === "cod"
+        ? "Mark this order as delivered? This confirms the full amount was collected in cash on delivery."
+        : "Mark this order as delivered? This confirms the remaining 50% was collected on delivery.";
+      if(!confirm(confirmMsg)) return;
+      o.status = "completed";
+      o.completedAt = new Date().toISOString();
+      savePreorders(preorders);
+      // Award reward credits (set by the admin on the quotation) to the customer's account
+      const creditsToAward = o.quote ? Math.max(0, parseInt(o.quote.creditsEarned || 0)) : 0;
+      if(creditsToAward > 0 && o.userId){
+        const users = loadUsers();
+        const buyer = users.find(u=>u.id === o.userId);
+        if(buyer){
+          buyer.credits = (buyer.credits || 0) + creditsToAward;
+          saveUsers(users);
+          refreshUserAuthUI();
+        }
+      }
+      refreshAdminData();
+      showToast("Order marked as delivered & completed.", "fa-circle-check");
     });
   });
   tbody.querySelectorAll("[data-del-order]").forEach(btn=>{
@@ -2669,6 +2929,50 @@ function renderOrdersInto(list, tbodyId, emptyId, showPhoto){
     });
   });
 }
+
+/* ---------- Admin: Send / Edit Quotation modal ---------- */
+let currentQuoteOrderId = null;
+function openQuoteModal(orderId){
+  const o = preorders.find(x=>x.id===orderId);
+  if(!o) return;
+  currentQuoteOrderId = orderId;
+  document.getElementById("qmOrderId").value = orderId;
+  document.getElementById("qmImg").src = o.productImage || (products.find(p=>p.id===o.productId)?.image) || "";
+  document.getElementById("qmImg").style.display = (o.productImage || o.productId) ? "block" : "none";
+  document.getElementById("qmTitle").textContent = o.productTitle;
+  document.getElementById("qmMeta").textContent = "Qty " + o.qty + " · " + escapeHtml(o.name) + " · " + escapeHtml(o.phone);
+  const product = o.productId ? products.find(p=>p.id===o.productId) : null;
+  document.getElementById("qmPrice").value = o.quote ? o.quote.price : (product ? product.price : "");
+  document.getElementById("qmShipping").value = o.quote ? (o.quote.shipping||0) : "";
+  document.getElementById("qmDeliveryTime").value = o.quote ? o.quote.deliveryTime : (o.orderCategory === "preorder" ? "7–15 days" : "2–5 days");
+  document.getElementById("qmNotes").value = o.quote ? (o.quote.notes||"") : "";
+  document.getElementById("qmCredits").value = o.quote ? (o.quote.creditsEarned||0) : (product ? (product.creditsEarned||0) : 0);
+  document.getElementById("quoteModalOverlay").classList.add("open");
+}
+function closeQuoteModal(){ document.getElementById("quoteModalOverlay").classList.remove("open"); currentQuoteOrderId = null; }
+document.getElementById("closeQuoteModal").addEventListener("click", closeQuoteModal);
+document.getElementById("cancelQuoteModal").addEventListener("click", closeQuoteModal);
+document.getElementById("quoteModalOverlay").addEventListener("click",(e)=>{ if(e.target.id==="quoteModalOverlay") closeQuoteModal(); });
+
+document.getElementById("quoteForm").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const orderId = document.getElementById("qmOrderId").value;
+  const o = preorders.find(x=>x.id===orderId);
+  if(!o) return;
+  o.quote = {
+    price: parseFloat(document.getElementById("qmPrice").value || 0),
+    shipping: parseFloat(document.getElementById("qmShipping").value || 0),
+    deliveryTime: document.getElementById("qmDeliveryTime").value.trim(),
+    notes: document.getElementById("qmNotes").value.trim(),
+    creditsEarned: Math.max(0, parseInt(document.getElementById("qmCredits").value || 0)),
+    quotedAt: new Date().toISOString() // resets the 7-day response window on every (re)send
+  };
+  o.status = "quoted";
+  savePreorders(preorders);
+  closeQuoteModal();
+  refreshAdminData();
+  showToast("Quotation sent to the customer.", "fa-paper-plane");
+});
 
 /* Records saved before the Pre-Order / In-Shop split won't have an
    orderCategory yet — treat them as pre-orders (that was the only flow
@@ -2709,21 +3013,29 @@ document.querySelectorAll("#orderTable th[data-sort]").forEach(th=>{
    up correctly, and it opens as a normal formatted spreadsheet. */
 function exportOrdersToExcel(list, filenamePrefix, emptyMsg){
   if(list.length === 0){ showToast(emptyMsg, "fa-circle-info"); return; }
-  const rows = list.map(o => ({
-    "Date": new Date(o.date).toLocaleString(),
-    "Name": o.name || "",
-    "Phone": o.phone || "",
-    "Product": o.productTitle + (o.isCustom ? " (Custom Request)" : ""),
-    "Quantity": o.qty,
-    "Address": o.address || "",
-    "Payment Method": o.paymentMethod === "cod" ? "Cash on Delivery" : "bKash/Nagad",
-    "Status": o.status || "pending",
-    "Total (৳)": o.total ?? "",
-    "Advance (৳)": o.advance || "",
-    "Transaction ID": o.txnId || ""
-  }));
+  const rows = list.map(o => {
+    const total = o.quote ? (o.quote.price * o.qty + (o.quote.shipping||0)) : "";
+    return {
+      "Date": new Date(o.date).toLocaleString(),
+      "Name": o.name || "",
+      "Phone": o.phone || "",
+      "Product": o.productTitle + (o.isCustom ? " (Custom Request)" : ""),
+      "Quantity": o.qty,
+      "Delivery Location": o.address || "",
+      "Status": (o.status || "pending").replace(/-/g," "),
+      "Quoted Price (৳/unit)": o.quote ? o.quote.price : "",
+      "Shipping Cost (৳)": o.quote ? (o.quote.shipping||0) : "",
+      "Estimated Delivery": o.quote ? o.quote.deliveryTime : "",
+      "Quote Notes": o.quote ? o.quote.notes||"" : "",
+      "Total (৳)": total,
+      "Payment Method": o.paymentMethod === "cod" ? "Cash on Delivery" : (o.paymentMethod === "advance" ? "bKash/Nagad (50% Advance)" : ""),
+      "50% Advance (৳)": (total !== "" && o.paymentMethod !== "cod") ? Math.ceil(total*0.5) : "",
+      "Advance Txn ID": o.advanceTxnId || "",
+      "Reward Credits": o.quote ? (o.quote.creditsEarned || 0) : ""
+    };
+  });
   const ws = XLSX.utils.json_to_sheet(rows);
-  ws["!cols"] = [ {wch:16},{wch:20},{wch:14},{wch:30},{wch:9},{wch:36},{wch:16},{wch:11},{wch:11},{wch:11},{wch:16} ];
+  ws["!cols"] = [ {wch:16},{wch:20},{wch:14},{wch:30},{wch:9},{wch:36},{wch:14},{wch:14},{wch:12},{wch:16},{wch:24},{wch:11},{wch:16},{wch:11},{wch:16},{wch:13} ];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Orders");
   XLSX.writeFile(wb, `${filenamePrefix}-${new Date().toISOString().slice(0,10)}.xlsx`);
@@ -2740,9 +3052,22 @@ document.getElementById("downloadOrderXlsxBtn").addEventListener("click", ()=>{
 /* =====================================================================
    ADMIN — PRODUCT TABLE / MANAGEMENT
    ===================================================================== */
+let activeAdminProductView = "all"; // "instock" | "preorder" | "all"
+document.querySelectorAll("#adminProductViewTabs .stock-view-tab").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    activeAdminProductView = btn.dataset.adminView;
+    document.querySelectorAll("#adminProductViewTabs .stock-view-tab").forEach(b=> b.classList.toggle("active", b===btn));
+    renderProductTable();
+  });
+});
+
 function renderProductTable(){
   const tbody = document.getElementById("productTbody");
-  tbody.innerHTML = products.map(p=>{
+  let list = products;
+  if(activeAdminProductView === "instock") list = list.filter(p=>p.orderType==="instock");
+  else if(activeAdminProductView === "preorder") list = list.filter(p=>p.orderType==="preorder");
+  document.getElementById("productEmpty").style.display = list.length ? "none" : "block";
+  tbody.innerHTML = list.map(p=>{
     const orderCount = preorders.filter(o=>o.productId===p.id).reduce((s,o)=>s+o.qty,0);
     return `<tr>
       <td><img src="${p.image}" class="thumb-sm" data-zoom="${p.image}"></td>
@@ -2750,6 +3075,10 @@ function renderProductTable(){
       <td>${escapeHtml(p.category)}</td>
       <td>${p.orderType === "instock" ? '<span class="status-pill" style="background:rgba(62,207,142,.15); color:var(--success);"><i class="fa-solid fa-check"></i> In Shop</span>' : '<span class="status-pill" style="background:rgba(212,175,55,.15); color:var(--gold-light);"><i class="fa-solid fa-clock"></i> Pre-Order</span>'}</td>
       <td>৳${p.price.toLocaleString()}</td>
+      <td style="font-size:.78rem;">
+        <span title="Credits earned on purchase"><i class="fa-solid fa-coins" style="color:var(--gold-light);"></i> +${p.creditsEarned||0}</span>
+        ${p.acceptsCredits ? `<br><span style="color:var(--muted-dim);">Buy: ${p.creditsCost||0} pts</span>` : ''}
+      </td>
       <td><i class="fa-solid fa-heart" style="color:var(--red);"></i> ${p.loves}</td>
       <td>${orderCount}</td>
       <td><span class="status-pill ${p.published?'published':'hidden'}">${p.published?'Published':'Hidden'}</span></td>
@@ -2808,14 +3137,35 @@ function openProductModal(id=null){
     document.getElementById("pfCategory").value = p.category;
     document.getElementById("pfPrice").value = p.price;
     document.getElementById("pfImage").value = p.image;
-    document.getElementById("pfOrderType").value = p.orderType || "preorder";
+    document.getElementById("pfOrderType").checked = (p.orderType === "instock");
+    document.getElementById("pfCreditsEarned").value = p.creditsEarned || 0;
+    document.getElementById("pfAcceptsCredits").checked = !!p.acceptsCredits;
+    document.getElementById("pfCreditsCost").value = p.creditsCost || 0;
+    document.getElementById("pfCreditsCostWrap").style.display = p.acceptsCredits ? "block" : "none";
   } else {
     document.getElementById("productModalTitle").innerHTML = '<i class="fa-solid fa-plus"></i> Add Product';
     document.getElementById("productEditId").value = "";
-    document.getElementById("pfOrderType").value = "preorder";
+    document.getElementById("pfOrderType").checked = false;
+    document.getElementById("pfCreditsEarned").value = 0;
+    document.getElementById("pfAcceptsCredits").checked = false;
+    document.getElementById("pfCreditsCost").value = 0;
+    document.getElementById("pfCreditsCostWrap").style.display = "none";
   }
+  syncOrderTypeToggleUI();
   document.getElementById("productModalOverlay").classList.add("open");
 }
+function syncOrderTypeToggleUI(){
+  const isInstock = document.getElementById("pfOrderType").checked;
+  document.getElementById("pfOrderTypeLabelLeft").style.color = isInstock ? "var(--muted)" : "var(--gold-light)";
+  document.getElementById("pfOrderTypeLabelRight").style.color = isInstock ? "var(--gold-light)" : "var(--muted)";
+  document.getElementById("pfOrderTypeHint").textContent = isInstock
+    ? "In Shop — available now (full payment or COD, ships fast)"
+    : "Pre-Order — not in shop yet, sourced from China (7–15 days, 50% advance)";
+}
+document.getElementById("pfOrderType").addEventListener("change", syncOrderTypeToggleUI);
+document.getElementById("pfAcceptsCredits").addEventListener("change", ()=>{
+  document.getElementById("pfCreditsCostWrap").style.display = document.getElementById("pfAcceptsCredits").checked ? "block" : "none";
+});
 function closeProductModal(){ document.getElementById("productModalOverlay").classList.remove("open"); }
 document.getElementById("addProductBtn").addEventListener("click", ()=> openProductModal());
 document.getElementById("closeProductModal").addEventListener("click", closeProductModal);
@@ -2829,16 +3179,19 @@ document.getElementById("productForm").addEventListener("submit",(e)=>{
   const category = document.getElementById("pfCategory").value.trim();
   const price = parseFloat(document.getElementById("pfPrice").value);
   const image = document.getElementById("pfImage").value.trim() || "https://images.unsplash.com/photo-1607082349566-187342175e2f?w=500&q=80";
-  const orderType = document.getElementById("pfOrderType").value === "instock" ? "instock" : "preorder";
+  const orderType = document.getElementById("pfOrderType").checked ? "instock" : "preorder";
+  const creditsEarned = Math.max(0, parseInt(document.getElementById("pfCreditsEarned").value || 0));
+  const acceptsCredits = document.getElementById("pfAcceptsCredits").checked;
+  const creditsCost = acceptsCredits ? Math.max(0, parseInt(document.getElementById("pfCreditsCost").value || 0)) : 0;
 
   if(id){
     const p = products.find(x=>x.id===id);
-    Object.assign(p, { title, category, price, image, orderType });
+    Object.assign(p, { title, category, price, image, orderType, creditsEarned, acceptsCredits, creditsCost });
     showToast("Product updated.", "fa-check");
   } else {
     products.push({
       id:"p_"+Date.now(), title, category, price, oldPrice:null, image,
-      published:true, showLoves:true, loves:0, orderType
+      published:true, showLoves:true, loves:0, orderType, creditsEarned, acceptsCredits, creditsCost
     });
     showToast("Product added.", "fa-check");
   }
@@ -3158,6 +3511,29 @@ async function refreshVideoAdminUI(){
     : '<span class="video-current-tag" style="color:var(--muted);"><i class="fa-solid fa-circle-info"></i> Using the default sample video</span>';
 }
 
+document.getElementById("changeAdminPasswordForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const errEl = document.getElementById("capError");
+  const current = document.getElementById("capCurrent").value;
+  const next = document.getElementById("capNew").value;
+  const currentHash = await hashPassword(current, "admin");
+  const storedHash = await getAdminPasswordHash();
+  if(currentHash !== storedHash){
+    errEl.textContent = "Incorrect current password.";
+    errEl.style.display = "block";
+    return;
+  }
+  if(next.length < 6){
+    errEl.textContent = "New password must be at least 6 characters.";
+    errEl.style.display = "block";
+    return;
+  }
+  localStorage.setItem(LS_ADMIN_PASS_HASH, await hashPassword(next, "admin"));
+  errEl.style.display = "none";
+  document.getElementById("changeAdminPasswordForm").reset();
+  showToast("Admin password updated.", "fa-key");
+});
+
 document.getElementById("resetDataBtn").addEventListener("click", async ()=>{
   if(confirm("This will erase ALL products, pre-orders, reacts and the uploaded hero video. Continue?")){
     localStorage.removeItem(LS_PRODUCTS);
@@ -3177,15 +3553,92 @@ document.getElementById("resetDataBtn").addEventListener("click", async ()=>{
 });
 
 /* =====================================================================
+   DAY / NIGHT MODE
+   ===================================================================== */
+const LS_THEME = "zylo_theme"; // "day" | "night"
+function applyTheme(theme){
+  const isDay = theme === "day";
+  document.body.classList.toggle("day-mode", isDay);
+  const icon = document.getElementById("themeToggleIcon");
+  if(icon){ icon.className = isDay ? "fa-solid fa-sun" : "fa-solid fa-moon"; }
+}
+function initTheme(){
+  const saved = localStorage.getItem(LS_THEME) || "night";
+  applyTheme(saved);
+}
+document.getElementById("themeToggleBtn").addEventListener("click", ()=>{
+  const current = localStorage.getItem(LS_THEME) || "night";
+  const next = current === "day" ? "night" : "day";
+  localStorage.setItem(LS_THEME, next);
+  applyTheme(next);
+});
+initTheme();
+
+/* =====================================================================
+   ORDER COUNTDOWN TIMERS (delivery ETA + auto-delete) — ticks any
+   .order-countdown badge currently in the DOM once a second.
+   ===================================================================== */
+function formatCountdown(ms){
+  if(ms <= 0) return "Expired";
+  const totalSeconds = Math.floor(ms / 1000);
+  const d = Math.floor(totalSeconds / 86400);
+  const h = Math.floor((totalSeconds % 86400) / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  return `${d}d ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+}
+let lastConfirmedOrderRecheck = 0;
+function tickOrderCountdowns(){
+  const badges = document.querySelectorAll(".order-countdown");
+  if(badges.length === 0) return;
+  const now = Date.now();
+  let anyAutoDeleteExpired = false;
+  badges.forEach(el=>{
+    const deadline = new Date(el.dataset.deadline).getTime();
+    const remaining = deadline - now;
+    el.textContent = formatCountdown(remaining);
+    if(remaining <= 0 && el.closest(".order-timer-row.auto-delete")) anyAutoDeleteExpired = true;
+  });
+  // Re-check for orders that just crossed their 7-day no-update deadline so they're
+  // actually removed (rather than only showing "Expired") — throttled to once per 20s.
+  if(anyAutoDeleteExpired && (now - lastConfirmedOrderRecheck > 20000)){
+    lastConfirmedOrderRecheck = now;
+    const before = preorders.length;
+    checkExpiredQuotes();
+    if(preorders.length !== before && document.getElementById("myOrdersOverlay").classList.contains("open")){
+      openMyOrders();
+    }
+  }
+}
+setInterval(tickOrderCountdowns, 1000);
+
+/* =====================================================================
+   TRADE ROUTE HERO — live local clocks for Guangzhou (China) & Chattogram (BD)
+   ===================================================================== */
+const CHINA_CLOCK_FMT = new Intl.DateTimeFormat("en-GB", { timeZone:"Asia/Shanghai", hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:false });
+const BD_CLOCK_FMT = new Intl.DateTimeFormat("en-GB", { timeZone:"Asia/Dhaka", hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:false });
+function updateRouteClocks(){
+  const cn = document.getElementById("routeChinaClock");
+  const bd = document.getElementById("routeBdClock");
+  const now = new Date();
+  if(cn) cn.textContent = CHINA_CLOCK_FMT.format(now);
+  if(bd) bd.textContent = BD_CLOCK_FMT.format(now);
+}
+updateRouteClocks();
+setInterval(updateRouteClocks, 1000);
+
+/* =====================================================================
    INIT
    ===================================================================== */
 injectLogos();
 applySettingsToPage();
 refreshUserAuthUI();
 renderBrandVideo(); // async, fire-and-forget is fine here — it self-updates the DOM when ready
+checkExpiredQuotes(); // drop any quotations that sat unanswered for 7+ days
 renderFilterBar();
 renderProductGrid();
 renderModelShowcase();
+setInterval(checkExpiredQuotes, 5 * 60 * 1000); // re-check every 5 min while this tab stays open
 
 // Resume admin session if already authenticated this tab session
 if(sessionStorage.getItem("zylo_admin_auth") === "1"){
